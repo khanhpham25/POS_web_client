@@ -18,6 +18,7 @@ const middleware = [
 const composedEnhancers = compose(
   applyMiddleware(...middleware),
   offline(offlineConfig),
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
   ...enhancers
 );
 

@@ -1,0 +1,6 @@
+@import '~antd/dist/antd.css';
+@import '~font-awesome/css/font-awesome.min.css';
+@import '~perfect-scrollbar/css/perfect-scrollbar.css';
+@import 'custom.css';
+@import 'login.scss';
+@import 'error.scss';
