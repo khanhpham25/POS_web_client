@@ -49,7 +49,7 @@ ReactDOM.render(
           return <EmptyLayoutRoute path={prop.path} component={prop.component} key={'empty' + key} />;
         })}
         {dashboardRoutes.map((prop, key) => {
-          return <DashboardRoute path={prop.path} component={prop.component} key={'dash' + key} />;
+          return <DashboardRoute path={prop.path} exact={prop.exact || false} component={prop.component} key={'dash' + key} />;
         })}
       </Switch>
     </ConnectedRouter>

@@ -4,16 +4,14 @@ import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom';
 import Errors from 'components/errors';
 
-import { onLoginInputChange, submitLogin } from './actions';
+import { submitLogin } from './actions';
 class Login extends Component {
   render() {
     const { errors, redirectToReferrer } = this.props;
     const { from } = this.props.location.state || { from: { pathname: '/' } };
+    const token = localStorage.token;
 
-    if (redirectToReferrer === true) {
-      return <Redirect to={from} />
-    }
-
+    if (token && redirectToReferrer === true) return <Redirect to={from} />;
 
     return (
       <div className='login-wrapper'>
@@ -42,10 +40,6 @@ class Login extends Component {
         </ul>
       </div>
     );
-  }
-
-  handleInputChange(event) {
-    this.props.onLoginInputChange(event.target.name, event.target.value);
   }
 
   onSubmit(event) {

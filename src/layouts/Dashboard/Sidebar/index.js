@@ -1,9 +1,8 @@
 import React, { Component, Fragment } from 'react';
 
-import { Switch, Route, Redirect } from 'react-router-dom';
+import { Link, NavLink, withRouter } from 'react-router-dom';
 // creates a beautiful scrollbar
 import PerfectScrollbar from 'perfect-scrollbar';
-
 import { Layout, Menu, Breadcrumb, Icon } from 'antd';
 const { Sider } = Layout;
 const SubMenu = Menu.SubMenu;
@@ -27,6 +26,8 @@ class Sidebar extends Component {
     //this.refs.mainPanel.scrollTop = 0;
   }
   render() {
+    //co the chua chay bang cach vut onclick cho link set menu item selected
+
     return (
       <Sider
         collapsible
@@ -36,10 +37,14 @@ class Sidebar extends Component {
         collapsedWidth={80}
       >
         <div className='logo' />
-        <Menu theme='dark' defaultSelectedKeys={['1']} mode='inline'>
-          <Menu.Item key='1'>
-            <Icon type='pie-chart' />
-            <span>Option 1</span>
+        <Menu theme='dark' mode='inline'
+          selectedKeys={[this.props.location.pathname]}
+        >
+          <Menu.Item key='/products'>
+            <NavLink to='/products' className='nav-text'>
+              <Icon type='tag' />&nbsp;&nbsp;&nbsp;
+              <span>Products</span>
+            </NavLink>
           </Menu.Item>
           <Menu.Item key='2'>
             <Icon type='desktop' />
@@ -70,4 +75,4 @@ class Sidebar extends Component {
   }
 }
 
-export default Sidebar;
+export default withRouter(Sidebar);
