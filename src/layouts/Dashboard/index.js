@@ -18,14 +18,23 @@ class DashboardLayout extends Component {
   componentDidUpdate() {
     //this.refs.mainPanel.scrollTop = 0;
   }
+
   render() {
+    const childWithProps = (props) => {
+      return (
+        React.Children.map(this.props.children, (child) => {
+          return React.cloneElement(child, props);
+        })
+      )
+    };
+
     return (
       <Fragment>
         <Layout style={{ minHeight: '100vh' }}>
           <Sidebar />
           <Layout>
             <AppHeader />
-            {this.props.children}
+            {childWithProps(this.props)}
             <AppFooter />
           </Layout>
         </Layout>
