@@ -11,7 +11,7 @@ class Login extends Component {
     const { from } = this.props.location.state || { from: { pathname: '/' } };
     const token = localStorage.token;
 
-    if (token && redirectToReferrer === true) return <Redirect to={from} />;
+    if (token && redirectToReferrer == true) return <Redirect to={from} />;
 
     return (
       <div className='login-wrapper'>

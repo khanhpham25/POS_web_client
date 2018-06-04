@@ -6,7 +6,6 @@ import { connect } from 'react-redux'
 
 import { getProducts, onTableRowChange } from '../../actions';
 import ProductDetail from '../ProductDetail';
-
 import ProductModal from '../ProductModal';
 
 const { Content } = Layout;

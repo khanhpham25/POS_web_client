@@ -32,6 +32,12 @@ export const submitLogin = (email, password) => {
 
 const saveUser = response => {
   const user = JSON.stringify(response.data.user);
+  const products = JSON.stringify(response.data.products);
+  const customers = JSON.stringify(response.data.customers);
+  const payment_methods = JSON.stringify(response.data.payment_methods);
   localStorage.setItem('user', user);
+  localStorage.setItem('products', products);
+  localStorage.setItem('customers', customers);
+  localStorage.setItem('payment_methods', payment_methods);
   localStorage.setItem('token', response.data.token);
 };
