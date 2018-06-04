@@ -1,5 +1,181 @@
 .logo {
-    height: 32px;
-    background: rgba(255,255,255,.2);
-    margin: 16px;
-}
+  height: 32px;
+  background: rgba(255, 255, 255, 0.2);
+  margin: 16px; }
+
+.header-menu,
+.receipt-date {
+  float: right; }
+
+.sale-screen .ant-layout-header {
+  padding: 0 15px; }
+
+.sale-header-menu .home-btn {
+  color: #fff;
+  font-size: 16pt;
+  font-weight: bold;
+  margin: 0 30px 0 20px; }
+
+.sale-header-menu .new-transaction-btn {
+  margin-right: 20px; }
+
+.global-search {
+  margin-left: 5px; }
+
+.ant-select-dropdown-menu {
+  max-height: calc(100vh - 100px) !important; }
+
+.global-search.ant-select-auto-complete .ant-select-selection--single {
+  margin-right: -46px; }
+
+.global-search.ant-select-auto-complete .ant-input-affix-wrapper .ant-input:not(:last-child) {
+  padding-right: 62px; }
+
+.global-search.ant-select-auto-complete .ant-input-affix-wrapper .ant-input-suffix {
+  right: 0; }
+
+.global-search.ant-select-auto-complete .ant-input-affix-wrapper .ant-input-suffix button {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0; }
+
+.global-search-item-count {
+  position: absolute;
+  right: 16px; }
+
+.receipt-add-customer-btn {
+  margin-left: 55px; }
+
+.form-receipt {
+  margin-top: 15px; }
+
+.customer-payment-input {
+  border: 0;
+  border-bottom: 2px solid #929292;
+  border-radius: 0;
+  font-size: 14pt;
+  margin-left: 10px;
+  text-align: right;
+  width: 150px; }
+
+.customer-payment-input:focus {
+  border: 0;
+  border-bottom: 2px solid #0081fa;
+  box-shadow: none; }
+
+.receipt-info {
+  font-size: 13pt; }
+
+.receipt-info .ant-tabs-tab-active {
+  background: #1890ff !important;
+  color: #ffffff !important;
+  font-weight: bold; }
+
+.receipt-info .payment-method {
+  font-size: 18pt; }
+
+.receipt-info-row {
+  margin-top: 20px; }
+  .receipt-info-row .receipt-info-total-product,
+  .receipt-info-row .receipt-total,
+  .receipt-info-row .receipt-info-customer-change {
+    text-align: right; }
+
+.receipt-total {
+  color: #1890ff;
+  font-size: 15pt;
+  font-weight: bold; }
+
+.product-list {
+  height: 100%; }
+
+.receipt-form {
+  box-shadow: -4px 0px 0px 0px #cfcfcf;
+  height: 100%;
+  overflow: auto;
+  position: relative; }
+  .receipt-form .receipt-main-content {
+    position: relative;
+    height: 100%; }
+  .receipt-form .col-right-content1 {
+    min-height: calc(100% - 129px); }
+    @media screen and (min-height: 645px) {
+      .receipt-form .col-right-content1 .col-right-inside .note-wrap .receipt-note {
+        position: absolute;
+        left: 0;
+        top: 10px;
+        right: 0;
+        bottom: 5px; } }
+    @media screen and (min-height: 645px) {
+      .receipt-form .col-right-content1 .col-right-inside .note-wrap {
+        height: 100%;
+        width: 100%;
+        position: relative;
+        display: table-cell; } }
+    @media screen and (min-height: 645px) {
+      .receipt-form .col-right-content1 .col-right-inside {
+        display: table-row;
+        width: 100%; } }
+    @media screen and (min-height: 645px) {
+      .receipt-form .col-right-content1 {
+        display: table;
+        overflow: hidden;
+        width: 100%; } }
+  .receipt-form .checkout-btn-container {
+    margin: 0 12px;
+    padding-top: 5px;
+    height: 129px; }
+    .receipt-form .checkout-btn-container .checkout-btn {
+      background: #4bac4d;
+      border-radius: 2px;
+      color: #fff;
+      cursor: pointer;
+      float: left;
+      font-size: 16px;
+      font-weight: bold;
+      text-decoration: none;
+      text-align: center;
+      padding: 15px;
+      line-height: 1.5;
+      height: 67px;
+      width: 100%; }
+    .receipt-form .checkout-btn-container .checkout-btn:hover {
+      background: #419543; }
+
+.sale-container {
+  height: calc(100vh - 64px); }
+
+.receipt-container {
+  height: calc(100vh - 132px); }
+
+.product-item {
+  font-size: 12pt; }
+
+.product-item-unit-price,
+.product-item-total {
+  text-align: right; }
+
+.product-item-total {
+  font-weight: bold; }
+
+.product-quantity-input {
+  border: 0;
+  border-bottom: 1px solid #929292;
+  border-radius: 0;
+  margin-left: 10px; }
+
+.product-quantity-input:focus {
+  border: 0;
+  border-bottom: 1px solid #0081fa;
+  box-shadow: none; }
+
+.delete-product-item {
+  color: #e47885;
+  cursor: pointer; }
+
+.delete-product-item:hover {
+  background: #e47885;
+  border-radius: 20%;
+  color: #fff; }
+
+.ant-select-selection__clear {
+  margin-right: 55px; }

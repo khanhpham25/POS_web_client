@@ -15,6 +15,8 @@ const middleware = [
   routerMiddleware(history)
 ];
 
+offlineConfig.persistOptions = { blacklist: ['saleReducer'] };
+
 const composedEnhancers = compose(
   applyMiddleware(...middleware),
   offline(offlineConfig),
