@@ -32,6 +32,15 @@ export const onQuantityChange = (value, product_id) => {
   }
 }
 
+export const onRemoveItemFromList = (product_id) => {
+  return dispatch => {
+    dispatch({
+      type: constants.ON_REMOVE_ITEM_FROM_LIST,
+      product_id
+    })
+  }
+}
+
 export const onPaymentTypeChange = (payment_type) => {
   return dispatch => {
     dispatch({
@@ -98,10 +107,10 @@ export const createReceipt = (data) => {
     formData.append('receipt[date_time]', moment().toString());
   }
 
-  if (data.receipt.customer) formData.append('receipt[customer_id]', data.receipt.customer.id);
+  if (data.receipt.customer.id) formData.append('receipt[customer_id]', data.receipt.customer.id);
+  if (data.receipt.payment_type.id) formData.append('receipt[payment_method_id]', data.receipt.payment_type.id);
 
   formData.append('receipt[customer_payment]', data.receipt.customer_payment);
-  formData.append('receipt[payment_method_id]', data.receipt.payment_type.id);
 
   data.boughtProducts.forEach((product, index) => {
     formData.append('receipt[receipt_details_attributes][' + index + '][quantity]', product.quantity);

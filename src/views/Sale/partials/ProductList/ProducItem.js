@@ -3,7 +3,6 @@ import { Row, Col, InputNumber, Icon } from 'antd';
 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { onQuantityChange } from '../../actions';
 
 class ProductItem extends Component {
 
@@ -11,6 +10,12 @@ class ProductItem extends Component {
     const { onQuantityChange, data } = this.props;
 
     onQuantityChange(value, data.id);
+  }
+
+  onRemoveItem = () => {
+    const { onRemoveItemFromList, data } = this.props;
+
+    onRemoveItemFromList(data.id);
   }
 
   render() {
@@ -23,7 +28,7 @@ class ProductItem extends Component {
           {data.index + 1}
         </Col>
         <Col lg={1} >
-          <Icon type='close' className='delete-product-item' />
+          <Icon type='close' className='delete-product-item' onClick={this.onRemoveItem} />
         </Col>
         <Col lg={3} >
           {!data.code || data.code == 'null' ? `TBDC${10000 + data.id}` : data.code}

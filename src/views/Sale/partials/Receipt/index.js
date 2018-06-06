@@ -7,7 +7,8 @@ class Receipt extends Component {
   render() {
     const {
       data, customers, onQuantityChange, payment_methods, onPaymentTypeChange,
-      onReceiptInputChange, onSelectCustomer, createReceipt, onCustomerInputChange
+      onReceiptInputChange, onSelectCustomer, createReceipt, onCustomerInputChange,
+      onRemoveItemFromList
     } = this.props;
 
     return (
@@ -15,7 +16,7 @@ class Receipt extends Component {
         <Row type='flex' gutter={32} className='receipt-container' >
           <Col lg={17} className='product-list' >
             <ProductList data={data.boughtProducts}
-              onQuantityChange={onQuantityChange} />
+              onQuantityChange={onQuantityChange} onRemoveItemFromList={onRemoveItemFromList} />
           </Col>
           <Col lg={7} className='receipt-form' >
             <ReceiptForm data={data} customers={customers} payment_methods={payment_methods}
