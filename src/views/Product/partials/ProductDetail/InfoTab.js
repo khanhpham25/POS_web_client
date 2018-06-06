@@ -82,8 +82,7 @@ class InfoTab extends Component {
             </Button>
           </Col>
         </Row>
-
-        <ProductModal title='Update Product Info'
+        <ProductModal title='Update Product Info' action='update'
           product={product} categories={categories}
           visible={isProductModalVisible}
           onClose={this.hideProductModal.bind(this)} />

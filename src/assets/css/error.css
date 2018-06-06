@@ -1,0 +1,14 @@
+.alert {
+  font-size: 14px !important;
+  padding: 10px !important;
+  color: #721c24;
+  opacity: 0.8;
+  position: relative;
+  background-color: #f8d7da;
+  border-color: #f5c6cb;
+  z-index: 999;
+  margin: 0 auto; }
+
+.alert-close {
+  color: #000;
+  opacity: 0.5 !important; }

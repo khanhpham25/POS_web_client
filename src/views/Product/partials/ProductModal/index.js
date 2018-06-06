@@ -4,7 +4,7 @@ import ModalInfoTab from './ModalInfoTab';
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
-import { updateProduct } from '../../actions';
+import { updateProduct, createProduct } from '../../actions';
 
 const TabPane = Tabs.TabPane;
 
@@ -24,7 +24,7 @@ class ProductModal extends Component {
   }
 
   render() {
-    const { title, visible, categories } = this.props;
+    const { title, visible, categories, action } = this.props;
     const { product } = this.state;
 
     return (
@@ -38,19 +38,22 @@ class ProductModal extends Component {
         footer={[
           <Button key='back' onClick={this.handleCancel.bind(this)}>
             <Icon type='close-circle-o' />
-            Return
+            Cancel
           </Button>,
           <Button key='submit' type='primary' onClick={this.handleOk.bind(this)}>
             <Icon type='save' />
-            Submit
+            Save
           </Button>,
         ]}
       >
         <Tabs defaultActiveKey='1' >
           <TabPane tab='Info' key='1'>
-            <ModalInfoTab product={product} categories={categories}
+            <ModalInfoTab product={product} categories={categories} action={action}
               onProductChange={this.onProductChange.bind(this)}
-              onCategoryChange={this.onCategoryChange.bind(this)} />
+              onCategoryChange={this.onCategoryChange.bind(this)}
+              afterCreateCategory={this.afterCreateCategory.bind(this)}
+              onNumberChange={this.onNumberChange.bind(this)}
+            />
           </TabPane>
           <TabPane tab='Description' key='2'>
 
@@ -61,12 +64,15 @@ class ProductModal extends Component {
   }
 
   handleOk(event) {
-    this.props.updateProduct(this.state.product);
+    if (this.props.action == 'create') {
+      this.props.createProduct(this.state.product);
+    } else {
+      this.props.updateProduct(this.state.product);
+    }
     this.props.onClose();
   }
 
   handleCancel(event) {
-
     this.props.onClose();
   }
 
@@ -87,9 +93,28 @@ class ProductModal extends Component {
       product: changedProduct
     });
   }
+
+  onNumberChange(name, value) {
+    let changedProduct = Object.assign({}, this.state.product);
+
+    Object.assign(changedProduct, { [name]: value });
+    this.setState({
+      product: changedProduct
+    });
+  }
+
+  afterCreateCategory(category) {
+    let changedProduct = Object.assign({}, this.state.product);
+
+    Object.assign(changedProduct.category, { id: category.id });
+    this.setState({
+      product: changedProduct
+    });
+  }
 }
 
 const mapDispatchToProps = dispatch => bindActionCreators({
+  createProduct,
   updateProduct
 }, dispatch);
 

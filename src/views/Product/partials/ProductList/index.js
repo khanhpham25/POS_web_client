@@ -1,23 +1,23 @@
 import React, { Component } from 'react';
-import { Table, Icon, Switch, Radio, Form } from 'antd';
+import { Table, Icon, Button, Row, Col } from 'antd';
 import { Layout, Breadcrumb } from 'antd';
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
-import { getProducts } from '../../actions';
+import { getProducts, onTableRowChange } from '../../actions';
 import ProductDetail from '../ProductDetail';
+import ProductModal from '../ProductModal';
 
 const { Content } = Layout;
-const FormItem = Form.Item;
 
 class ProductList extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      expandedRowKeys: [],
       filteredInfo: null,
       sortedInfo: null,
+      isProductModalVisible: false
     }
   }
 
@@ -26,8 +26,8 @@ class ProductList extends Component {
   }
 
   render() {
-    const { products, categories } = this.props;
-    const { expandedRowKeys } = this.state;
+    const { products, categories, expandedRowKeys } = this.props;
+    const { isProductModalVisible } = this.state;
     let { sortedInfo, filteredInfo } = this.state;
     let categoryFilters = [];
     let totalInStock = 0;
@@ -118,9 +118,28 @@ class ProductList extends Component {
 
     return (
       <div>
+        <Row type='flex' justify='end' gutter={16}>
+          <Col>
+            <Button type='primary' onClick={this.showProductModal.bind(this)} >
+              <Icon type='plus' /> New Product
+            </Button>
+          </Col>
+          <Col>
+            <Button type='default' ><Icon type='login' /> Import</Button>
+          </Col>
+          <Col>
+            <Button type='default' ><Icon type='logout' /> Export</Button>
+          </Col>
+        </Row>
         <Table {...tableConfig} columns={columns} dataSource={products}
           onExpand={this.onTableRowExpand.bind(this)}
           onChange={this.handleChange.bind(this)} />
+
+        <ProductModal title='Create Product' action='create'
+          product={{ name: '', category: { id: '' }, initial_cost: 0, sale_price: 0, stock_count: 0 }}
+          categories={categories}
+          visible={isProductModalVisible}
+          onClose={this.hideProductModal.bind(this)} />
       </div>
     );
   }
@@ -131,7 +150,7 @@ class ProductList extends Component {
       keys.push(record.id);
     }
 
-    this.setState({ expandedRowKeys: keys });
+    this.props.onTableRowChange(keys);
   }
 
   handleChange(pagination, filters, sorter) {
@@ -140,16 +159,31 @@ class ProductList extends Component {
       sortedInfo: sorter,
     });
   }
+
+  showProductModal(event) {
+    //show product thi gui request lay du lieu product de edit ve
+    this.setState({
+      isProductModalVisible: true,
+    });
+  }
+
+  hideProductModal(event) {
+    this.setState({
+      isProductModalVisible: false,
+    });
+  }
 }
 
 const mapStateToProps = (state) => ({
   errors: state.productReducer.errors,
   products: state.productReducer.products,
-  categories: state.productReducer.categories
+  categories: state.productReducer.categories,
+  expandedRowKeys: state.productReducer.expandedRowKeys
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-  getProducts
+  getProducts,
+  onTableRowChange
 }, dispatch);
 
 export default connect(

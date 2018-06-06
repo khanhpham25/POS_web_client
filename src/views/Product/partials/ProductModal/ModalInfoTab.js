@@ -1,13 +1,29 @@
 import React, { Component } from 'react';
-import { Form, Input, Tooltip, Icon, Row, Col, Button, Select } from 'antd';
-import productImg from 'assets/img/24.png';
+import { Form, Input, Tooltip, Icon, Row, Col, Upload, Button, Select, InputNumber } from 'antd';
+import CategoryModal from '../CategoryModal';
 
+// import productImg from 'assets/img/24.png';
 const FormItem = Form.Item;
 const Option = Select.Option;
-
+const uploadButton = (
+  <div>
+    <Icon type="plus" />
+    <div className="ant-upload-text">Upload</div>
+  </div>
+);
 class ModalInfoTab extends Component {
+  constructor() {
+    super();
+
+    this.state = {
+      isCategoryModalVisible: false
+    }
+  }
+
+
   render() {
-    const { product, categories } = this.props;
+    const { product, categories, action } = this.props;
+    const { isCategoryModalVisible } = this.state;
     // const formItemLayout = {
     //   labelCol: { span: 4 },
     //   wrapperCol: { span: 8 },
@@ -24,6 +40,23 @@ class ModalInfoTab extends Component {
       },
     };
 
+    let initialPriceInput;
+    let codeInput = (
+      <FormItem
+        {...formItemLayout}
+        label={(
+          <span>
+            Code&nbsp;
+            <Tooltip title='Product Code is a unique information'>
+              <Icon type='question-circle-o' />
+            </Tooltip>
+          </span>
+        )}
+      >
+        <Input name='code'
+          value={!product.code || product.code == 'null' ? `TBDC${10000 + product.id}` : product.code}
+          onChange={this.onInputChange.bind(this)} />
+      </FormItem>);
     let options = null;
 
     options = categories.map(category => {
@@ -32,25 +65,30 @@ class ModalInfoTab extends Component {
       )
     });
 
+    if (action == 'create') {
+      initialPriceInput = (
+        <FormItem
+          {...formItemLayout}
+          label={(
+            <span>
+              Initial Cost&nbsp;
+              <Tooltip title='Initial Cost is used to caculate profit of a product'>
+                <Icon type='question-circle-o' />
+              </Tooltip>
+            </span>
+          )}
+        >
+          <InputNumber name='initial_cost' value={product.initial_cost}
+            onChange={this.onInputNumberChange.bind(this, 'initial_cost')} />
+        </FormItem>);
+      codeInput = null;
+    }
+
     return (
       <div>
         <Row type='flex' gutter={24}>
           <Col lg={12}>
-            <FormItem
-              {...formItemLayout}
-              label={(
-                <span>
-                  Code&nbsp;
-                  <Tooltip title='Product Code is a unique information'>
-                    <Icon type='question-circle-o' />
-                  </Tooltip>
-                </span>
-              )}
-            >
-              <Input name='code'
-                value={product.code || product.code == 'null' ? `TBDC${10000 + product.id}` : product.code}
-                onChange={this.onInputChange.bind(this)} />
-            </FormItem>
+            {codeInput}
             <FormItem
               {...formItemLayout}
               label={(
@@ -89,16 +127,14 @@ class ModalInfoTab extends Component {
                 {options}
               </Select>
               &nbsp;&nbsp;
-              <Button type='default' >
+              <Button type='default' onClick={this.showCategoryModal.bind(this)} >
                 <Icon type='plus' />
               </Button>
             </FormItem>
-            <FormItem
-              {...formItemLayout}
-              label='Sale Price'
-            >
-              <Input name='sale_price' value={product.sale_price}
-                onChange={this.onInputChange.bind(this)} />
+            {initialPriceInput}
+            <FormItem {...formItemLayout} label='Sale Price' >
+              <InputNumber name='sale_price' value={product.sale_price}
+                onChange={this.onInputNumberChange.bind(this, 'sale_price')} />
             </FormItem>
             <FormItem
               {...formItemLayout}
@@ -111,16 +147,41 @@ class ModalInfoTab extends Component {
                 </span>
               )}
             >
-              <Input name='stock_count' value={product.stock_count}
-                onChange={this.onInputChange.bind(this)} />
+              <InputNumber name='stock_count' value={product.stock_count}
+                onChange={this.onInputNumberChange.bind(this, 'stock_count')} />
             </FormItem>
           </Col>
           <Col lg={12}>
-            <img src={productImg} />
+            {/* <Upload
+              action="/products"
+              listType="picture-card"
+              fileList={fileList}
+              onPreview={this.handlePreview}
+              onChange={this.handleChange}
+            >
+              {fileList.length >= 3 ? null : uploadButton}
+            </Upload> */}
           </Col>
         </Row>
+
+        <CategoryModal visible={isCategoryModalVisible}
+          afterCreateCategory={this.props.afterCreateCategory}
+          onClose={this.hideCategoryModal.bind(this)} />
       </div>
     );
+  }
+
+  showCategoryModal(event) {
+    //show product thi gui request lay du lieu product de edit ve
+    this.setState({
+      isCategoryModalVisible: true,
+    });
+  }
+
+  hideCategoryModal(event) {
+    this.setState({
+      isCategoryModalVisible: false,
+    });
   }
 
   onInputChange(event) {
@@ -129,6 +190,10 @@ class ModalInfoTab extends Component {
 
   onSelectChange(value) {
     this.props.onCategoryChange(value);
+  }
+
+  onInputNumberChange(name, value) {
+    this.props.onNumberChange(name, value);
   }
 }
 
