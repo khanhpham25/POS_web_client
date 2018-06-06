@@ -3,10 +3,12 @@ import { routerReducer } from 'react-router-redux';
 import loginReducer from 'views/Login/reducer';
 import productReducer from 'views/Product/reducer';
 import saleReducer from 'views/Sale/reducer';
+import generalReportReducer from 'views/Hello/reducer';
 
 export default combineReducers({
   routing: routerReducer,
   loginReducer,
   productReducer,
-  saleReducer
+  saleReducer,
+  generalReportReducer
 });

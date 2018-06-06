@@ -1,5 +1,6 @@
 import * as constants from '../constants';
 import axios from 'axios';
+import moment from 'moment';
 
 export const onSelectProduct = (product_id, allProducts) => {
   return dispatch => {
@@ -91,7 +92,11 @@ export const createReceipt = (data) => {
   let formData = new FormData();
 
   formData.append('receipt[creator_id]', currentUser.id);
-  formData.append('receipt[date_time]', data.receipt.date_time);
+  if (data.receipt.isTimeChange) {
+    formData.append('receipt[date_time]', data.receipt.date_time);
+  } else {
+    formData.append('receipt[date_time]', moment().toString());
+  }
 
   if (data.receipt.customer) formData.append('receipt[customer_id]', data.receipt.customer.id);
 

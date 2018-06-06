@@ -10,6 +10,40 @@
 .sale-screen .ant-layout-header {
   padding: 0 15px; }
 
+.today-sale-result {
+  margin-top: 10px; }
+  .today-sale-result .daily-sale-icon i {
+    background: #0081fa;
+    border-radius: 50%;
+    color: #fff;
+    font-size: 14pt;
+    margin: 17px 5px;
+    padding: 10px 14px; }
+  .today-sale-result .daily-report-icon .fa {
+    border-radius: 50%;
+    color: #fff;
+    font-size: 14pt;
+    margin: 20px 5px;
+    padding: 10px 12px; }
+  .today-sale-result .daily-report-icon .fa-arrow-up {
+    background: #4bac4d; }
+  .today-sale-result .daily-report-icon .fa-arrow-down {
+    background: #ea002a; }
+  .today-sale-result .report-total-receipt {
+    color: #666;
+    font-weight: bold;
+    margin: 0; }
+  .today-sale-result .report-sale-result {
+    color: #0094da;
+    font-size: 22px; }
+  .today-sale-result .report-sale-result.up {
+    color: #4bac4d; }
+  .today-sale-result .report-sale-result.down {
+    color: #ea002a; }
+  .today-sale-result .report-note {
+    color: #999;
+    font-size: 12px; }
+
 .sale-header-menu .home-btn {
   color: #fff;
   font-size: 16pt;

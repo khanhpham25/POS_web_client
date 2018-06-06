@@ -15,6 +15,65 @@
 	}
 }
 
+.today-sale-result {
+	margin-top: 15px;
+
+	.daily-sale-icon {
+		i {
+			background: rgb(0, 129, 250);
+			border-radius: 50%;
+			color: #fff;
+			font-size: 14pt;
+			margin: 17px 5px;
+			padding: 10px 14px;
+		}
+	}
+
+	.daily-report-icon {
+		.fa {
+			border-radius: 50%;
+			color: #fff;
+			font-size: 14pt;
+			margin: 20px 5px;
+			padding: 10px 12px;
+		}
+
+		.fa-arrow-up {
+			background: #4bac4d;
+		}
+
+		.fa-arrow-down {
+			background: #ea002a;
+		}
+	}
+
+
+	.report-total-receipt {
+    color: #666;
+		font-weight: bold;
+    margin: 0;
+	}
+
+	.report-sale-result {
+		color: #0094da;
+		font-size: 22px;
+
+	}
+
+	.report-sale-result.up {
+		color: #4bac4d;
+	}
+
+	.report-sale-result.down {
+		color: #ea002a;
+	}
+
+	.report-note {
+		color: #999;
+    font-size: 12px;
+	}
+}
+
 .sale-header-menu {
 	.home-btn {
 		color: #fff;
