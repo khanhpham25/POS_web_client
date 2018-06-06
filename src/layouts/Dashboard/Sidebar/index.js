@@ -42,7 +42,7 @@ class Sidebar extends Component {
         >
           <Menu.Item key='/products'>
             <NavLink to='/products' className='nav-text'>
-              <Icon type='tag' />&nbsp;&nbsp;&nbsp;
+              <Icon type='tags' />&nbsp;&nbsp;&nbsp;
               <span>Products</span>
             </NavLink>
           </Menu.Item>
