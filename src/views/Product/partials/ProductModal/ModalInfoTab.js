@@ -1,11 +1,16 @@
 import React, { Component } from 'react';
-import { Form, Input, Tooltip, Icon, Row, Col, Button, Select, InputNumber } from 'antd';
+import { Form, Input, Tooltip, Icon, Row, Col, Upload, Button, Select, InputNumber } from 'antd';
 import CategoryModal from '../CategoryModal';
 
-import productImg from 'assets/img/24.png';
+// import productImg from 'assets/img/24.png';
 const FormItem = Form.Item;
 const Option = Select.Option;
-
+const uploadButton = (
+  <div>
+    <Icon type="plus" />
+    <div className="ant-upload-text">Upload</div>
+  </div>
+);
 class ModalInfoTab extends Component {
   constructor() {
     super();
@@ -147,7 +152,15 @@ class ModalInfoTab extends Component {
             </FormItem>
           </Col>
           <Col lg={12}>
-            <img src={productImg} />
+            {/* <Upload
+              action="/products"
+              listType="picture-card"
+              fileList={fileList}
+              onPreview={this.handlePreview}
+              onChange={this.handleChange}
+            >
+              {fileList.length >= 3 ? null : uploadButton}
+            </Upload> */}
           </Col>
         </Row>
 

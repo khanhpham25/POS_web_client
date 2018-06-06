@@ -146,7 +146,7 @@ class ReceiptForm extends Component {
               <div className='receipt-date' >
                 <FormItem label='DatePicker' >
                   <DatePicker showTime format='YYYY-MM-DD HH:mm:ss'
-                    value={moment(data.receipt.date_time)}
+                    value={moment(data.receipt.date_time)} disabled={true}
                     onChange={this.onDateChange.bind(this)} />
                 </FormItem>
               </div>

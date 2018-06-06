@@ -10,7 +10,8 @@ const initialPanes = [{
       customer_payment: 0,
       customer: { id: '' },
       payment_type: { id: 1, name: 'Cash' },
-      note: ''
+      note: '',
+      isTimeChange: false
     }
   }
 }];
@@ -97,7 +98,6 @@ const saleReducer = (state = initialState, action) => {
         activeKey: state.activeKey
       }
 
-
     case constants.ON_PAYMENT_TYPE_CHANGE:
       panes = [...state.panes];
 
@@ -120,6 +120,7 @@ const saleReducer = (state = initialState, action) => {
 
       panes.forEach(pane => {
         if (pane.key == state.activeKey) {
+          if (action.name == 'date_time') Object.assign(pane.data.receipt, { isTimeChange: true });
           Object.assign(pane.data.receipt, { [action.name]: action.value });
 
           return;
