@@ -32,7 +32,7 @@ class PaymentMethodSelector extends Component {
     return (
       <Row type='flex' gutter={8} justify='center' >
         <Col lg={12} >
-          <RadioGroup onChange={this.onChange} value={currentPaymentType.id} >
+          <RadioGroup onChange={this.onChange} value={currentPaymentType.id || data[0].id} >
             {radioButtons}
           </RadioGroup>
         </Col>

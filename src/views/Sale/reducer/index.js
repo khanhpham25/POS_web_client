@@ -9,7 +9,7 @@ const initialPanes = [{
       date_time: moment().toString(),
       customer_payment: 0,
       customer: { id: '' },
-      payment_type: { id: 1, name: 'Cash' },
+      payment_type: { id: null, name: 'Cash' },
       note: '',
       isTimeChange: false
     }
@@ -24,6 +24,7 @@ const initialState = {
 
 const saleReducer = (state = initialState, action) => {
   let panes;
+
   switch (action.type) {
 
     case constants.ON_SELECT_PRODUCT_AUTO_COMPLETE:
@@ -98,6 +99,32 @@ const saleReducer = (state = initialState, action) => {
         activeKey: state.activeKey
       }
 
+    case constants.ON_REMOVE_ITEM_FROM_LIST:
+      panes = [...state.panes];
+
+      panes.forEach(pane => {
+        if (pane.key == state.activeKey) {
+          let boughtProducts = pane.data.boughtProducts;
+          let boughtIndex = boughtProducts.findIndex(product => product.id == action.product_id);
+
+          if (boughtIndex >= 0) {
+            boughtProducts.splice(boughtIndex, 1);
+          }
+
+          boughtProducts.map((pro, index) => {
+            Object.assign(pro, { index });
+          })
+
+          return;
+        }
+      });
+
+      return {
+        errors: null,
+        panes,
+        activeKey: state.activeKey
+      }
+
     case constants.ON_PAYMENT_TYPE_CHANGE:
       panes = [...state.panes];
 
@@ -139,7 +166,8 @@ const saleReducer = (state = initialState, action) => {
       if (action.value == '') {
         panes.forEach(pane => {
           if (pane.key == state.activeKey) {
-            Object.assign(pane.data.receipt, { customer: null });
+            let customer = { id: '' };
+            Object.assign(pane.data.receipt, { customer });
 
             return;
           }

@@ -12,7 +12,7 @@ import { connect } from 'react-redux'
 import {
   onSelectProduct, onQuantityChange, onPaymentTypeChange, onReceiptInputChange,
   onSelectCustomer, onChangeTab, onAddNewTransaction, onRemoveTransaction,
-  createReceipt, onCustomerInputChange
+  createReceipt, onCustomerInputChange, onRemoveItemFromList
 } from './actions';
 
 const TabPane = Tabs.TabPane;
@@ -110,7 +110,8 @@ class SaleIndex extends Component {
   render() {
     const {
       panes, activeKey, onQuantityChange, customers, payment_methods, onCustomerInputChange,
-      onPaymentTypeChange, onReceiptInputChange, onSelectCustomer, createReceipt
+      onPaymentTypeChange, onReceiptInputChange, onSelectCustomer, createReceipt,
+      onRemoveItemFromList
     } = this.props;
     const { dataSource } = this.state;
 
@@ -122,7 +123,9 @@ class SaleIndex extends Component {
           <Receipt customers={customers} data={pane.data} payment_methods={payment_methods}
             onQuantityChange={onQuantityChange} onPaymentTypeChange={onPaymentTypeChange}
             onReceiptInputChange={onReceiptInputChange} onSelectCustomer={onSelectCustomer}
-            createReceipt={createReceipt} onCustomerInputChange={onCustomerInputChange} />
+            createReceipt={createReceipt} onCustomerInputChange={onCustomerInputChange}
+            onRemoveItemFromList={onRemoveItemFromList}
+          />
         </TabPane>
       );
     });
@@ -200,7 +203,8 @@ const mapDispatchToProps = dispatch => bindActionCreators({
   onRemoveTransaction,
   onChangeTab,
   createReceipt,
-  onCustomerInputChange
+  onCustomerInputChange,
+  onRemoveItemFromList
 }, dispatch);
 
 
