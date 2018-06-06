@@ -73,7 +73,6 @@ class ProductModal extends Component {
   }
 
   handleCancel(event) {
-
     this.props.onClose();
   }
 

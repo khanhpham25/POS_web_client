@@ -11,6 +11,7 @@ const initialState = {
 const productReducer = (state = initialState, action) => {
   let products;
   let expandedRowKeys;
+
   switch (action.type) {
     case constants.LOAD_ALL_PRODUCT_SUCCESS:
       return {
