@@ -22,9 +22,13 @@ export const submitLogin = (email, password) => {
 
       dispatch(push('/'));
     }).catch(error => {
+      let currentErrors = [];
+      currentErrors.push(error.message);
+      if (error.response) currentErrors = handleErrorsResponse(error.response.data.errors);
+
       dispatch({
         type: constants.LOGIN_FAIL,
-        errors: handleErrorsResponse(error.response.data.errors)
+        errors: currentErrors
       })
     });
   }
