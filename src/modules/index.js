@@ -5,6 +5,7 @@ import productReducer from 'views/Product/reducer';
 import customerReducer from 'views/Customer/reducer';
 import saleReducer from 'views/Sale/reducer';
 import generalReportReducer from 'views/Hello/reducer';
+import providerReducer from 'views/Provider/reducer';
 
 export default combineReducers({
   routing: routerReducer,
@@ -12,5 +13,5 @@ export default combineReducers({
   productReducer,
   customerReducer,
   saleReducer,
-  generalReportReducer
+  providerReducer
 });

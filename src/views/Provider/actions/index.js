@@ -4,8 +4,8 @@ import { push } from 'react-router-redux';
 
 import { handleErrorsResponse } from 'assets/helper/handleErrorsResponse';
 
-export const getCustomers = () => {
-  let url = process.env.REACT_APP_HOST + 'customers';
+export const getProviders = () => {
+  const url = `${process.env.REACT_APP_HOST}providers`;
 
   return dispatch => {
     axios({
@@ -15,7 +15,7 @@ export const getCustomers = () => {
       }
     }).then(response => {
       dispatch({
-        type: constants.LOAD_ALL_CUSTOMER_SUCCESS,
+        type: constants.LOAD_ALL_PROVIDER_SUCCESS,
         data: response.data.data
       });
     }).catch(error => {
@@ -28,16 +28,12 @@ export const getCustomers = () => {
   };
 };
 
-export const updateCustomer = (customer) => {
-  let url = process.env.REACT_APP_HOST + 'customers/' + customer.id;
+export const updateProvider = provider => {
+  const url = `${process.env.REACT_APP_HOST}providers/${provider.id}`;
   let formData = new FormData();
 
-  for (let key of Object.keys(customer)) {
-    if (key !== 'customer_type') {
-      formData.append(`customer[${key}]`, customer[key]);
-    } else {
-      formData.append(`customer[${key}_id]`, customer[key].id);
-    }
+  for (let key of Object.keys(provider)) {
+    formData.append(`provider[${key}]`, provider[key]);
   }
 
   return dispatch => {
@@ -48,7 +44,7 @@ export const updateCustomer = (customer) => {
       }
     }).then(response => {
       dispatch({
-        type: constants.UPDATE_CUSTOMER_SUCCESS,
+        type: constants.UPDATE_PROVIDER_SUCCESS,
         data: response.data.data
       });
     }).catch(error => {
@@ -61,16 +57,12 @@ export const updateCustomer = (customer) => {
   };
 };
 
-export const createCustomer = customer => {
-  let url = process.env.REACT_APP_HOST + 'customers';
+export const createProvider = provider => {
+  const url = `${process.env.REACT_APP_HOST}providers`;
   let formData = new FormData();
 
-  for (let key of Object.keys(customer)) {
-    if (key == 'customer_type') {
-      formData.append(`customer[customer_type_id]`, customer[key].id);
-    } else if (key !== 'code') {
-      formData.append(`customer[${key}]`, customer[key]);
-    }
+  for (let key of Object.keys(provider)) {
+    formData.append(`provider[${key}]`, provider[key]);
   }
 
   return dispatch => {
@@ -81,7 +73,7 @@ export const createCustomer = customer => {
       }
     }).then(response => {
       dispatch({
-        type: constants.CREATE_CUSTOMER_SUCCESS,
+        type: constants.CREATE_PROVIDER_SUCCESS,
         data: response.data.data
       });
     }).catch(error => {
@@ -94,8 +86,8 @@ export const createCustomer = customer => {
   };
 }
 
-export const deleteCustomer = customer_id => {
-  const url = `${process.env.REACT_APP_HOST}customers/${customer_id}`;
+export const deleteProvider = provider_id => {
+  const url = `${process.env.REACT_APP_HOST}providers/${provider_id}`;
 
   return dispatch => {
     axios({
@@ -106,8 +98,8 @@ export const deleteCustomer = customer_id => {
       }
     }).then(response => {
       dispatch({
-        type: constants.DELETE_CUSTOMER_SUCCESS,
-        customer_id
+        type: constants.DELETE_PROVIDER_SUCCESS,
+        provider_id
       });
     }).catch(error => {
       console.log(error);
