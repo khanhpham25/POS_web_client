@@ -3,57 +3,57 @@ import { notification } from 'antd';
 
 const initialState = {
   errors: null,
-  customers: [],
-  customerTypes: [],
+  users: [],
+  roles: [],
   expandedRowKeys: [],
   dataSource: [],
   selectedRowKeys: []
 };
 
-const customerReducer = (state = initialState, action) => {
-  let customers, dataSource, expandedRowKeys;
+const userReducer = (state = initialState, action) => {
+  let users, dataSource, expandedRowKeys;
   switch (action.type) {
-    case constants.LOAD_ALL_CUSTOMER_SUCCESS:
+    case constants.LOAD_ALL_USER_SUCCESS:
       return {
         errors: null,
-        customers: action.data.customers,
-        customerTypes: action.data.customerTypes,
+        users: action.data.users,
+        roles: action.data.roles,
         expandedRowKeys: state.expandedRowKeys,
-        dataSource: action.data.customers,
+        dataSource: action.data.users,
         selectedRowKeys: state.selectedRowKeys
       };
 
-    case constants.UPDATE_CUSTOMER_SUCCESS:
-      customers = Object.assign([], state.customers);
+    case constants.UPDATE_USER_SUCCESS:
+      users = Object.assign([], state.users);
 
-      let index = customers.findIndex(customer => {
-        return customer.id == action.data.customer.id
+      let index = users.findIndex(user => {
+        return user.id == action.data.user.id
       });
 
-      customers[index] = action.data.customer;
-      dataSource = customers;
+      users[index] = action.data.user;
+      dataSource = users;
 
       return {
         errors: null,
-        customers,
-        customerTypes: action.data.customerTypes,
+        users,
+        roles: state.roles,
         expandedRowKeys: state.expandedRowKeys,
         dataSource,
         selectedRowKeys: state.selectedRowKeys
       };
 
-    case constants.CREATE_CUSTOMER_SUCCESS:
+    case constants.CREATE_USER_SUCCESS:
       expandedRowKeys = [];
-      customers = Object.assign([], state.customers);
+      users = Object.assign([], state.users);
 
-      customers.unshift(action.data.customer);
-      expandedRowKeys.push(action.data.customer.id);
-      dataSource = customers;
+      users.unshift(action.data.user);
+      expandedRowKeys.push(action.data.user.id);
+      dataSource = users;
 
       return {
         errors: null,
-        customers,
-        customerTypes: state.customerTypes,
+        users,
+        roles: state.roles,
         expandedRowKeys,
         dataSource,
         selectedRowKeys: state.selectedRowKeys
@@ -64,15 +64,29 @@ const customerReducer = (state = initialState, action) => {
 
       return {
         errors: null,
-        customers: state.customers,
-        customerTypes: state.customerTypes,
+        users: state.users,
+        roles: state.roles,
         expandedRowKeys,
         dataSource: state.dataSource,
         selectedRowKeys: state.selectedRowKeys
       };
 
-    case constants.HANDLE_CUSTOMER_SEARCH:
-      let initialSource = [...state.customers];
+    case constants.DELETE_USER_SUCCESS:
+      expandedRowKeys = [];
+      users = Object.assign([], state.users.filter(user => { return user.id !== action.user_id }));
+      dataSource = users;
+
+      return {
+        errors: null,
+        users,
+        roles: state.roles,
+        expandedRowKeys,
+        dataSource,
+        selectedRowKeys: state.selectedRowKeys
+      };
+
+    case constants.HANDLE_USER_SEARCH:
+      let initialSource = [...state.users];
       let searchValue = action.searchValue.toLowerCase();
       let filterdSource = initialSource.filter(p => {
         let isCodeMatch = p.code ? p.code.toLowerCase().includes(searchValue) : false;
@@ -81,8 +95,8 @@ const customerReducer = (state = initialState, action) => {
 
       return {
         errors: null,
-        customers: state.customers,
-        customerTypes: state.customerTypes,
+        users: state.users,
+        roles: state.roles,
         expandedRowKeys: state.expandedRowKeys,
         dataSource: filterdSource,
         selectedRowKeys: state.selectedRowKeys
@@ -91,37 +105,23 @@ const customerReducer = (state = initialState, action) => {
     case constants.HANDLE_ROW_SELECTED:
       return {
         errors: null,
-        customers: state.customers,
-        customerTypes: state.customerTypes,
+        roles: state.roles,
+        users: state.users,
         expandedRowKeys: state.expandedRowKeys,
         dataSource: state.dataSource,
         selectedRowKeys: action.selectedRowKeys
       };
 
-    case constants.DELETE_CUSTOMER_SUCCESS:
-      expandedRowKeys = [];
-      customers = Object.assign([], state.customers.filter(customer => { return customer.id !== action.customer_id }));
-      dataSource = customers;
-
-      return {
-        errors: null,
-        customers,
-        customerTypes: state.customerTypes,
-        expandedRowKeys,
-        dataSource,
-        selectedRowKeys: state.selectedRowKeys
-      };
-
-    case constants.DELETE_MANY_CUSTOMERS_SUCCESS:
-      let customers = Object.assign([], state.customers);
+    case constants.DELETE_MANY_USERS_SUCCESS:
+      let users = Object.assign([], state.users);
       let dataSource = Object.assign([], state.dataSource);
 
-      customers = customers.filter(p => !action.selectedIds.includes(p.id));
+      users = users.filter(p => !action.selectedIds.includes(p.id));
       dataSource = dataSource.filter(d => !action.selectedIds.includes(d.id));
 
       const args = {
         message: 'DELETE',
-        description: 'Chosen customers has been DELETEd sucessfully!',
+        description: 'Chosen users has been DELETEd sucessfully!',
         duration: 5,
         placement: 'bottomRight',
         style: {
@@ -134,8 +134,8 @@ const customerReducer = (state = initialState, action) => {
 
       return {
         errors: null,
-        customers,
-        customerTypes: state.customerTypes,
+        roles: state.roles,
+        users,
         expandedRowKeys: [],
         dataSource,
         selectedRowKeys: []
@@ -146,4 +146,4 @@ const customerReducer = (state = initialState, action) => {
   }
 }
 
-export default customerReducer;
+export default userReducer;
