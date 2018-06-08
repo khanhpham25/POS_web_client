@@ -2,7 +2,6 @@ import React, { Component, Fragment } from 'react';
 
 import { Link, NavLink, withRouter } from 'react-router-dom';
 // creates a beautiful scrollbar
-import PerfectScrollbar from 'perfect-scrollbar';
 import { Layout, Menu, Breadcrumb, Icon } from 'antd';
 const { Sider } = Layout;
 const SubMenu = Menu.SubMenu;
@@ -17,11 +16,6 @@ class Sidebar extends Component {
     this.setState({ collapsed });
   }
 
-  componentDidMount() {
-    if (navigator.platform.indexOf('Win') > -1) {
-      const ps = new PerfectScrollbar(this.refs.mainPanel);
-    }
-  }
   componentDidUpdate() {
     //this.refs.mainPanel.scrollTop = 0;
   }
