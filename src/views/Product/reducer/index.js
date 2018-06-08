@@ -4,8 +4,7 @@ const initialState = {
   errors: null,
   products: [],
   categories: [],
-  expandedRowKeys: [],
-
+  expandedRowKeys: []
 }
 
 const productReducer = (state = initialState, action) => {
@@ -55,7 +54,7 @@ const productReducer = (state = initialState, action) => {
 
       products.unshift(action.data.product);
       expandedRowKeys.push(action.data.product.id);
-
+      products
       return {
         errors: null,
         products,

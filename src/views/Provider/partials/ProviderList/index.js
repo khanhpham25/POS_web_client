@@ -4,42 +4,37 @@ import { Layout, Breadcrumb } from 'antd';
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
-import { getCustomers, onTableRowChange } from '../../actions';
-import CustomerDetail from '../CustomerDetail';
-import CustomerModal from '../CustomerModal';
+import { getProviders, onTableRowChange } from '../../actions';
+import ProviderDetail from '../ProviderDetail';
+import ProviderModal from '../ProviderModal';
 
 const { Content } = Layout;
 
-class CustomerList extends Component {
+class ProviderList extends Component {
   constructor() {
     super();
 
     this.state = {
       filteredInfo: null,
       sortedInfo: null,
-      isCustomerModalVisible: false
+      isProviderModalVisible: false
     };
   }
 
   componentDidMount() {
-    this.props.getCustomers();
+    this.props.getProviders();
   }
 
   render() {
-    const { customers, customerTypes, expandedRowKeys } = this.props;
-    let { sortedInfo, filteredInfo, isCustomerModalVisible } = this.state;
+    const { providers, expandedRowKeys } = this.props;
+    let { sortedInfo, filteredInfo, isProviderModalVisible } = this.state;
 
-    let customerTypeFilters = [];
-
-    customerTypes.map(cusType => {
-      customerTypeFilters.push({ text: cusType.name, value: cusType.name });
-    });
     sortedInfo = sortedInfo || {};
     filteredInfo = filteredInfo || {};
 
-    const expandedRowRender = record => <CustomerDetail key={record.id}
-      customer={record} customerTypes={customerTypes} />;
-    const title = () => 'Customer List';
+    const expandedRowRender = record => <ProviderDetail key={record.id}
+      provider={record} />;
+    const title = () => 'Provider List';
     const showHeader = true;
     const footer = () => 'Here is footer';
     const rowKey = (record) => { return record.id };
@@ -80,27 +75,40 @@ class CustomerList extends Component {
       },
       sortOrder: sortedInfo.columnKey === 'name' && sortedInfo.order
     }, {
-      title: 'Customer Code',
+      title: 'Provider Code',
       dataIndex: 'code',
       key: 'code',
       render: (text, record) => (
         record.code && record.code !== 'null' ? record.code : <span>{`TBDC${10000 + record.id}`}</span>
       )
     }, {
-      title: 'Customer Type',
-      dataIndex: 'customer_type.name',
-      key: 'customer_type',
-      filters: customerTypeFilters,
-      filteredValue: filteredInfo.customer_type || null,
-      onFilter: (value, record) => record.customer_type.name.includes(value)
+      title: 'Name',
+      dataIndex: 'name',
+      key: 'name'
+    }, {
+      title: 'Phone',
+      dataIndex: 'phone',
+      key: 'phone'
+    }, {
+      title: 'Email',
+      dataIndex: 'email',
+      key: 'email'
+    }, {
+      title: 'Address',
+      dataIndex: 'address',
+      key: 'address'
+    }, {
+      title: 'Tax code',
+      dataIndex: 'tax_code',
+      key: 'tax_code'
     }];
 
     return (
       <div>
         <Row type='flex' justify='end' gutter={16}>
           <Col>
-            <Button type='primary' onClick={this.showCustomerModal.bind(this)} >
-              <Icon type='plus' /> New customer
+            <Button type='primary' onClick={this.showProviderModal.bind(this)} >
+              <Icon type='plus' /> New provider
             </Button>
           </Col>
           <Col>
@@ -111,16 +119,15 @@ class CustomerList extends Component {
           </Col>
         </Row>
 
-        <Table {...tableConfig} columns={columns} dataSource={customers}
+        <Table {...tableConfig} columns={columns} dataSource={providers}
           onExpand={this.onTableRowExpand.bind(this)}
           onChange={this.handleChange.bind(this)}
         />
 
-        <CustomerModal title='Create customer' action='create'
-          customer={{ name: '', customer_type: { id: '' } }}
-          customerTypes={customerTypes}
-          visible={isCustomerModalVisible}
-          onClose={this.hideCustomerModal.bind(this)} />
+        <ProviderModal title='Create provider' action='create'
+          provider={{ name: '', code: '', phone: '', email: '', address: '', tax_code: '', note: '' }}
+          visible={isProviderModalVisible}
+          onClose={this.hideProviderModal.bind(this)} />
       </div>
     );
   }
@@ -141,33 +148,32 @@ class CustomerList extends Component {
     });
   }
 
-  showCustomerModal(event) {
+  showProviderModal(event) {
     this.setState({
-      isCustomerModalVisible: true,
+      isProviderModalVisible: true,
     });
   }
 
-  hideCustomerModal(event) {
+  hideProviderModal(event) {
     this.setState({
-      isCustomerModalVisible: false,
+      isProviderModalVisible: false,
     });
   }
 }
 
 const mapStateToProps = state => {
   return {
-    errors: state.customerReducer.errors,
-    customers: state.customerReducer.customers,
-    customerTypes: state.customerReducer.customerTypes,
-    expandedRowKeys: state.customerReducer.expandedRowKeys
+    errors: state.providerReducer.errors,
+    providers: state.providerReducer.providers,
+    expandedRowKeys: state.providerReducer.expandedRowKeys
   };
 };
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-  getCustomers, onTableRowChange
+  getProviders, onTableRowChange
 }, dispatch);
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(CustomerList);
+)(ProviderList);
