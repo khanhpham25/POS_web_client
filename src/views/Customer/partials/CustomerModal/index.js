@@ -23,6 +23,7 @@ class CustomerModal extends Component {
         customer: nextProps.customer
       };
     }
+    return prevState;
   }
 
   render() {

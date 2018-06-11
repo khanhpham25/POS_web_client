@@ -1,6 +1,8 @@
 import * as constants from '../constants';
 import axios from 'axios';
 
+import { showLoading, hideLoading } from 'layouts/Dashboard/actions';
+
 export const onCustomerInputChange = (value) => {
   return dispatch => {
     dispatch({
@@ -15,6 +17,7 @@ export const getStatisticData = () => {
   const currentUser = JSON.parse(localStorage.user);
 
   return dispatch => {
+    dispatch(showLoading());
     axios({
       url: url + '?type=general_reports', method: 'GET',
       headers: {
@@ -25,11 +28,13 @@ export const getStatisticData = () => {
         type: constants.ON_LOAD_GENERAL_REPORT_SUCCESS,
         response
       });
+      dispatch(hideLoading());
     }).catch(error => {
       // dispatch({
       //   type: constants.LOGIN_FAIL,
       //   errors: handleErrorsResponse(error.response.data.errors)
       // })
+      dispatch(hideLoading());
       console.log(error);
     });
   }
