@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import { Modal, Tabs, Icon, Button } from 'antd';
 import ModalInfoTab from './ModalInfoTab';
+import ModalDescriptionTab from './ModalDescriptionTab';
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
+import { convertToRaw } from 'draft-js';
 
 import { updateProduct, createProduct } from '../../actions';
 
@@ -18,9 +20,13 @@ class ProductModal extends Component {
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    return {
-      product: nextProps.product,
+    if (nextProps.product.id != prevState.product.id) {
+      return {
+        product: nextProps.product,
+      }
     }
+
+    return null;
   }
 
   render() {
@@ -56,7 +62,8 @@ class ProductModal extends Component {
             />
           </TabPane>
           <TabPane tab='Description' key='2'>
-
+            <ModalDescriptionTab product={product}
+              onDescriptionChange={this.onDescriptionChange.bind(this)} />
           </TabPane>
         </Tabs>
       </Modal>
@@ -107,6 +114,17 @@ class ProductModal extends Component {
     let changedProduct = Object.assign({}, this.state.product);
 
     Object.assign(changedProduct.category, { id: category.id });
+    this.setState({
+      product: changedProduct
+    });
+  }
+
+  onDescriptionChange(editorState) {
+    const content = convertToRaw(editorState.getCurrentContent());
+    let description = JSON.stringify(content);
+    let changedProduct = Object.assign({}, this.state.product);
+
+    Object.assign(changedProduct, { description });
     this.setState({
       product: changedProduct
     });

@@ -111,3 +111,149 @@ export const updateCategories = (category) => {
     })
   }
 }
+
+export const handleSearchProduct = (searchValue) => {
+  return dispatch => {
+    dispatch({
+      type: constants.HANDLE_PRODUCT_SEARCH,
+      searchValue
+    })
+  }
+}
+
+export const handleRowSelected = (selectedRowKeys) => {
+  return dispatch => {
+    dispatch({
+      type: constants.HANDLE_ROW_SELECTED,
+      selectedRowKeys
+    })
+  }
+}
+
+export const allowSellingProducts = (selectedIds) => {
+  let url = process.env.REACT_APP_HOST + 'products/allow_selling_products';
+  let formData = new FormData();
+  formData.append(`product[product_ids]`, selectedIds);
+
+  return dispatch => {
+    axios({
+      url, method: 'PUT', data: formData,
+      headers: {
+        'AUTH-TOKEN': localStorage.token
+      }
+    }).then(response => {
+      dispatch({
+        type: constants.ALLOW_SELLING_PRODUCTS_SUCCESS,
+        selectedIds
+      });
+    }).catch(error => {
+      // dispatch({
+      //   type: constants.LOGIN_FAIL,
+      //   errors: handleErrorsResponse(error.response.data.errors)
+      // })
+      console.log(error);
+    });
+  }
+}
+
+export const stopSellingProducts = (selectedIds) => {
+  let url = process.env.REACT_APP_HOST + 'products/stop_selling_products';
+  let formData = new FormData();
+  formData.append(`product[product_ids]`, selectedIds);
+
+  return dispatch => {
+    axios({
+      url, method: 'PUT', data: formData,
+      headers: {
+        'AUTH-TOKEN': localStorage.token
+      }
+    }).then(response => {
+      dispatch({
+        type: constants.STOP_SELLING_PRODUCTS_SUCCESS,
+        selectedIds
+      });
+    }).catch(error => {
+      // dispatch({
+      //   type: constants.LOGIN_FAIL,
+      //   errors: handleErrorsResponse(error.response.data.errors)
+      // })
+      console.log(error);
+    });
+  }
+}
+
+export const updateProductStatus = (product_id, status) => {
+  let url = process.env.REACT_APP_HOST + 'products/' + product_id;
+  let formData = new FormData();
+  formData.append(`product[is_selling]`, status);
+
+  return dispatch => {
+    axios({
+      url, method: 'PUT', data: formData,
+      headers: {
+        'AUTH-TOKEN': localStorage.token
+      }
+    }).then(response => {
+      dispatch({
+        type: constants.UPDATE_PRODUCT_STATUS_SUCCESS,
+        product_id, status
+      });
+    }).catch(error => {
+      // dispatch({
+      //   type: constants.LOGIN_FAIL,
+      //   errors: handleErrorsResponse(error.response.data.errors)
+      // })
+      console.log(error);
+    });
+  }
+}
+
+export const deleteProduct = (product_id) => {
+  let url = process.env.REACT_APP_HOST + 'products/' + product_id;
+
+  return dispatch => {
+    axios({
+      url, method: 'DELETE',
+      headers: {
+        'AUTH-TOKEN': localStorage.token
+      }
+    }).then(response => {
+      dispatch({
+        type: constants.DELETE_PRODUCT_SUCCESS,
+        product_id
+      });
+    }).catch(error => {
+      // dispatch({
+      //   type: constants.LOGIN_FAIL,
+      //   errors: handleErrorsResponse(error.response.data.errors)
+      // })
+      console.log(error);
+    });
+  }
+}
+
+export const deleteProducts = (selectedIds) => {
+  let url = process.env.REACT_APP_HOST + 'products/delete_products';
+  let formData = new FormData();
+  formData.append(`product[product_ids]`, selectedIds);
+
+  return dispatch => {
+    axios({
+      url, method: 'DELETE', data: formData,
+      headers: {
+        'AUTH-TOKEN': localStorage.token
+      }
+    }).then(response => {
+      dispatch({
+        type: constants.DELETE_MANY_PRODUCTS_SUCCESS,
+        selectedIds
+      });
+    }).catch(error => {
+      // dispatch({
+      //   type: constants.LOGIN_FAIL,
+      //   errors: handleErrorsResponse(error.response.data.errors)
+      // })
+      console.log(error);
+    });
+  }
+}

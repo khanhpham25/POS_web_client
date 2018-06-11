@@ -4,3 +4,4 @@
 @import 'custom.css';
 @import 'login.scss';
 @import 'error.scss';
+@import '~react-draft-wysiwyg/dist/react-draft-wysiwyg.css';

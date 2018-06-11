@@ -59,7 +59,7 @@ class Hello extends Component {
           <TodaySaleResult data={data.todaySaleResult} />
         </Card>
 
-        <Card title="Today's Sales" style={{ width: '100%' }}
+        <Card title="Today's Sales" style={{ width: '100%', minHeight: 470 }}
           className='today-sale-result' extra={<Select
             style={{ width: 230 }}
             value={currentSaleSelect}
@@ -70,7 +70,7 @@ class Hello extends Component {
           <TodaySale data={currentSaleGraph} type={currentSaleSelect} />
         </Card>
 
-        <Card title="Top 10 Most Selling Product By Quantity" style={{ width: '100%' }}
+        <Card title="Top 10 Most Selling Product By Quantity" style={{ width: '100%', minHeight: 470 }}
           className='today-sale-result' extra={<Select
             style={{ width: 230 }}
             value={currentProductSelect}

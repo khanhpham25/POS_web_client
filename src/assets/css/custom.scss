@@ -1,7 +1,33 @@
 .logo {
+	background: #0a4074;
+	border-radius: 7px;
 	height: 32px;
-	background: rgba(255,255,255,.2);
-	margin: 16px;
+	color: #fff;
+	font-size: 14pt;
+	margin: 20px 10px;
+	text-align: center;
+	cursor: pointer;
+	text-decoration: none;
+
+	.full-logo {
+		display: block;
+	}
+
+	.mini-logo {
+		display: none;
+	}
+}
+
+.ant-layout-sider-collapsed {
+	.logo {
+		.full-logo {
+			display: none;
+		}
+
+		.mini-logo {
+			display: block;
+		}
+	}
 }
 
 .header-menu,
@@ -300,4 +326,24 @@
 
 .ant-select-selection__clear {
 	margin-right: 55px;
+}
+
+// .product-page-container {
+// 	.product-search {
+// 		.btn-search {
+
+// 		}
+// 	}
+// }
+
+
+.allow-btn {
+	background: #4bac4d !important;
+	color: #fff !important;
+	text-decoration: none !important;
+	margin-right: 5px;
+}
+
+.allow-btn:hover {
+	background: #61c963 !important;
 }

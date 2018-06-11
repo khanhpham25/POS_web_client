@@ -2,7 +2,7 @@ import _ from 'lodash';
 import React, { Component } from 'react';
 import {
   Form, Input, Tooltip, Icon, Row, Col, Button, Select, InputNumber,
-  DatePicker, TimePicker, AutoComplete, Tabs, Popover, message
+  DatePicker, TimePicker, AutoComplete, Tabs, Popover, notification
 } from 'antd';
 import moment from 'moment';
 import swal from 'sweetalert';
@@ -259,11 +259,18 @@ class ReceiptForm extends Component {
         });
       }
     } else {
-      message.config({
-        top: 100,
-        duration: 3
-      });
-      message.error('No product is selected');
+      const args = {
+        message: 'Transaction failed',
+        description: 'There is no product selected in the list',
+        duration: 5,
+        placement: 'bottomRight',
+        style: {
+          background: '#db4e65',
+          color: '#fff',
+          marginBottom: '125px'
+        }
+      };
+      notification.open(args);
     }
   }
 

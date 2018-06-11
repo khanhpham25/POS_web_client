@@ -1,12 +1,18 @@
 import React, { Component } from 'react';
-import { Table, Icon, Button, Row, Col } from 'antd';
-import { Layout, Breadcrumb } from 'antd';
+import {
+   Table, Icon, Button, Row, Col, Layout, Breadcrumb, Input, Menu, Dropdown,
+} from 'antd';
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
-import { getProducts, onTableRowChange } from '../../actions';
+import {
+  getProducts, onTableRowChange, handleSearchProduct, handleRowSelected,
+  allowSellingProducts, stopSellingProducts, deleteProducts, updateProductStatus,
+  deleteProduct
+} from '../../actions';
 import ProductDetail from '../ProductDetail';
 import ProductModal from '../ProductModal';
+import swal from 'sweetalert';
 
 const { Content } = Layout;
 
@@ -25,8 +31,53 @@ class ProductList extends Component {
     this.props.getProducts();
   }
 
+  onSelectChange = (selectedRowKeys) => {
+    this.props.handleRowSelected(selectedRowKeys);
+  }
+
+  handleMenuClick = (e) => {
+    const { allowSellingProducts, stopSellingProducts, deleteProducts, selectedRowKeys } = this.props;
+
+    if (e.key == 'allow') {
+      swal({
+        title: `Confirmation`,
+        text: `You want to continue selling these products?`,
+        icon: 'warning',
+        buttons: true,
+        dangerMode: true,
+      }).then(willConfirm => {
+        if (willConfirm) allowSellingProducts(selectedRowKeys);
+      });
+    }
+    else if (e.key == 'stop') {
+      swal({
+        title: `Confirmation`,
+        text: `You want to stop selling these products?`,
+        icon: 'warning',
+        buttons: true,
+        dangerMode: true,
+      }).then(willConfirm => {
+        if (willConfirm) stopSellingProducts(selectedRowKeys);
+      });
+    }
+    else {
+       swal({
+        title: `Delete Products`,
+        text: `Do you want to delete these products?`,
+        icon: 'warning',
+        buttons: true,
+        dangerMode: true,
+      }).then(willConfirm => {
+        if (willConfirm) deleteProducts(selectedRowKeys);
+      });
+    }
+  }
+
   render() {
-    const { products, categories, expandedRowKeys } = this.props;
+    const {
+      products, categories, expandedRowKeys, dataSource, selectedRowKeys,
+      deleteProduct, updateProductStatus
+    } = this.props;
     const { isProductModalVisible } = this.state;
     let { sortedInfo, filteredInfo } = this.state;
     let categoryFilters = [];
@@ -39,10 +90,13 @@ class ProductList extends Component {
     filteredInfo = filteredInfo || {};
 
     products.map(product => { totalInStock += product.stock_count });
-
+    const hasSelected = selectedRowKeys.length > 0;
     const expandedRowRender = record => <ProductDetail key={record.id}
-      product={record} categories={categories} />;
-    const title = () => 'Product List';
+      product={record} categories={categories} deleteProduct={deleteProduct}
+      updateProductStatus={updateProductStatus} />;
+    const title = () => (<span style={{ marginLeft: 8 }}>
+      {hasSelected ? `Selected ${selectedRowKeys.length} items` : ''}
+    </span>);
     const showHeader = true;
     const footer = () => 'Total In Stock: ' + totalInStock;
     const rowKey = (record) => { return record.id };
@@ -52,19 +106,31 @@ class ProductList extends Component {
       pageSizeOptions: ['10', '20', '30', '40']
     };
 
+    const menu = (
+      <Menu onClick={this.handleMenuClick}>
+        <Menu.Item key='allow'>Allow Selling</Menu.Item>
+        <Menu.Item key='stop'>Stop Selling</Menu.Item>
+        <Menu.Item key='delete'>Delete</Menu.Item>
+      </Menu>
+    );
+
+    const rowSelection = {
+      selectedRowKeys,
+      onChange: this.onSelectChange,
+    };
+
     const tableConfig = {
       rowKey,
       expandedRowKeys,
       bordered: false,
       loading: false,
-      pagination,
       size: 'middle',
       expandedRowRender,
       expandRowByClick: true,
       title,
       showHeader,
       footer,
-      rowSelection: {},
+      rowSelection,
       scroll: undefined
     };
 
@@ -116,22 +182,48 @@ class ProductList extends Component {
       sortOrder: sortedInfo.columnKey === 'stock_count' && sortedInfo.order,
     }];
 
+    let multiSelectAction;
+    if (hasSelected) {
+      multiSelectAction = (<Dropdown overlay={menu}>
+        <Button>
+          Actions <Icon type='down' />
+        </Button>
+      </Dropdown>);
+    }
+
     return (
       <div>
-        <Row type='flex' justify='end' gutter={16}>
-          <Col>
-            <Button type='primary' onClick={this.showProductModal.bind(this)} >
-              <Icon type='plus' /> New Product
-            </Button>
+        <Row type='flex' justify='end'>
+          <Col lg={12} >
+            <Row type='flex' justify='start' gutter={16} >
+              <Col lg={8} >
+                <Input className='product-search' placeholder='Search by name, product code'
+                  onChange={this.handleProductSearch.bind(this)}
+                  suffix={(<Icon type='search' />)}
+                />
+              </Col>
+              <Col lg={6} >
+                {multiSelectAction}
+              </Col>
+            </Row>
           </Col>
-          <Col>
-            <Button type='default' ><Icon type='login' /> Import</Button>
-          </Col>
-          <Col>
-            <Button type='default' ><Icon type='logout' /> Export</Button>
+          <Col lg={12} >
+            <Row type='flex' justify='end' gutter={16}>
+              <Col>
+                <Button type='primary' onClick={this.showProductModal.bind(this)} >
+                  <Icon type='plus' /> New Product
+                </Button>
+              </Col>
+              <Col>
+                <Button type='default' ><Icon type='login' /> Import</Button>
+              </Col>
+              <Col>
+                <Button type='default' ><Icon type='logout' /> Export</Button>
+              </Col>
+            </Row>
           </Col>
         </Row>
-        <Table {...tableConfig} columns={columns} dataSource={products}
+        <Table {...tableConfig} columns={columns} dataSource={dataSource}
           onExpand={this.onTableRowExpand.bind(this)}
           onChange={this.handleChange.bind(this)} />
 
@@ -172,18 +264,31 @@ class ProductList extends Component {
       isProductModalVisible: false,
     });
   }
+
+  handleProductSearch(event) {
+    this.props.handleSearchProduct(event.target.value);
+  }
 }
 
 const mapStateToProps = (state) => ({
   errors: state.productReducer.errors,
   products: state.productReducer.products,
   categories: state.productReducer.categories,
-  expandedRowKeys: state.productReducer.expandedRowKeys
+  expandedRowKeys: state.productReducer.expandedRowKeys,
+  dataSource: state.productReducer.dataSource,
+  selectedRowKeys: state.productReducer.selectedRowKeys,
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
   getProducts,
-  onTableRowChange
+  onTableRowChange,
+  handleSearchProduct,
+  handleRowSelected,
+  deleteProducts,
+  stopSellingProducts,
+  allowSellingProducts,
+  updateProductStatus,
+  deleteProduct
 }, dispatch);
 
 export default connect(
