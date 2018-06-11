@@ -1,5 +1,5 @@
 import * as constants from '../constants';
-import { message } from 'antd';
+import { notification } from 'antd';
 import moment from 'moment';
 
 const initialPanes = [{
@@ -268,11 +268,19 @@ const saleReducer = (state = initialState, action) => {
 
       let afterFinishedActiveKey = panes[panes.length - 1].key;
 
-      message.config({
-        top: 100,
-        duration: 3
-      });
-      message.success('Receipt Information has been saved!');
+      const args = {
+        message: 'Transaction success',
+        description: 'Receipt Information has been saved!',
+        duration: 5,
+        placement: 'bottomRight',
+        style: {
+          background: '#69BF6B',
+          color: '#fff',
+          marginBottom: '125px'
+        }
+      };
+      notification.open(args);
+
       return {
         errors: null,
         panes,

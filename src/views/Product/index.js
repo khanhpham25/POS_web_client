@@ -12,7 +12,8 @@ class ProductContainer extends Component {
           <Breadcrumb.Item>Home</Breadcrumb.Item>
           <Breadcrumb.Item>Product</Breadcrumb.Item>
         </Breadcrumb>
-        <div style={{ padding: 24, background: '#fff', minHeight: 360 }}>
+        <div style={{ padding: 24, background: '#fff', minHeight: 360 }}
+          className='product-page-container' >
           <ProductList />
         </div>
       </Content>

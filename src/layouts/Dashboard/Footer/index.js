@@ -7,7 +7,7 @@ class AppFooter extends Component {
   render() {
     return (
       <Footer style={{ textAlign: 'center' }}>
-        Ant Design ©2016 Created by Ant UED
+        Point of Sale System For Retailers ©2018
       </Footer>
     );
   }

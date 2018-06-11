@@ -17,10 +17,16 @@ const middleware = [
 
 offlineConfig.persistOptions = { blacklist: ['saleReducer'] };
 
+// const composedEnhancers = compose(
+//   applyMiddleware(...middleware),
+//   offline(offlineConfig),
+//   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
+//   ...enhancers
+// );
+
 const composedEnhancers = compose(
   applyMiddleware(...middleware),
   offline(offlineConfig),
-  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
   ...enhancers
 );
 

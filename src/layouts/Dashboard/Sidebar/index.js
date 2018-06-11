@@ -30,10 +30,22 @@ class Sidebar extends Component {
         breakpoint='xl'
         collapsedWidth={80}
       >
-        <div className='logo' />
+
+        <NavLink to='/' className='nav-text'>
+          <div className='logo' >
+            <div className='mini-logo' ><b>P</b><b>O</b><b>S</b></div>
+            <div className='full-logo' ><b>Point Of Sale</b></div>
+          </div>
+        </NavLink>
         <Menu theme='dark' mode='inline'
           selectedKeys={[this.props.location.pathname]}
         >
+          <Menu.Item key='/'>
+            <NavLink to='/' className='nav-text'>
+              <Icon type='bars' />&nbsp;&nbsp;&nbsp;
+              <span>Overall</span>
+            </NavLink>
+          </Menu.Item>
           <Menu.Item key='/products'>
             <NavLink to='/products' className='nav-text'>
               <Icon type='tags' />&nbsp;&nbsp;&nbsp;
