@@ -1,13 +1,13 @@
 import * as constants from '../constants';
 import axios from 'axios';
-import { push } from 'react-router-redux';
 
-import { handleErrorsResponse } from 'assets/helper/handleErrorsResponse';
+import { showLoading, hideLoading } from 'layouts/Dashboard/actions';
 
 export const getCustomers = () => {
   let url = process.env.REACT_APP_HOST + 'customers';
 
   return dispatch => {
+    dispatch(showLoading());
     axios({
       url, method: 'GET',
       headers: {
@@ -18,11 +18,13 @@ export const getCustomers = () => {
         type: constants.LOAD_ALL_CUSTOMER_SUCCESS,
         data: response.data.data
       });
+      dispatch(hideLoading());
     }).catch(error => {
       // dispatch({
       //   type: constants.LOGIN_FAIL,
       //   errors: handleErrorsResponse(error.response.data.errors)
       // })
+      dispatch(hideLoading());
       console.log(error);
     });
   };
@@ -41,6 +43,7 @@ export const updateCustomer = (customer) => {
   }
 
   return dispatch => {
+    dispatch(showLoading());
     axios({
       url, method: 'PUT', data: formData,
       headers: {
@@ -51,11 +54,13 @@ export const updateCustomer = (customer) => {
         type: constants.UPDATE_CUSTOMER_SUCCESS,
         data: response.data.data
       });
+      dispatch(hideLoading());
     }).catch(error => {
       // dispatch({
       //   type: constants.LOGIN_FAIL,
       //   errors: handleErrorsResponse(error.response.data.errors)
       // })
+      dispatch(hideLoading());
       console.log(error);
     });
   };
@@ -74,6 +79,7 @@ export const createCustomer = customer => {
   }
 
   return dispatch => {
+    dispatch(showLoading());
     axios({
       url, method: 'POST', data: formData,
       headers: {
@@ -84,11 +90,13 @@ export const createCustomer = customer => {
         type: constants.CREATE_CUSTOMER_SUCCESS,
         data: response.data.data
       });
+      dispatch(hideLoading());
     }).catch(error => {
       // dispatch({
       //   type: constants.LOGIN_FAIL,
       //   errors: handleErrorsResponse(error.response.data.errors)
       // })
+      dispatch(hideLoading());
       console.log(error);
     });
   };
@@ -98,6 +106,7 @@ export const deleteCustomer = customer_id => {
   const url = `${process.env.REACT_APP_HOST}customers/${customer_id}`;
 
   return dispatch => {
+    dispatch(showLoading());
     axios({
       url,
       method: 'DELETE',
@@ -109,7 +118,9 @@ export const deleteCustomer = customer_id => {
         type: constants.DELETE_CUSTOMER_SUCCESS,
         customer_id
       });
+      dispatch(hideLoading());
     }).catch(error => {
+      dispatch(hideLoading());
       console.log(error);
     });
   };

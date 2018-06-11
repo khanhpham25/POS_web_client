@@ -1,13 +1,12 @@
 import * as constants from '../constants';
 import axios from 'axios';
-import { push } from 'react-router-redux';
-
-import { handleErrorsResponse } from 'assets/helper/handleErrorsResponse';
+import { showLoading, hideLoading } from 'layouts/Dashboard/actions';
 
 export const getProviders = () => {
   const url = `${process.env.REACT_APP_HOST}providers`;
 
   return dispatch => {
+    dispatch(showLoading());
     axios({
       url, method: 'GET',
       headers: {
@@ -18,11 +17,13 @@ export const getProviders = () => {
         type: constants.LOAD_ALL_PROVIDER_SUCCESS,
         data: response.data.data
       });
+      dispatch(hideLoading());
     }).catch(error => {
       // dispatch({
       //   type: constants.LOGIN_FAIL,
       //   errors: handleErrorsResponse(error.response.data.errors)
       // })
+      dispatch(hideLoading());
       console.log(error);
     });
   };
@@ -37,6 +38,7 @@ export const updateProvider = provider => {
   }
 
   return dispatch => {
+    dispatch(showLoading());
     axios({
       url, method: 'PUT', data: formData,
       headers: {
@@ -47,11 +49,13 @@ export const updateProvider = provider => {
         type: constants.UPDATE_PROVIDER_SUCCESS,
         data: response.data.data
       });
+      dispatch(hideLoading());
     }).catch(error => {
       // dispatch({
       //   type: constants.LOGIN_FAIL,
       //   errors: handleErrorsResponse(error.response.data.errors)
       // })
+      dispatch(hideLoading());
       console.log(error);
     });
   };
@@ -66,6 +70,7 @@ export const createProvider = provider => {
   }
 
   return dispatch => {
+    dispatch(showLoading());
     axios({
       url, method: 'POST', data: formData,
       headers: {
@@ -76,11 +81,13 @@ export const createProvider = provider => {
         type: constants.CREATE_PROVIDER_SUCCESS,
         data: response.data.data
       });
+      dispatch(hideLoading());
     }).catch(error => {
       // dispatch({
       //   type: constants.LOGIN_FAIL,
       //   errors: handleErrorsResponse(error.response.data.errors)
       // })
+      dispatch(hideLoading());
       console.log(error);
     });
   };
@@ -90,6 +97,7 @@ export const deleteProvider = provider_id => {
   const url = `${process.env.REACT_APP_HOST}providers/${provider_id}`;
 
   return dispatch => {
+    dispatch(showLoading());
     axios({
       url,
       method: 'DELETE',
@@ -101,8 +109,10 @@ export const deleteProvider = provider_id => {
         type: constants.DELETE_PROVIDER_SUCCESS,
         provider_id
       });
+      dispatch(hideLoading());
     }).catch(error => {
       console.log(error);
+      dispatch(hideLoading());
     });
   };
 };
