@@ -20,7 +20,6 @@ class ModalInfoTab extends Component {
     }
   }
 
-
   render() {
     const { product, categories, action } = this.props;
     const { isCategoryModalVisible } = this.state;
