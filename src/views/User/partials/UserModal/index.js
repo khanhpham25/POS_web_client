@@ -4,30 +4,30 @@ import ModalInfoTab from './ModalInfoTab';
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
-import { updateProvider, createProvider } from '../../actions';
+import { updateUser, createUser } from '../../actions';
 
 const TabPane = Tabs.TabPane;
 
-class ProviderModal extends Component {
+class UserModal extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      provider: props.provider
+      user: props.user
     };
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    if (nextProps.provider.id !== prevState.provider.id) {
+    if (nextProps.user.id !== prevState.user.id) {
       return {
-        provider: nextProps.provider
+        user: nextProps.user
       };
     }
   }
 
   render() {
     const { title, visible, action } = this.props;
-    const { provider } = this.state;
+    const { user } = this.state;
 
     return (
       <Modal
@@ -50,8 +50,8 @@ class ProviderModal extends Component {
       >
         <Tabs defaultActiveKey='1' >
           <TabPane tab='Info' key='1'>
-            <ModalInfoTab provider={provider}
-              onProviderChange={this.onProviderChange.bind(this)} action={action} />
+            <ModalInfoTab user={user}
+              onUserChange={this.onUserChange.bind(this)} action={action} />
           </TabPane>
         </Tabs>
       </Modal>
@@ -60,9 +60,9 @@ class ProviderModal extends Component {
 
   handleOk(event) {
     if (this.props.action === 'create') {
-      this.props.createProvider(this.state.provider);
+      this.props.createUser(this.state.user);
     } else {
-      this.props.updateProvider(this.state.provider);
+      this.props.updateUser(this.state.user);
     }
     this.props.onClose();
   }
@@ -71,18 +71,18 @@ class ProviderModal extends Component {
     this.props.onClose();
   }
 
-  onProviderChange(name, value) {
-    let changedProvider = Object.assign({}, this.state.provider);
+  onUserChange(name, value) {
+    let changedUser = Object.assign({}, this.state.user);
 
-    Object.assign(changedProvider, { [name]: value });
+    Object.assign(changedUser, { [name]: value });
     this.setState({
-      provider: changedProvider
+      user: changedUser
     });
   }
 }
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-  updateProvider, createProvider
+  updateUser, createUser
 }, dispatch);
 
-export default connect(null, mapDispatchToProps)(ProviderModal);
+export default connect(null, mapDispatchToProps)(UserModal);

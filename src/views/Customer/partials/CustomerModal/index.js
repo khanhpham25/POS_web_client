@@ -55,9 +55,6 @@ class CustomerModal extends Component {
               onCustomerChange={this.onCustomerChange.bind(this)} action={action}
               onCustomerTypeChange={this.onCustomerTypeChange.bind(this)} />
           </TabPane>
-          <TabPane tab='Description' key='2'>
-            <p>Coming soon...</p>
-          </TabPane>
         </Tabs>
       </Modal>
     );

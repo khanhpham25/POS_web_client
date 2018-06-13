@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Form, Input, Tooltip, Icon, Row, Col, Button, Select } from 'antd';
-import customerImg from 'assets/img/24.png';
 
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -112,7 +111,7 @@ class ModalInfoTab extends Component {
             </FormItem>
           </Col>
           <Col lg={12}>
-            <img src={customerImg} />
+
           </Col>
         </Row>
       </div>

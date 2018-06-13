@@ -3,51 +3,51 @@ import { notification } from 'antd';
 
 const initialState = {
   errors: null,
-  providers: [],
+  users: [],
   expandedRowKeys: [],
   dataSource: [],
   selectedRowKeys: []
 };
 
-const providerReducer = (state = initialState, action) => {
-  let providers, expandedRowKeys;
+const userReducer = (state = initialState, action) => {
+  let users, expandedRowKeys;
   switch (action.type) {
-    case constants.LOAD_ALL_PROVIDER_SUCCESS:
+    case constants.LOAD_ALL_USER_SUCCESS:
       return {
         errors: null,
-        providers: action.data.providers,
+        users: action.data.users,
         expandedRowKeys: state.expandedRowKeys,
-        dataSource: action.data.providers,
+        dataSource: action.data.users,
         selectedRowKeys: state.selectedRowKeys
       };
 
-    case constants.UPDATE_PROVIDER_SUCCESS:
-      let providers = Object.assign([], state.providers);
+    case constants.UPDATE_USER_SUCCESS:
+      let users = Object.assign([], state.users);
 
-      let index = providers.findIndex(provider => {
-        return provider.id == action.data.provider.id
+      let index = users.findIndex(user => {
+        return user.id == action.data.user.id
       });
 
-      providers[index] = action.data.provider;
+      users[index] = action.data.user;
 
       return {
         errors: null,
-        providers,
+        users,
         expandedRowKeys: state.expandedRowKeys,
         dataSource: state.dataSource,
         selectedRowKeys: state.selectedRowKeys
       };
 
-    case constants.CREATE_PROVIDER_SUCCESS:
+    case constants.CREATE_USER_SUCCESS:
       expandedRowKeys = [];
-      providers = Object.assign([], state.providers);
+      users = Object.assign([], state.users);
 
-      providers.unshift(action.data.provider);
-      expandedRowKeys.push(action.data.provider.id);
+      users.unshift(action.data.user);
+      expandedRowKeys.push(action.data.user.id);
 
       return {
         errors: null,
-        providers,
+        users,
         expandedRowKeys,
         dataSource: state.dataSource,
         selectedRowKeys: state.selectedRowKeys
@@ -58,26 +58,26 @@ const providerReducer = (state = initialState, action) => {
 
       return {
         errors: null,
-        providers: state.providers,
+        users: state.users,
         expandedRowKeys,
         dataSource: state.dataSource,
         selectedRowKeys: state.selectedRowKeys
       };
 
-    case constants.DELETE_PROVIDER_SUCCESS:
+    case constants.DELETE_USER_SUCCESS:
       expandedRowKeys = [];
-      providers = Object.assign([], state.providers.filter(provider => { return provider.id !== action.provider_id }));
+      users = Object.assign([], state.users.filter(user => { return user.id !== action.user_id }));
 
       return {
         errors: null,
-        providers,
+        users,
         expandedRowKeys,
         dataSource: state.dataSource,
         selectedRowKeys: state.selectedRowKeys
       };
 
-    case constants.HANDLE_PROVIDER_SEARCH:
-      let initialSource = [...state.providers];
+    case constants.HANDLE_USER_SEARCH:
+      let initialSource = [...state.users];
       let searchValue = action.searchValue.toLowerCase();
       let filterdSource = initialSource.filter(p => {
         let isCodeMatch = p.code ? p.code.toLowerCase().includes(searchValue) : false;
@@ -86,7 +86,7 @@ const providerReducer = (state = initialState, action) => {
 
       return {
         errors: null,
-        providers: state.providers,
+        users: state.users,
         expandedRowKeys: state.expandedRowKeys,
         dataSource: filterdSource,
         selectedRowKeys: state.selectedRowKeys
@@ -95,22 +95,22 @@ const providerReducer = (state = initialState, action) => {
     case constants.HANDLE_ROW_SELECTED:
       return {
         errors: null,
-        providers: state.providers,
+        users: state.users,
         expandedRowKeys: state.expandedRowKeys,
         dataSource: state.dataSource,
         selectedRowKeys: action.selectedRowKeys
       };
 
-    case constants.DELETE_MANY_PROVIDERS_SUCCESS:
-      providers = Object.assign([], state.providers);
+    case constants.DELETE_MANY_USERS_SUCCESS:
+      users = Object.assign([], state.users);
       let dataSource = Object.assign([], state.dataSource);
 
-      providers = providers.filter(p => !action.selectedIds.includes(p.id));
+      users = users.filter(p => !action.selectedIds.includes(p.id));
       dataSource = dataSource.filter(d => !action.selectedIds.includes(d.id));
 
       const args = {
         message: 'Delete',
-        description: 'Chosen providers has been deleted sucessfully!',
+        description: 'Chosen users has been deleted sucessfully!',
         duration: 5,
         placement: 'bottomRight',
         style: {
@@ -123,7 +123,7 @@ const providerReducer = (state = initialState, action) => {
 
       return {
         errors: null,
-        providers,
+        users,
         expandedRowKeys: [],
         dataSource,
         selectedRowKeys: []
@@ -134,4 +134,4 @@ const providerReducer = (state = initialState, action) => {
   }
 }
 
-export default providerReducer;
+export default userReducer;

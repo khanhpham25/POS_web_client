@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-   Table, Icon, Button, Row, Col, Layout, Breadcrumb, Input, Menu, Dropdown,
+  Table, Icon, Button, Row, Col, Layout, Breadcrumb, Input, Menu, Dropdown,
 } from 'antd';
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
@@ -61,7 +61,7 @@ class ProductList extends Component {
       });
     }
     else {
-       swal({
+      swal({
         title: `Delete Products`,
         text: `Do you want to delete these products?`,
         icon: 'warning',
