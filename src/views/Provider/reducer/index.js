@@ -3,55 +3,51 @@ import { notification } from 'antd';
 
 const initialState = {
   errors: null,
-  customers: [],
-  customerTypes: [],
+  providers: [],
   expandedRowKeys: [],
   dataSource: [],
   selectedRowKeys: []
 };
 
-const customerReducer = (state = initialState, action) => {
-  let customers, expandedRowKeys, dataSource;
+const providerReducer = (state = initialState, action) => {
+  let providers, expandedRowKeys;
   switch (action.type) {
-    case constants.LOAD_ALL_CUSTOMER_SUCCESS:
+    case constants.LOAD_ALL_PROVIDER_SUCCESS:
       return {
         errors: null,
-        customers: action.data.customers,
-        customerTypes: action.data.customerTypes,
+        providers: action.data.providers,
         expandedRowKeys: state.expandedRowKeys,
-        dataSource: action.data.customers,
+        dataSource: action.data.providers,
         selectedRowKeys: state.selectedRowKeys
       };
 
-    case constants.UPDATE_CUSTOMER_SUCCESS:
-      let customers = Object.assign([], state.customers);
+    case constants.UPDATE_PROVIDER_SUCCESS:
+      let providers = Object.assign([], state.providers);
 
-      let index = customers.findIndex(customer => {
-        return customer.id == action.data.customer.id
+      let index = providers.findIndex(provider => {
+        return provider.id == action.data.provider.id
       });
 
-      customers[index] = action.data.customer;
+      providers[index] = action.data.provider;
 
       return {
         errors: null,
-        customers,
-        customerTypes: action.data.customerTypes,
+        providers,
         expandedRowKeys: state.expandedRowKeys,
         dataSource: state.dataSource,
         selectedRowKeys: state.selectedRowKeys
       };
 
-    case constants.CREATE_CUSTOMER_SUCCESS:
+    case constants.CREATE_PROVIDER_SUCCESS:
       expandedRowKeys = [];
-      customers = Object.assign([], state.customers);
+      providers = Object.assign([], state.providers);
 
-      customers.unshift(action.data.customer);
-      expandedRowKeys.push(action.data.customer.id);
+      providers.unshift(action.data.provider);
+      expandedRowKeys.push(action.data.provider.id);
 
       return {
         errors: null,
-        customers,
-        customerTypes: state.customerTypes,
+        providers,
         expandedRowKeys,
         dataSource: state.dataSource,
         selectedRowKeys: state.selectedRowKeys
@@ -62,15 +58,26 @@ const customerReducer = (state = initialState, action) => {
 
       return {
         errors: null,
-        customers: state.customers,
-        customerTypes: state.customerTypes,
+        providers: state.providers,
         expandedRowKeys,
         dataSource: state.dataSource,
         selectedRowKeys: state.selectedRowKeys
       };
 
-    case constants.HANDLE_CUSTOMER_SEARCH:
-      let initialSource = [...state.customers];
+    case constants.DELETE_PROVIDER_SUCCESS:
+      expandedRowKeys = [];
+      providers = Object.assign([], state.providers.filter(provider => { return provider.id !== action.provider_id }));
+
+      return {
+        errors: null,
+        providers,
+        expandedRowKeys,
+        dataSource: state.dataSource,
+        selectedRowKeys: state.selectedRowKeys
+      };
+
+    case constants.HANDLE_PROVIDER_SEARCH:
+      let initialSource = [...state.providers];
       let searchValue = action.searchValue.toLowerCase();
       let filterdSource = initialSource.filter(p => {
         let isCodeMatch = p.code ? p.code.toLowerCase().includes(searchValue) : false;
@@ -79,8 +86,7 @@ const customerReducer = (state = initialState, action) => {
 
       return {
         errors: null,
-        customers: state.customers,
-        customerTypes: state.customerTypes,
+        providers: state.providers,
         expandedRowKeys: state.expandedRowKeys,
         dataSource: filterdSource,
         selectedRowKeys: state.selectedRowKeys
@@ -89,36 +95,22 @@ const customerReducer = (state = initialState, action) => {
     case constants.HANDLE_ROW_SELECTED:
       return {
         errors: null,
-        customers: state.customers,
-        customerTypes: state.customerTypes,
+        providers: state.providers,
         expandedRowKeys: state.expandedRowKeys,
         dataSource: state.dataSource,
         selectedRowKeys: action.selectedRowKeys
       };
 
-    case constants.DELETE_CUSTOMER_SUCCESS:
-      expandedRowKeys = [];
-      customers = Object.assign([], state.customers.filter(customer => { return customer.id !== action.customer_id }));
-
-      return {
-        errors: null,
-        customers,
-        customerTypes: state.customerTypes,
-        expandedRowKeys,
-        dataSource: state.dataSource,
-        selectedRowKeys: state.selectedRowKeys
-      };
-
-    case constants.DELETE_MANY_CUSTOMERS_SUCCESS:
-      customers = Object.assign([], state.customers);
+    case constants.DELETE_MANY_PROVIDERS_SUCCESS:
+      providers = Object.assign([], state.providers);
       let dataSource = Object.assign([], state.dataSource);
 
-      customers = customers.filter(p => !action.selectedIds.includes(p.id));
+      providers = providers.filter(p => !action.selectedIds.includes(p.id));
       dataSource = dataSource.filter(d => !action.selectedIds.includes(d.id));
 
       const args = {
         message: 'Delete',
-        description: 'Chosen customers has been deleted sucessfully!',
+        description: 'Chosen providers has been deleted sucessfully!',
         duration: 5,
         placement: 'bottomRight',
         style: {
@@ -131,8 +123,7 @@ const customerReducer = (state = initialState, action) => {
 
       return {
         errors: null,
-        customers,
-        customerTypes: state.customerTypes,
+        providers,
         expandedRowKeys: [],
         dataSource,
         selectedRowKeys: []
@@ -143,4 +134,4 @@ const customerReducer = (state = initialState, action) => {
   }
 }
 
-export default customerReducer;
+export default providerReducer;

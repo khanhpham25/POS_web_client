@@ -64,7 +64,7 @@ const productReducer = (state = initialState, action) => {
 
       products.unshift(action.data.product);
       expandedRowKeys.push(action.data.product.id);
-
+      products
       return {
         errors: null,
         products,

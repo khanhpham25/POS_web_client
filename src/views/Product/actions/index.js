@@ -1,13 +1,12 @@
 import * as constants from '../constants';
 import axios from 'axios';
-import { push } from 'react-router-redux';
-
-import { handleErrorsResponse } from 'assets/helper/handleErrorsResponse';
+import { showLoading, hideLoading } from 'layouts/Dashboard/actions';
 
 export const getProducts = () => {
   let url = process.env.REACT_APP_HOST + 'products';
 
   return dispatch => {
+    dispatch(showLoading());
     axios({
       url, method: 'GET',
       headers: {
@@ -18,11 +17,13 @@ export const getProducts = () => {
         type: constants.LOAD_ALL_PRODUCT_SUCCESS,
         data: response.data.data
       });
+      dispatch(hideLoading());
     }).catch(error => {
       // dispatch({
       //   type: constants.LOGIN_FAIL,
       //   errors: handleErrorsResponse(error.response.data.errors)
       // })
+      dispatch(hideLoading());
       console.log(error);
     });
   }
@@ -41,6 +42,7 @@ export const updateProduct = (product) => {
   }
 
   return dispatch => {
+    dispatch(showLoading());
     axios({
       url, method: 'PUT', data: formData,
       headers: {
@@ -51,11 +53,13 @@ export const updateProduct = (product) => {
         type: constants.UPDATE_PRODUCT_SUCCESS,
         data: response.data.data
       });
+      dispatch(hideLoading());
     }).catch(error => {
       // dispatch({
       //   type: constants.LOGIN_FAIL,
       //   errors: handleErrorsResponse(error.response.data.errors)
       // })
+      dispatch(hideLoading());
       console.log(error);
     });
   }
@@ -74,6 +78,7 @@ export const createProduct = (product) => {
   }
 
   return dispatch => {
+    dispatch(showLoading());
     axios({
       url, method: 'POST', data: formData,
       headers: {
@@ -84,11 +89,13 @@ export const createProduct = (product) => {
         type: constants.CREATE_PRODUCT_SUCCESS,
         data: response.data.data
       });
+      dispatch(hideLoading());
     }).catch(error => {
       // dispatch({
       //   type: constants.LOGIN_FAIL,
       //   errors: handleErrorsResponse(error.response.data.errors)
       // })
+      dispatch(hideLoading());
       console.log(error);
     });
   }

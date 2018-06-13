@@ -4,31 +4,30 @@ import ModalInfoTab from './ModalInfoTab';
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
-import { updateCustomer, createCustomer } from '../../actions';
+import { updateUser, createUser } from '../../actions';
 
 const TabPane = Tabs.TabPane;
 
-class CustomerModal extends Component {
+class UserModal extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      customer: props.customer
+      user: props.user
     };
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    if (nextProps.customer.id !== prevState.customer.id) {
+    if (nextProps.user.id !== prevState.user.id) {
       return {
-        customer: nextProps.customer
+        user: nextProps.user
       };
     }
-    return prevState;
   }
 
   render() {
-    const { title, visible, customerTypes, action } = this.props;
-    const { customer } = this.state;
+    const { title, visible, action } = this.props;
+    const { user } = this.state;
 
     return (
       <Modal
@@ -51,9 +50,8 @@ class CustomerModal extends Component {
       >
         <Tabs defaultActiveKey='1' >
           <TabPane tab='Info' key='1'>
-            <ModalInfoTab customer={customer} customerTypes={customerTypes}
-              onCustomerChange={this.onCustomerChange.bind(this)} action={action}
-              onCustomerTypeChange={this.onCustomerTypeChange.bind(this)} />
+            <ModalInfoTab user={user}
+              onUserChange={this.onUserChange.bind(this)} action={action} />
           </TabPane>
         </Tabs>
       </Modal>
@@ -62,9 +60,9 @@ class CustomerModal extends Component {
 
   handleOk(event) {
     if (this.props.action === 'create') {
-      this.props.createCustomer(this.state.customer);
+      this.props.createUser(this.state.user);
     } else {
-      this.props.updateCustomer(this.state.customer);
+      this.props.updateUser(this.state.user);
     }
     this.props.onClose();
   }
@@ -73,27 +71,18 @@ class CustomerModal extends Component {
     this.props.onClose();
   }
 
-  onCustomerChange(name, value) {
-    let changedCustomer = Object.assign({}, this.state.customer);
+  onUserChange(name, value) {
+    let changedUser = Object.assign({}, this.state.user);
 
-    Object.assign(changedCustomer, { [name]: value });
+    Object.assign(changedUser, { [name]: value });
     this.setState({
-      customer: changedCustomer
-    });
-  }
-
-  onCustomerTypeChange(value) {
-    let changedCustomer = Object.assign({}, this.state.customer);
-
-    Object.assign(changedCustomer.customer_type, { id: value });
-    this.setState({
-      customer: changedCustomer
+      user: changedUser
     });
   }
 }
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-  updateCustomer, createCustomer
+  updateUser, createUser
 }, dispatch);
 
-export default connect(null, mapDispatchToProps)(CustomerModal);
+export default connect(null, mapDispatchToProps)(UserModal);
