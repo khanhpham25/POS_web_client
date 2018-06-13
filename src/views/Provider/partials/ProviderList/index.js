@@ -1,10 +1,15 @@
 import React, { Component } from 'react';
-import { Table, Icon, Button, Row, Col } from 'antd';
-import { Layout, Breadcrumb } from 'antd';
-import { bindActionCreators } from 'redux'
-import { connect } from 'react-redux'
+import {
+  Table, Icon, Button, Row, Col, Layout, Breadcrumb, Input, Menu, Dropdown,
+} from 'antd';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import swal from 'sweetalert';
 
-import { getProviders, onTableRowChange } from '../../actions';
+import {
+  getProviders, onTableRowChange, handleSearchProvider, handleRowSelected,
+  deleteProviders
+} from '../../actions';
 import ProviderDetail from '../ProviderDetail';
 import ProviderModal from '../ProviderModal';
 
@@ -25,16 +30,37 @@ class ProviderList extends Component {
     this.props.getProviders();
   }
 
+  onSelectChange = (selectedRowKeys) => {
+    this.props.handleRowSelected(selectedRowKeys);
+  }
+
+  handleMenuClick = (e) => {
+    const { deleteProviders, selectedRowKeys } = this.props;
+
+    swal({
+      title: `Delete providers`,
+      text: `Do you want to delete these providers?`,
+      icon: 'warning',
+      buttons: true,
+      dangerMode: true,
+    }).then(willConfirm => {
+      if (willConfirm) deleteProviders(selectedRowKeys);
+    });
+  }
+
   render() {
-    const { providers, expandedRowKeys } = this.props;
+    const { providers, expandedRowKeys, dataSource, selectedRowKeys } = this.props;
     let { sortedInfo, filteredInfo, isProviderModalVisible } = this.state;
 
     sortedInfo = sortedInfo || {};
     filteredInfo = filteredInfo || {};
 
+    const hasSelected = selectedRowKeys.length > 0;
     const expandedRowRender = record => <ProviderDetail key={record.id}
       provider={record} />;
-    const title = () => 'Provider List';
+    const title = () => (<span style={{ marginLeft: 8 }}>
+      {hasSelected ? `Selected ${selectedRowKeys.length} items` : ''}
+    </span>);
     const showHeader = true;
     const footer = () => 'Here is footer';
     const rowKey = (record) => { return record.id };
@@ -42,6 +68,17 @@ class ProviderList extends Component {
     const pagination = {
       position: 'bottom', defaultPageSize: 10, showSizeChanger: true,
       pageSizeOptions: ['10', '20', '30', '40']
+    };
+
+    const menu = (
+      <Menu onClick={this.handleMenuClick}>
+        <Menu.Item key='delete'>Delete</Menu.Item>
+      </Menu>
+    );
+
+    const rowSelection = {
+      selectedRowKeys,
+      onChange: this.onSelectChange
     };
 
     const tableConfig = {
@@ -56,7 +93,7 @@ class ProviderList extends Component {
       title,
       showHeader,
       footer,
-      rowSelection: {},
+      rowSelection,
       scroll: undefined
     };
 
@@ -103,23 +140,51 @@ class ProviderList extends Component {
       key: 'tax_code'
     }];
 
+    let multiSelectAction;
+    if (hasSelected) {
+      multiSelectAction = (
+        <Dropdown overlay={menu}>
+          <Button>
+            Actions <Icon type='down' />
+          </Button>
+        </Dropdown>
+      );
+    }
+
     return (
       <div>
-        <Row type='flex' justify='end' gutter={16}>
-          <Col>
-            <Button type='primary' onClick={this.showProviderModal.bind(this)} >
-              <Icon type='plus' /> New provider
-            </Button>
+        <Row type='flex' justify='end'>
+          <Col lg={12} >
+            <Row type='flex' justify='start' gutter={16} >
+              <Col lg={8} >
+                <Input className='provider-search' placeholder='Search by name, provider code'
+                  onChange={this.handleProviderSearch.bind(this)}
+                  suffix={(<Icon type='search' />)}
+                />
+              </Col>
+              <Col lg={6} >
+                {multiSelectAction}
+              </Col>
+            </Row>
           </Col>
-          <Col>
-            <Button type='default' ><Icon type='login' /> Import</Button>
-          </Col>
-          <Col>
-            <Button type='default' ><Icon type='logout' /> Export</Button>
+          <Col lg={12} >
+            <Row type='flex' justify='end' gutter={16}>
+              <Col>
+                <Button type='primary' onClick={this.showProviderModal.bind(this)} >
+                  <Icon type='plus' /> New provider
+                </Button>
+              </Col>
+              <Col>
+                <Button type='default' ><Icon type='login' /> Import</Button>
+              </Col>
+              <Col>
+                <Button type='default' ><Icon type='logout' /> Export</Button>
+              </Col>
+            </Row>
           </Col>
         </Row>
 
-        <Table {...tableConfig} columns={columns} dataSource={providers}
+        <Table {...tableConfig} columns={columns} dataSource={dataSource}
           onExpand={this.onTableRowExpand.bind(this)}
           onChange={this.handleChange.bind(this)}
         />
@@ -159,18 +224,25 @@ class ProviderList extends Component {
       isProviderModalVisible: false,
     });
   }
+
+  handleProviderSearch(event) {
+    this.props.handleSearchProvider(event.target.value);
+  }
 }
 
 const mapStateToProps = state => {
   return {
     errors: state.providerReducer.errors,
     providers: state.providerReducer.providers,
-    expandedRowKeys: state.providerReducer.expandedRowKeys
+    expandedRowKeys: state.providerReducer.expandedRowKeys,
+    dataSource: state.providerReducer.dataSource,
+    selectedRowKeys: state.providerReducer.selectedRowKeys
   };
 };
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-  getProviders, onTableRowChange
+  getProviders, onTableRowChange, handleSearchProvider, handleRowSelected,
+  deleteProviders
 }, dispatch);
 
 export default connect(

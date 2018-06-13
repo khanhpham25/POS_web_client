@@ -2,8 +2,8 @@ import * as constants from '../constants';
 import axios from 'axios';
 import { showLoading, hideLoading } from 'layouts/Dashboard/actions';
 
-export const getProviders = () => {
-  const url = `${process.env.REACT_APP_HOST}providers`;
+export const getUsers = () => {
+  const url = `${process.env.REACT_APP_HOST}users`;
 
   return dispatch => {
     dispatch(showLoading());
@@ -14,7 +14,7 @@ export const getProviders = () => {
       }
     }).then(response => {
       dispatch({
-        type: constants.LOAD_ALL_PROVIDER_SUCCESS,
+        type: constants.LOAD_ALL_USER_SUCCESS,
         data: response.data.data
       });
       dispatch(hideLoading());
@@ -29,12 +29,12 @@ export const getProviders = () => {
   };
 };
 
-export const updateProvider = provider => {
-  const url = `${process.env.REACT_APP_HOST}providers/${provider.id}`;
+export const updateUser = user => {
+  const url = `${process.env.REACT_APP_HOST}users/${user.id}`;
   let formData = new FormData();
 
-  for (let key of Object.keys(provider)) {
-    formData.append(`provider[${key}]`, provider[key]);
+  for (let key of Object.keys(user)) {
+    formData.append(`user[${key}]`, user[key]);
   }
 
   return dispatch => {
@@ -46,7 +46,7 @@ export const updateProvider = provider => {
       }
     }).then(response => {
       dispatch({
-        type: constants.UPDATE_PROVIDER_SUCCESS,
+        type: constants.UPDATE_USER_SUCCESS,
         data: response.data.data
       });
       dispatch(hideLoading());
@@ -61,12 +61,12 @@ export const updateProvider = provider => {
   };
 };
 
-export const createProvider = provider => {
-  const url = `${process.env.REACT_APP_HOST}providers`;
+export const createUser = user => {
+  const url = `${process.env.REACT_APP_HOST}users`;
   let formData = new FormData();
 
-  for (let key of Object.keys(provider)) {
-    formData.append(`provider[${key}]`, provider[key]);
+  for (let key of Object.keys(user)) {
+    formData.append(`user[${key}]`, user[key]);
   }
 
   return dispatch => {
@@ -78,7 +78,7 @@ export const createProvider = provider => {
       }
     }).then(response => {
       dispatch({
-        type: constants.CREATE_PROVIDER_SUCCESS,
+        type: constants.CREATE_USER_SUCCESS,
         data: response.data.data
       });
       dispatch(hideLoading());
@@ -93,8 +93,8 @@ export const createProvider = provider => {
   };
 }
 
-export const deleteProvider = provider_id => {
-  const url = `${process.env.REACT_APP_HOST}providers/${provider_id}`;
+export const deleteUser = user_id => {
+  const url = `${process.env.REACT_APP_HOST}users/${user_id}`;
 
   return dispatch => {
     dispatch(showLoading());
@@ -106,8 +106,8 @@ export const deleteProvider = provider_id => {
       }
     }).then(response => {
       dispatch({
-        type: constants.DELETE_PROVIDER_SUCCESS,
-        provider_id
+        type: constants.DELETE_USER_SUCCESS,
+        user_id
       });
       dispatch(hideLoading());
     }).catch(error => {
@@ -126,10 +126,10 @@ export const onTableRowChange = (expandedRowKeys) => {
   };
 }
 
-export const handleSearchProvider = searchValue => {
+export const handleSearchUser = searchValue => {
   return dispatch => {
     dispatch({
-      type: constants.HANDLE_PROVIDER_SEARCH,
+      type: constants.HANDLE_USER_SEARCH,
       searchValue
     });
   };
@@ -144,8 +144,8 @@ export const handleRowSelected = selectedRowKeys => {
   };
 }
 
-export const deleteProviders = selectedIds => {
-  let url = process.env.REACT_APP_HOST + 'providers/delete_providers';
+export const deleteUsers = selectedIds => {
+  let url = process.env.REACT_APP_HOST + 'users/delete_users';
   let formData = new FormData();
   formData.append(`provider[provider_ids]`, selectedIds);
 
@@ -158,7 +158,7 @@ export const deleteProviders = selectedIds => {
       }
     }).then(response => {
       dispatch({
-        type: constants.DELETE_MANY_PROVIDERS_SUCCESS,
+        type: constants.DELETE_MANY_USERS_SUCCESS,
         selectedIds
       });
       dispatch(hideLoading());

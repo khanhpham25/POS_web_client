@@ -1,30 +1,33 @@
 import React, { Component } from 'react';
-import { Table, Icon, Button, Row, Col, Layout, Breadcrumb, Input, Menu, Dropdown } from 'antd';
+import {
+  Table, Icon, Button, Row, Col, Layout, Breadcrumb, Input, Menu, Dropdown,
+} from 'antd';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import swal from 'sweetalert';
 
 import {
-  getCustomers, onTableRowChange, handleSearchCustomer, handleRowSelected, deleteCustomers
+  getUsers, onTableRowChange, handleSearchUser, handleRowSelected,
+  deleteUsers
 } from '../../actions';
-import CustomerDetail from '../CustomerDetail';
-import CustomerModal from '../CustomerModal';
+import UserDetail from '../UserDetail';
+import UserModal from '../UserModal';
 
 const { Content } = Layout;
 
-class CustomerList extends Component {
+class UserList extends Component {
   constructor() {
     super();
 
     this.state = {
       filteredInfo: null,
       sortedInfo: null,
-      isCustomerModalVisible: false
+      isUserModalVisible: false
     };
   }
 
   componentDidMount() {
-    this.props.getCustomers();
+    this.props.getUsers();
   }
 
   onSelectChange = (selectedRowKeys) => {
@@ -32,35 +35,34 @@ class CustomerList extends Component {
   }
 
   handleMenuClick = (e) => {
-    const { deleteCustomers, selectedRowKeys } = this.props;
+    const { deleteUsers, selectedRowKeys } = this.props;
 
     swal({
-      title: `Delete customers`,
-      text: `Do you want to delete these customers?`,
+      title: `Delete users`,
+      text: `Do you want to delete these users?`,
       icon: 'warning',
       buttons: true,
       dangerMode: true,
     }).then(willConfirm => {
-      if (willConfirm) deleteCustomers(selectedRowKeys);
+      if (willConfirm) deleteUsers(selectedRowKeys);
     });
   }
 
   render() {
-    const { customers, customerTypes, expandedRowKeys,
-      dataSource, selectedRowKeys } = this.props;
-    let { sortedInfo, filteredInfo, isCustomerModalVisible } = this.state;
+    const { users, expandedRowKeys, dataSource, selectedRowKeys, roles } = this.props;
+    let { sortedInfo, filteredInfo, isUserModalVisible } = this.state;
 
-    let customerTypeFilters = [];
-
-    customerTypes.map(cusType => {
-      customerTypeFilters.push({ text: cusType.name, value: cusType.name });
-    });
     sortedInfo = sortedInfo || {};
     filteredInfo = filteredInfo || {};
+    let roleFilters = [];
+
+    roles.map(role => {
+      roleFilters.push({ text: role.name, value: role.name });
+    });
 
     const hasSelected = selectedRowKeys.length > 0;
-    const expandedRowRender = record => <CustomerDetail key={record.id}
-      customer={record} customerTypes={customerTypes} />;
+    const expandedRowRender = record => <UserDetail key={record.id}
+      user={record} />;
     const title = () => (<span style={{ marginLeft: 8 }}>
       {hasSelected ? `Selected ${selectedRowKeys.length} items` : ''}
     </span>);
@@ -115,38 +117,49 @@ class CustomerList extends Component {
       },
       sortOrder: sortedInfo.columnKey === 'name' && sortedInfo.order
     }, {
-      title: 'Customer Code',
-      dataIndex: 'code',
-      key: 'code',
-      render: (text, record) => (
-        record.code && record.code !== 'null' ? record.code : <span>{`TBDC${10000 + record.id}`}</span>
-      )
+      title: 'Phone',
+      dataIndex: 'phone',
+      key: 'phone'
     }, {
-      title: 'Customer Type',
-      dataIndex: 'customer_type.name',
-      key: 'customer_type',
-      filters: customerTypeFilters,
-      filteredValue: filteredInfo.customer_type || null,
-      onFilter: (value, record) => record.customer_type.name.includes(value)
+      title: 'Email',
+      dataIndex: 'email',
+      key: 'email'
+    }, {
+      title: 'Role',
+      dataIndex: 'role.name',
+      key: 'role',
+      filters: roleFilters,
+      filteredValue: filteredInfo.role || null,
+      onFilter: (value, record) => record.role.name.includes(value)
+    }, {
+      title: 'Address',
+      dataIndex: 'address',
+      key: 'address'
+    }, {
+      title: 'Status',
+      dataIndex: 'status',
+      key: 'status'
     }];
 
     let multiSelectAction;
     if (hasSelected) {
-      multiSelectAction = (<Dropdown overlay={menu}>
-        <Button>
-          Actions <Icon type='down' />
-        </Button>
-      </Dropdown>);
+      multiSelectAction = (
+        <Dropdown overlay={menu}>
+          <Button>
+            Actions <Icon type='down' />
+          </Button>
+        </Dropdown>
+      );
     }
 
     return (
       <div>
         <Row type='flex' justify='end'>
-          <Col lg={12}>
-            <Row type='flex' justify='start' gutter={16}>
+          <Col lg={12} >
+            <Row type='flex' justify='start' gutter={16} >
               <Col lg={8} >
-                <Input className='customer-search' placeholder='Search by name, customer code'
-                  onChange={this.handleCustomerSearch.bind(this)}
+                <Input className='user-search' placeholder='Search by name, user code'
+                  onChange={this.handleUserSearch.bind(this)}
                   suffix={(<Icon type='search' />)}
                 />
               </Col>
@@ -155,18 +168,12 @@ class CustomerList extends Component {
               </Col>
             </Row>
           </Col>
-          <Col lg={12}>
+          <Col lg={12} >
             <Row type='flex' justify='end' gutter={16}>
               <Col>
-                <Button type='primary' onClick={this.showCustomerModal.bind(this)} >
-                  <Icon type='plus' /> New customer
+                <Button type='primary' onClick={this.showUserModal.bind(this)} >
+                  <Icon type='plus' /> New user
                 </Button>
-              </Col>
-              <Col>
-                <Button type='default' ><Icon type='login' /> Import</Button>
-              </Col>
-              <Col>
-                <Button type='default' ><Icon type='logout' /> Export</Button>
               </Col>
             </Row>
           </Col>
@@ -177,11 +184,11 @@ class CustomerList extends Component {
           onChange={this.handleChange.bind(this)}
         />
 
-        <CustomerModal title='Create customer' action='create'
-          customer={{ name: '', customer_type: { id: '' } }}
-          customerTypes={customerTypes}
-          visible={isCustomerModalVisible}
-          onClose={this.hideCustomerModal.bind(this)} />
+        <UserModal title='Create user' action='create'
+          user={{ name: '', email: '', phone: '', address: '', status: '', role_id: '' }}
+          roles={roles}
+          visible={isUserModalVisible}
+          onClose={this.hideUserModal.bind(this)} />
       </div>
     );
   }
@@ -202,40 +209,40 @@ class CustomerList extends Component {
     });
   }
 
-  showCustomerModal(event) {
+  showUserModal(event) {
     this.setState({
-      isCustomerModalVisible: true,
+      isUserModalVisible: true,
     });
   }
 
-  hideCustomerModal(event) {
+  hideUserModal(event) {
     this.setState({
-      isCustomerModalVisible: false,
+      isUserModalVisible: false,
     });
   }
 
-  handleCustomerSearch(event) {
-    this.props.handleSearchCustomer(event.target.value);
+  handleUserSearch(event) {
+    this.props.handleSearchUser(event.target.value);
   }
 }
 
 const mapStateToProps = state => {
   return {
-    errors: state.customerReducer.errors,
-    customers: state.customerReducer.customers,
-    customerTypes: state.customerReducer.customerTypes,
-    expandedRowKeys: state.customerReducer.expandedRowKeys,
-    dataSource: state.customerReducer.dataSource,
-    selectedRowKeys: state.customerReducer.selectedRowKeys
+    errors: state.userReducer.errors,
+    users: state.userReducer.users,
+    roles: state.userReducer.roles,
+    expandedRowKeys: state.userReducer.expandedRowKeys,
+    dataSource: state.userReducer.dataSource,
+    selectedRowKeys: state.userReducer.selectedRowKeys
   };
 };
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-  getCustomers, onTableRowChange, handleSearchCustomer, handleRowSelected,
-  deleteCustomers
+  getUsers, onTableRowChange, handleSearchUser, handleRowSelected,
+  deleteUsers
 }, dispatch);
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(CustomerList);
+)(UserList);

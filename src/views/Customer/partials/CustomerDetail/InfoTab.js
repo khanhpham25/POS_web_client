@@ -56,12 +56,6 @@ class InfoTab extends Component {
             </Button>
           </Col>
           <Col lg={2} md={2}>
-            <Button type='danger'>
-              <Icon type='close' />
-              Stop Selling
-            </Button>
-          </Col>
-          <Col lg={2} md={2}>
             <Button type='danger' onClick={this.handleDeleteCustomer.bind(this, customer.id)}>
               <Icon type='delete' />
               Delete

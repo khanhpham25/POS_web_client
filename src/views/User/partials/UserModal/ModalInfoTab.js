@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import { Form, Input, Tooltip, Icon, Row, Col, Button, Select } from 'antd';
+import { Form, Input, Tooltip, Icon, Row, Col, Select } from 'antd';
 
 const FormItem = Form.Item;
 const Option = Select.Option;
 
 class ModalInfoTab extends Component {
   render() {
-    const { provider, action } = this.props;
+    const { user, action } = this.props;
     // const formItemLayout = {
     //   labelCol: { span: 4 },
     //   wrapperCol: { span: 8 },
@@ -23,24 +23,6 @@ class ModalInfoTab extends Component {
       }
     };
 
-    let codeInput = (
-      <FormItem
-        {...formItemLayout}
-        label={(
-          <span>
-            Code&nbsp;
-            <Tooltip title='Provider code is a unique information'>
-              <Icon type='question-circle-o' />
-            </Tooltip>
-          </span>
-        )}
-      >
-        <Input name='code'
-          value={!provider.code || provider.code == 'null' ? `TBDC${10000 + provider.id}` : provider.code}
-          onChange={this.onInputChange.bind(this)} />
-      </FormItem>
-    );
-
     return (
       <div>
         <Row type='flex' gutter={24}>
@@ -49,29 +31,29 @@ class ModalInfoTab extends Component {
               {...formItemLayout}
               label={(
                 <span>
-                  Code&nbsp;
-                  <Tooltip title='Provider Code is a unique information'>
+                  Name&nbsp;
+                  <Tooltip title='User name is a unique information'>
                     <Icon type='question-circle-o' />
                   </Tooltip>
                 </span>
               )}
             >
-              <Input name='code'
-                value={provider.code || provider.code == 'null' ? `TBDC${10000 + provider.id}` : provider.code}
+              <Input name='name'
+                value={user.name ? user.name : ''}
                 onChange={this.onInputChange.bind(this)} />
             </FormItem>
             <FormItem
               {...formItemLayout}
               label={(
                 <span>
-                  Name&nbsp;
-                  <Tooltip title='Name is the name of the provider'>
+                  Email&nbsp;
+                  <Tooltip title='Email is the email of the user'>
                     <Icon type='question-circle-o' />
                   </Tooltip>
                 </span>
               )}
             >
-              <Input name='name' value={provider.name}
+              <Input name='email' value={user.email}
                 onChange={this.onInputChange.bind(this)} />
             </FormItem>
 
@@ -80,13 +62,13 @@ class ModalInfoTab extends Component {
               label={(
                 <span>
                   Phone&nbsp;
-                  <Tooltip title='Phone provider'>
+                  <Tooltip title='Phone user'>
                     <Icon type='question-circle-o' />
                   </Tooltip>
                 </span>
               )}
             >
-              <Input name='phone' value={provider.phone}
+              <Input name='phone' value={user.phone}
                 onChange={this.onInputChange.bind(this)} />
             </FormItem>
 
@@ -96,29 +78,14 @@ class ModalInfoTab extends Component {
               {...formItemLayout}
               label={(
                 <span>
-                  Email&nbsp;
-                  <Tooltip title='Email provider'>
-                    <Icon type='question-circle-o' />
-                  </Tooltip>
-                </span>
-              )}
-            >
-              <Input name='email' value={provider.email}
-                onChange={this.onInputChange.bind(this)} />
-            </FormItem>
-
-            <FormItem
-              {...formItemLayout}
-              label={(
-                <span>
                   Address&nbsp;
-                  <Tooltip title='Address provider'>
+                  <Tooltip title='Address user'>
                     <Icon type='question-circle-o' />
                   </Tooltip>
                 </span>
               )}
             >
-              <Input name='address' value={provider.address}
+              <Input name='address' value={user.address}
                 onChange={this.onInputChange.bind(this)} />
             </FormItem>
 
@@ -126,14 +93,14 @@ class ModalInfoTab extends Component {
               {...formItemLayout}
               label={(
                 <span>
-                  Tax code&nbsp;
-                  <Tooltip title='Tax code provider'>
+                  Status&nbsp;
+                  <Tooltip title='Status user'>
                     <Icon type='question-circle-o' />
                   </Tooltip>
                 </span>
               )}
             >
-              <Input name='tax_code' value={provider.tax_code}
+              <Input name='status' value={user.status}
                 onChange={this.onInputChange.bind(this)} />
             </FormItem>
           </Col>
@@ -143,7 +110,7 @@ class ModalInfoTab extends Component {
   }
 
   onInputChange(event) {
-    this.props.onProviderChange(event.target.name, event.target.value);
+    this.props.onUserChange(event.target.name, event.target.value);
   }
 }
 

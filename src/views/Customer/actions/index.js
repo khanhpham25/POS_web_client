@@ -134,3 +134,50 @@ export const onTableRowChange = (expandedRowKeys) => {
     });
   };
 }
+
+export const handleSearchCustomer = searchValue => {
+  return dispatch => {
+    dispatch({
+      type: constants.HANDLE_CUSTOMER_SEARCH,
+      searchValue
+    });
+  };
+}
+
+export const handleRowSelected = selectedRowKeys => {
+  return dispatch => {
+    dispatch({
+      type: constants.HANDLE_ROW_SELECTED,
+      selectedRowKeys
+    });
+  };
+}
+
+export const deleteCustomers = selectedIds => {
+  let url = process.env.REACT_APP_HOST + 'customers/delete_customers';
+  let formData = new FormData();
+  formData.append(`customer[customer_ids]`, selectedIds);
+
+  return dispatch => {
+    dispatch(showLoading());
+    axios({
+      url, method: 'DELETE', data: formData,
+      headers: {
+        'AUTH-TOKEN': localStorage.token
+      }
+    }).then(response => {
+      dispatch({
+        type: constants.DELETE_MANY_CUSTOMERS_SUCCESS,
+        selectedIds
+      });
+      dispatch(hideLoading());
+    }).catch(error => {
+      // dispatch({
+      //   type: constants.LOGIN_FAIL,
+      //   errors: handleErrorsResponse(error.response.data.errors)
+      // })
+      console.log(error);
+      dispatch(hideLoading());
+    });
+  }
+}
