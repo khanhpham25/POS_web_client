@@ -51,7 +51,9 @@ class UserModal extends Component {
         <Tabs defaultActiveKey='1' >
           <TabPane tab='Info' key='1'>
             <ModalInfoTab user={user} roles={roles}
-              onUserChange={this.onUserChange.bind(this)} action={action} />
+              onUserChange={this.onUserChange.bind(this)} action={action}
+              onUserRoleChange={this.onUserRoleChange.bind(this)}
+            />
           </TabPane>
         </Tabs>
       </Modal>
@@ -75,6 +77,15 @@ class UserModal extends Component {
     let changedUser = Object.assign({}, this.state.user);
 
     Object.assign(changedUser, { [name]: value });
+    this.setState({
+      user: changedUser
+    });
+  }
+
+  onUserRoleChange(value) {
+    let changedUser = Object.assign({}, this.state.user);
+
+    Object.assign(changedUser.role, { id: value });
     this.setState({
       user: changedUser
     });

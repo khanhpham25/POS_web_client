@@ -62,7 +62,7 @@ class UserList extends Component {
 
     const hasSelected = selectedRowKeys.length > 0;
     const expandedRowRender = record => <UserDetail key={record.id}
-      user={record} />;
+      user={record} roles={roles} />;
     const title = () => (<span style={{ marginLeft: 8 }}>
       {hasSelected ? `Selected ${selectedRowKeys.length} items` : ''}
     </span>);
@@ -185,7 +185,7 @@ class UserList extends Component {
         />
 
         <UserModal title='Create user' action='create'
-          user={{ name: '', email: '', phone: '', address: '', status: '', role_id: '' }}
+          user={{ name: '', email: '', phone: '', address: '', status: '', role: { id: '' } }}
           roles={roles}
           visible={isUserModalVisible}
           onClose={this.hideUserModal.bind(this)} />

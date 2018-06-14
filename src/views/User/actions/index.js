@@ -66,7 +66,11 @@ export const createUser = user => {
   let formData = new FormData();
 
   for (let key of Object.keys(user)) {
-    formData.append(`user[${key}]`, user[key]);
+    if (key == 'role') {
+      formData.append(`user[role_id]`, user[key].id);
+    } else if (key !== 'code') {
+      formData.append(`user[${key}]`, user[key]);
+    }
   }
 
   return dispatch => {
@@ -147,7 +151,7 @@ export const handleRowSelected = selectedRowKeys => {
 export const deleteUsers = selectedIds => {
   let url = process.env.REACT_APP_HOST + 'users/delete_users';
   let formData = new FormData();
-  formData.append(`provider[provider_ids]`, selectedIds);
+  formData.append(`user_ids`, selectedIds);
 
   return dispatch => {
     dispatch(showLoading());

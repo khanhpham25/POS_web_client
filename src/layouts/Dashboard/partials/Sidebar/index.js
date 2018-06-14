@@ -70,14 +70,6 @@ class Sidebar extends Component {
               <span>Users</span>
             </NavLink>
           </Menu.Item>
-          <SubMenu
-            key='sub1'
-            title={<span><Icon type='user' /><span>User</span></span>}
-          >
-            <Menu.Item key='3'>Tom</Menu.Item>
-            <Menu.Item key='4'>Bill</Menu.Item>
-            <Menu.Item key='5'>Alex</Menu.Item>
-          </SubMenu>
         </Menu>
       </Sider>
     );

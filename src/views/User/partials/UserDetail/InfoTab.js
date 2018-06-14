@@ -20,7 +20,7 @@ class InfoTab extends Component {
   }
 
   render() {
-    const { user } = this.props;
+    const { user, roles } = this.props;
     const { isUserModalVisible } = this.state;
 
     const formItemLayout = {
@@ -50,7 +50,7 @@ class InfoTab extends Component {
               </FormItem>
 
               <FormItem label='Address:' {...formItemLayout}>
-                {user.adress}
+                {user.address}
               </FormItem>
 
               <FormItem label='Status:' {...formItemLayout}>
@@ -58,7 +58,7 @@ class InfoTab extends Component {
               </FormItem>
 
               <FormItem label='Role:' {...formItemLayout}>
-                {user.role_id}
+                {user.role.name}
               </FormItem>
             </Form>
           </Col>
@@ -80,7 +80,7 @@ class InfoTab extends Component {
         </Row>
 
         <UserModal title='Update user info'
-          user={user}
+          user={user} roles={roles}
           visible={isUserModalVisible}
           onClose={this.hideUserModal.bind(this)} />
       </div>

@@ -156,7 +156,7 @@ export const handleRowSelected = selectedRowKeys => {
 export const deleteCustomers = selectedIds => {
   let url = process.env.REACT_APP_HOST + 'customers/delete_customers';
   let formData = new FormData();
-  formData.append(`customer[customer_ids]`, selectedIds);
+  formData.append(`customer_ids`, selectedIds);
 
   return dispatch => {
     dispatch(showLoading());

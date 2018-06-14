@@ -6,7 +6,7 @@ const Option = Select.Option;
 
 class ModalInfoTab extends Component {
   render() {
-    const { user, action } = this.props;
+    const { user, action, roles } = this.props;
     // const formItemLayout = {
     //   labelCol: { span: 4 },
     //   wrapperCol: { span: 8 },
@@ -22,6 +22,14 @@ class ModalInfoTab extends Component {
         sm: { span: 16 }
       }
     };
+
+    let options = null;
+
+    options = roles.map(role => {
+      return (
+        <Option value={role.id} key={role.id} >{role.name}</Option>
+      );
+    });
 
     return (
       <div>
@@ -78,6 +86,31 @@ class ModalInfoTab extends Component {
               {...formItemLayout}
               label={(
                 <span>
+                  User roles&nbsp;
+                  <Tooltip title='Choose role for user'>
+                    <Icon type='question-circle-o' />
+                  </Tooltip>
+                </span>
+              )}
+            >
+              <Select
+                showSearch
+                style={{ width: 230 }}
+                placeholder='Select a user role'
+                optionFilterProp='children'
+                filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                value={user.role.id}
+                onChange={this.onSelectChange.bind(this)}
+              >
+                <Option value='' >--- Select user role</Option>
+                {options}
+              </Select>
+            </FormItem>
+
+            <FormItem
+              {...formItemLayout}
+              label={(
+                <span>
                   Address&nbsp;
                   <Tooltip title='Address user'>
                     <Icon type='question-circle-o' />
@@ -107,6 +140,10 @@ class ModalInfoTab extends Component {
         </Row>
       </div>
     );
+  }
+
+  onSelectChange(value) {
+    this.props.onUserRoleChange(value);
   }
 
   onInputChange(event) {

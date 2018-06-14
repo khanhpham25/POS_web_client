@@ -11,7 +11,7 @@ const initialState = {
 };
 
 const userReducer = (state = initialState, action) => {
-  let users, expandedRowKeys;
+  let users, dataSource, expandedRowKeys;
   switch (action.type) {
     case constants.LOAD_ALL_USER_SUCCESS:
       return {
@@ -24,20 +24,21 @@ const userReducer = (state = initialState, action) => {
       };
 
     case constants.UPDATE_USER_SUCCESS:
-      let users = Object.assign([], state.users);
+      users = Object.assign([], state.users);
 
       let index = users.findIndex(user => {
         return user.id == action.data.user.id
       });
 
       users[index] = action.data.user;
+      dataSource = users;
 
       return {
         errors: null,
         users,
         roles: state.roles,
         expandedRowKeys: state.expandedRowKeys,
-        dataSource: state.dataSource,
+        dataSource,
         selectedRowKeys: state.selectedRowKeys
       };
 
@@ -47,13 +48,14 @@ const userReducer = (state = initialState, action) => {
 
       users.unshift(action.data.user);
       expandedRowKeys.push(action.data.user.id);
+      dataSource = users;
 
       return {
         errors: null,
         users,
         roles: state.roles,
         expandedRowKeys,
-        dataSource: state.dataSource,
+        dataSource,
         selectedRowKeys: state.selectedRowKeys
       };
 
@@ -72,13 +74,14 @@ const userReducer = (state = initialState, action) => {
     case constants.DELETE_USER_SUCCESS:
       expandedRowKeys = [];
       users = Object.assign([], state.users.filter(user => { return user.id !== action.user_id }));
+      dataSource = users;
 
       return {
         errors: null,
         users,
         roles: state.roles,
         expandedRowKeys,
-        dataSource: state.dataSource,
+        dataSource,
         selectedRowKeys: state.selectedRowKeys
       };
 
@@ -110,15 +113,15 @@ const userReducer = (state = initialState, action) => {
       };
 
     case constants.DELETE_MANY_USERS_SUCCESS:
-      users = Object.assign([], state.users);
+      let users = Object.assign([], state.users);
       let dataSource = Object.assign([], state.dataSource);
 
       users = users.filter(p => !action.selectedIds.includes(p.id));
       dataSource = dataSource.filter(d => !action.selectedIds.includes(d.id));
 
       const args = {
-        message: 'Delete',
-        description: 'Chosen users has been deleted sucessfully!',
+        message: 'DELETE',
+        description: 'Chosen users has been DELETEd sucessfully!',
         duration: 5,
         placement: 'bottomRight',
         style: {

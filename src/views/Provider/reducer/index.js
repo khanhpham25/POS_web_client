@@ -10,7 +10,7 @@ const initialState = {
 };
 
 const providerReducer = (state = initialState, action) => {
-  let providers, expandedRowKeys;
+  let providers, dataSource, expandedRowKeys;
   switch (action.type) {
     case constants.LOAD_ALL_PROVIDER_SUCCESS:
       return {
@@ -22,19 +22,20 @@ const providerReducer = (state = initialState, action) => {
       };
 
     case constants.UPDATE_PROVIDER_SUCCESS:
-      let providers = Object.assign([], state.providers);
+      providers = Object.assign([], state.providers);
 
       let index = providers.findIndex(provider => {
         return provider.id == action.data.provider.id
       });
 
       providers[index] = action.data.provider;
+      dataSource = providers;
 
       return {
         errors: null,
         providers,
         expandedRowKeys: state.expandedRowKeys,
-        dataSource: state.dataSource,
+        dataSource,
         selectedRowKeys: state.selectedRowKeys
       };
 
@@ -44,12 +45,13 @@ const providerReducer = (state = initialState, action) => {
 
       providers.unshift(action.data.provider);
       expandedRowKeys.push(action.data.provider.id);
+      dataSource = providers;
 
       return {
         errors: null,
         providers,
         expandedRowKeys,
-        dataSource: state.dataSource,
+        dataSource,
         selectedRowKeys: state.selectedRowKeys
       };
 
@@ -67,12 +69,13 @@ const providerReducer = (state = initialState, action) => {
     case constants.DELETE_PROVIDER_SUCCESS:
       expandedRowKeys = [];
       providers = Object.assign([], state.providers.filter(provider => { return provider.id !== action.provider_id }));
+      dataSource = providers;
 
       return {
         errors: null,
         providers,
         expandedRowKeys,
-        dataSource: state.dataSource,
+        dataSource,
         selectedRowKeys: state.selectedRowKeys
       };
 
@@ -102,15 +105,15 @@ const providerReducer = (state = initialState, action) => {
       };
 
     case constants.DELETE_MANY_PROVIDERS_SUCCESS:
-      providers = Object.assign([], state.providers);
+      let providers = Object.assign([], state.providers);
       let dataSource = Object.assign([], state.dataSource);
 
       providers = providers.filter(p => !action.selectedIds.includes(p.id));
       dataSource = dataSource.filter(d => !action.selectedIds.includes(d.id));
 
       const args = {
-        message: 'Delete',
-        description: 'Chosen providers has been deleted sucessfully!',
+        message: 'DELETE',
+        description: 'Chosen providers has been DELETEd sucessfully!',
         duration: 5,
         placement: 'bottomRight',
         style: {

@@ -11,7 +11,7 @@ const initialState = {
 };
 
 const customerReducer = (state = initialState, action) => {
-  let customers, expandedRowKeys, dataSource;
+  let customers, dataSource, expandedRowKeys;
   switch (action.type) {
     case constants.LOAD_ALL_CUSTOMER_SUCCESS:
       return {
@@ -24,20 +24,21 @@ const customerReducer = (state = initialState, action) => {
       };
 
     case constants.UPDATE_CUSTOMER_SUCCESS:
-      let customers = Object.assign([], state.customers);
+      customers = Object.assign([], state.customers);
 
       let index = customers.findIndex(customer => {
         return customer.id == action.data.customer.id
       });
 
       customers[index] = action.data.customer;
+      dataSource = customers;
 
       return {
         errors: null,
         customers,
         customerTypes: action.data.customerTypes,
         expandedRowKeys: state.expandedRowKeys,
-        dataSource: state.dataSource,
+        dataSource,
         selectedRowKeys: state.selectedRowKeys
       };
 
@@ -47,13 +48,14 @@ const customerReducer = (state = initialState, action) => {
 
       customers.unshift(action.data.customer);
       expandedRowKeys.push(action.data.customer.id);
+      dataSource = customers;
 
       return {
         errors: null,
         customers,
         customerTypes: state.customerTypes,
         expandedRowKeys,
-        dataSource: state.dataSource,
+        dataSource,
         selectedRowKeys: state.selectedRowKeys
       };
 
@@ -99,26 +101,27 @@ const customerReducer = (state = initialState, action) => {
     case constants.DELETE_CUSTOMER_SUCCESS:
       expandedRowKeys = [];
       customers = Object.assign([], state.customers.filter(customer => { return customer.id !== action.customer_id }));
+      dataSource = customers;
 
       return {
         errors: null,
         customers,
         customerTypes: state.customerTypes,
         expandedRowKeys,
-        dataSource: state.dataSource,
+        dataSource,
         selectedRowKeys: state.selectedRowKeys
       };
 
     case constants.DELETE_MANY_CUSTOMERS_SUCCESS:
-      customers = Object.assign([], state.customers);
+      let customers = Object.assign([], state.customers);
       let dataSource = Object.assign([], state.dataSource);
 
       customers = customers.filter(p => !action.selectedIds.includes(p.id));
       dataSource = dataSource.filter(d => !action.selectedIds.includes(d.id));
 
       const args = {
-        message: 'Delete',
-        description: 'Chosen customers has been deleted sucessfully!',
+        message: 'DELETE',
+        description: 'Chosen customers has been DELETEd sucessfully!',
         duration: 5,
         placement: 'bottomRight',
         style: {
