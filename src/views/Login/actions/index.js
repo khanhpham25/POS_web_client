@@ -2,6 +2,7 @@ import * as constants from '../constants';
 import axios from 'axios';
 import { push } from 'react-router-redux';
 
+import { showLoading, hideLoading } from 'layouts/Dashboard/actions';
 import { handleErrorsResponse } from 'assets/helper/handleErrorsResponse';
 
 export const submitLogin = (email, password) => {
@@ -10,6 +11,7 @@ export const submitLogin = (email, password) => {
   formData.append('authentication[email]', email);
   formData.append('authentication[password]', password);
   return dispatch => {
+    dispatch(showLoading());
     axios({
       url, method: 'POST',
       data: formData
@@ -19,7 +21,7 @@ export const submitLogin = (email, password) => {
         response
       });
       saveUser(response.data);
-
+      dispatch(hideLoading());
       dispatch(push('/'));
     }).catch(error => {
       let currentErrors = [];
@@ -29,7 +31,8 @@ export const submitLogin = (email, password) => {
       dispatch({
         type: constants.LOGIN_FAIL,
         errors: currentErrors
-      })
+      });
+      dispatch(hideLoading());
     });
   }
 }

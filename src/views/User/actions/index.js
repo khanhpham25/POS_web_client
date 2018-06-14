@@ -1,10 +1,9 @@
 import * as constants from '../constants';
 import axios from 'axios';
-
 import { showLoading, hideLoading } from 'layouts/Dashboard/actions';
 
-export const getCustomers = () => {
-  let url = process.env.REACT_APP_HOST + 'customers';
+export const getUsers = () => {
+  const url = `${process.env.REACT_APP_HOST}users`;
 
   return dispatch => {
     dispatch(showLoading());
@@ -15,7 +14,7 @@ export const getCustomers = () => {
       }
     }).then(response => {
       dispatch({
-        type: constants.LOAD_ALL_CUSTOMER_SUCCESS,
+        type: constants.LOAD_ALL_USER_SUCCESS,
         data: response.data.data
       });
       dispatch(hideLoading());
@@ -30,16 +29,12 @@ export const getCustomers = () => {
   };
 };
 
-export const updateCustomer = (customer) => {
-  let url = process.env.REACT_APP_HOST + 'customers/' + customer.id;
+export const updateUser = user => {
+  const url = `${process.env.REACT_APP_HOST}users/${user.id}`;
   let formData = new FormData();
 
-  for (let key of Object.keys(customer)) {
-    if (key !== 'customer_type') {
-      formData.append(`customer[${key}]`, customer[key]);
-    } else {
-      formData.append(`customer[${key}_id]`, customer[key].id);
-    }
+  for (let key of Object.keys(user)) {
+    formData.append(`user[${key}]`, user[key]);
   }
 
   return dispatch => {
@@ -51,7 +46,7 @@ export const updateCustomer = (customer) => {
       }
     }).then(response => {
       dispatch({
-        type: constants.UPDATE_CUSTOMER_SUCCESS,
+        type: constants.UPDATE_USER_SUCCESS,
         data: response.data.data
       });
       dispatch(hideLoading());
@@ -66,15 +61,15 @@ export const updateCustomer = (customer) => {
   };
 };
 
-export const createCustomer = customer => {
-  let url = process.env.REACT_APP_HOST + 'customers';
+export const createUser = user => {
+  const url = `${process.env.REACT_APP_HOST}users`;
   let formData = new FormData();
 
-  for (let key of Object.keys(customer)) {
-    if (key == 'customer_type') {
-      formData.append(`customer[customer_type_id]`, customer[key].id);
+  for (let key of Object.keys(user)) {
+    if (key == 'role') {
+      formData.append(`user[role_id]`, user[key].id);
     } else if (key !== 'code') {
-      formData.append(`customer[${key}]`, customer[key]);
+      formData.append(`user[${key}]`, user[key]);
     }
   }
 
@@ -87,7 +82,7 @@ export const createCustomer = customer => {
       }
     }).then(response => {
       dispatch({
-        type: constants.CREATE_CUSTOMER_SUCCESS,
+        type: constants.CREATE_USER_SUCCESS,
         data: response.data.data
       });
       dispatch(hideLoading());
@@ -102,8 +97,8 @@ export const createCustomer = customer => {
   };
 }
 
-export const deleteCustomer = customer_id => {
-  const url = `${process.env.REACT_APP_HOST}customers/${customer_id}`;
+export const deleteUser = user_id => {
+  const url = `${process.env.REACT_APP_HOST}users/${user_id}`;
 
   return dispatch => {
     dispatch(showLoading());
@@ -115,13 +110,13 @@ export const deleteCustomer = customer_id => {
       }
     }).then(response => {
       dispatch({
-        type: constants.DELETE_CUSTOMER_SUCCESS,
-        customer_id
+        type: constants.DELETE_USER_SUCCESS,
+        user_id
       });
       dispatch(hideLoading());
     }).catch(error => {
-      dispatch(hideLoading());
       console.log(error);
+      dispatch(hideLoading());
     });
   };
 };
@@ -135,10 +130,10 @@ export const onTableRowChange = (expandedRowKeys) => {
   };
 }
 
-export const handleSearchCustomer = searchValue => {
+export const handleSearchUser = searchValue => {
   return dispatch => {
     dispatch({
-      type: constants.HANDLE_CUSTOMER_SEARCH,
+      type: constants.HANDLE_USER_SEARCH,
       searchValue
     });
   };
@@ -153,10 +148,10 @@ export const handleRowSelected = selectedRowKeys => {
   };
 }
 
-export const deleteCustomers = selectedIds => {
-  let url = process.env.REACT_APP_HOST + 'customers/delete_customers';
+export const deleteUsers = selectedIds => {
+  let url = process.env.REACT_APP_HOST + 'users/delete_users';
   let formData = new FormData();
-  formData.append(`customer_ids`, selectedIds);
+  formData.append(`user_ids`, selectedIds);
 
   return dispatch => {
     dispatch(showLoading());
@@ -167,7 +162,7 @@ export const deleteCustomers = selectedIds => {
       }
     }).then(response => {
       dispatch({
-        type: constants.DELETE_MANY_CUSTOMERS_SUCCESS,
+        type: constants.DELETE_MANY_USERS_SUCCESS,
         selectedIds
       });
       dispatch(hideLoading());

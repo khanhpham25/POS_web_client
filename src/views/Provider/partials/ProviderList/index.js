@@ -1,30 +1,33 @@
 import React, { Component } from 'react';
-import { Table, Icon, Button, Row, Col, Layout, Breadcrumb, Input, Menu, Dropdown } from 'antd';
+import {
+  Table, Icon, Button, Row, Col, Layout, Breadcrumb, Input, Menu, Dropdown,
+} from 'antd';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import swal from 'sweetalert';
 
 import {
-  getCustomers, onTableRowChange, handleSearchCustomer, handleRowSelected, deleteCustomers
+  getProviders, onTableRowChange, handleSearchProvider, handleRowSelected,
+  deleteProviders
 } from '../../actions';
-import CustomerDetail from '../CustomerDetail';
-import CustomerModal from '../CustomerModal';
+import ProviderDetail from '../ProviderDetail';
+import ProviderModal from '../ProviderModal';
 
 const { Content } = Layout;
 
-class CustomerList extends Component {
+class ProviderList extends Component {
   constructor() {
     super();
 
     this.state = {
       filteredInfo: null,
       sortedInfo: null,
-      isCustomerModalVisible: false
+      isProviderModalVisible: false
     };
   }
 
   componentDidMount() {
-    this.props.getCustomers();
+    this.props.getProviders();
   }
 
   onSelectChange = (selectedRowKeys) => {
@@ -32,35 +35,29 @@ class CustomerList extends Component {
   }
 
   handleMenuClick = (e) => {
-    const { deleteCustomers, selectedRowKeys } = this.props;
+    const { deleteProviders, selectedRowKeys } = this.props;
 
     swal({
-      title: `Delete customers`,
-      text: `Do you want to delete these customers?`,
+      title: `Delete providers`,
+      text: `Do you want to delete these providers?`,
       icon: 'warning',
       buttons: true,
       dangerMode: true,
     }).then(willConfirm => {
-      if (willConfirm) deleteCustomers(selectedRowKeys);
+      if (willConfirm) deleteProviders(selectedRowKeys);
     });
   }
 
   render() {
-    const { customers, customerTypes, expandedRowKeys,
-      dataSource, selectedRowKeys } = this.props;
-    let { sortedInfo, filteredInfo, isCustomerModalVisible } = this.state;
+    const { providers, expandedRowKeys, dataSource, selectedRowKeys } = this.props;
+    let { sortedInfo, filteredInfo, isProviderModalVisible } = this.state;
 
-    let customerTypeFilters = [];
-
-    customerTypes.map(cusType => {
-      customerTypeFilters.push({ text: cusType.name, value: cusType.name });
-    });
     sortedInfo = sortedInfo || {};
     filteredInfo = filteredInfo || {};
 
     const hasSelected = selectedRowKeys.length > 0;
-    const expandedRowRender = record => <CustomerDetail key={record.id}
-      customer={record} customerTypes={customerTypes} />;
+    const expandedRowRender = record => <ProviderDetail key={record.id}
+      provider={record} />;
     const title = () => (<span style={{ marginLeft: 8 }}>
       {hasSelected ? `Selected ${selectedRowKeys.length} items` : ''}
     </span>);
@@ -115,38 +112,53 @@ class CustomerList extends Component {
       },
       sortOrder: sortedInfo.columnKey === 'name' && sortedInfo.order
     }, {
-      title: 'Customer Code',
+      title: 'Provider Code',
       dataIndex: 'code',
       key: 'code',
       render: (text, record) => (
         record.code && record.code !== 'null' ? record.code : <span>{`TBDC${10000 + record.id}`}</span>
       )
     }, {
-      title: 'Customer Type',
-      dataIndex: 'customer_type.name',
-      key: 'customer_type',
-      filters: customerTypeFilters,
-      filteredValue: filteredInfo.customer_type || null,
-      onFilter: (value, record) => record.customer_type.name.includes(value)
+      title: 'Name',
+      dataIndex: 'name',
+      key: 'name'
+    }, {
+      title: 'Phone',
+      dataIndex: 'phone',
+      key: 'phone'
+    }, {
+      title: 'Email',
+      dataIndex: 'email',
+      key: 'email'
+    }, {
+      title: 'Address',
+      dataIndex: 'address',
+      key: 'address'
+    }, {
+      title: 'Tax code',
+      dataIndex: 'tax_code',
+      key: 'tax_code'
     }];
 
     let multiSelectAction;
     if (hasSelected) {
-      multiSelectAction = (<Dropdown overlay={menu}>
-        <Button>
-          Actions <Icon type='down' />
-        </Button>
-      </Dropdown>);
+      multiSelectAction = (
+        <Dropdown overlay={menu}>
+          <Button>
+            Actions <Icon type='down' />
+          </Button>
+        </Dropdown>
+      );
     }
 
     return (
       <div>
         <Row type='flex' justify='end'>
-          <Col lg={12}>
-            <Row type='flex' justify='start' gutter={16}>
+          <Col lg={12} >
+            <Row type='flex' justify='start' gutter={16} >
               <Col lg={8} >
-                <Input className='customer-search' placeholder='Search by name, customer code'
-                  onChange={this.handleCustomerSearch.bind(this)}
+                <Input className='provider-search' placeholder='Search by name, provider code'
+                  onChange={this.handleProviderSearch.bind(this)}
                   suffix={(<Icon type='search' />)}
                 />
               </Col>
@@ -155,11 +167,11 @@ class CustomerList extends Component {
               </Col>
             </Row>
           </Col>
-          <Col lg={12}>
+          <Col lg={12} >
             <Row type='flex' justify='end' gutter={16}>
               <Col>
-                <Button type='primary' onClick={this.showCustomerModal.bind(this)} >
-                  <Icon type='plus' /> New customer
+                <Button type='primary' onClick={this.showProviderModal.bind(this)} >
+                  <Icon type='plus' /> New provider
                 </Button>
               </Col>
               <Col>
@@ -177,11 +189,10 @@ class CustomerList extends Component {
           onChange={this.handleChange.bind(this)}
         />
 
-        <CustomerModal title='Create customer' action='create'
-          customer={{ name: '', customer_type: { id: '' } }}
-          customerTypes={customerTypes}
-          visible={isCustomerModalVisible}
-          onClose={this.hideCustomerModal.bind(this)} />
+        <ProviderModal title='Create provider' action='create'
+          provider={{ name: '', code: '', phone: '', email: '', address: '', tax_code: '', note: '' }}
+          visible={isProviderModalVisible}
+          onClose={this.hideProviderModal.bind(this)} />
       </div>
     );
   }
@@ -202,40 +213,39 @@ class CustomerList extends Component {
     });
   }
 
-  showCustomerModal(event) {
+  showProviderModal(event) {
     this.setState({
-      isCustomerModalVisible: true,
+      isProviderModalVisible: true,
     });
   }
 
-  hideCustomerModal(event) {
+  hideProviderModal(event) {
     this.setState({
-      isCustomerModalVisible: false,
+      isProviderModalVisible: false,
     });
   }
 
-  handleCustomerSearch(event) {
-    this.props.handleSearchCustomer(event.target.value);
+  handleProviderSearch(event) {
+    this.props.handleSearchProvider(event.target.value);
   }
 }
 
 const mapStateToProps = state => {
   return {
-    errors: state.customerReducer.errors,
-    customers: state.customerReducer.customers,
-    customerTypes: state.customerReducer.customerTypes,
-    expandedRowKeys: state.customerReducer.expandedRowKeys,
-    dataSource: state.customerReducer.dataSource,
-    selectedRowKeys: state.customerReducer.selectedRowKeys
+    errors: state.providerReducer.errors,
+    providers: state.providerReducer.providers,
+    expandedRowKeys: state.providerReducer.expandedRowKeys,
+    dataSource: state.providerReducer.dataSource,
+    selectedRowKeys: state.providerReducer.selectedRowKeys
   };
 };
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-  getCustomers, onTableRowChange, handleSearchCustomer, handleRowSelected,
-  deleteCustomers
+  getProviders, onTableRowChange, handleSearchProvider, handleRowSelected,
+  deleteProviders
 }, dispatch);
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(CustomerList);
+)(ProviderList);

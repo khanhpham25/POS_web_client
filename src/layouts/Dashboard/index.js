@@ -1,12 +1,12 @@
 import React, { Component, Fragment } from 'react';
-
-import { Switch, Route, Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
 // creates a beautiful scrollbar
-
-import AppHeader from './Header';
-import Sidebar from './Sidebar';
-import AppFooter from './Footer';
 import { Layout } from 'antd';
+
+import AppHeader from './partials/Header';
+import Sidebar from './partials/Sidebar';
+import AppFooter from './partials/Footer';
+import Loading from 'components/loading';
 
 class DashboardLayout extends Component {
   componentDidUpdate() {
@@ -25,16 +25,23 @@ class DashboardLayout extends Component {
     return (
       <Fragment>
         <Layout style={{ minHeight: '100vh' }}>
-          <Sidebar />
-          <Layout>
-            <AppHeader />
-            {childWithProps(this.props)}
-            <AppFooter />
-          </Layout>
+            <Loading loading={this.props.isShow} />
+            <Sidebar />
+            <Layout>
+              <AppHeader />
+              {childWithProps(this.props)}
+              <AppFooter />
+            </Layout>
         </Layout>
       </Fragment >
     );
   }
 }
 
-export default DashboardLayout;
+const mapStateToProps = state => {
+  return {
+    isShow: state.dashboardReducer.isShow
+  };
+};
+
+export default connect(mapStateToProps)(DashboardLayout);

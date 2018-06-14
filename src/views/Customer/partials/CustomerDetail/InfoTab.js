@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Row, Col } from 'antd';
 import { Form, Divider, Button, Icon } from 'antd';
+
+import { deleteCustomer } from '../../actions';
 import CustomerModal from '../CustomerModal';
 
 import customerImg from 'assets/img/24.png';
@@ -53,13 +56,7 @@ class InfoTab extends Component {
             </Button>
           </Col>
           <Col lg={2} md={2}>
-            <Button type='danger'>
-              <Icon type='close' />
-              Stop Selling
-            </Button>
-          </Col>
-          <Col lg={2} md={2}>
-            <Button type='danger'>
+            <Button type='danger' onClick={this.handleDeleteCustomer.bind(this, customer.id)}>
               <Icon type='delete' />
               Delete
             </Button>
@@ -72,6 +69,12 @@ class InfoTab extends Component {
           onClose={this.hideCustomerModal.bind(this)} />
       </div>
     );
+  }
+
+  handleDeleteCustomer(customer_id, event) {
+    if (window.confirm('Are you sure ?')) {
+      this.props.deleteCustomer(customer_id);
+    }
   }
 
   showCustomertModal(event) {
@@ -87,4 +90,4 @@ class InfoTab extends Component {
   }
 }
 
-export default InfoTab;
+export default connect(null, { deleteCustomer })(InfoTab);

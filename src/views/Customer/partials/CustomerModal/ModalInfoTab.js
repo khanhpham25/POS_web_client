@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import { Form, Input, Tooltip, Icon, Row, Col, Button, Select } from 'antd';
-import customerImg from 'assets/img/24.png';
 
 const FormItem = Form.Item;
 const Option = Select.Option;
 
 class ModalInfoTab extends Component {
   render() {
-    const { customer, customerTypes } = this.props;
+    const { customer, customerTypes, action } = this.props;
     // const formItemLayout = {
     //   labelCol: { span: 4 },
     //   wrapperCol: { span: 8 },
@@ -23,6 +22,23 @@ class ModalInfoTab extends Component {
         sm: { span: 16 }
       }
     };
+
+    let codeInput = (
+      <FormItem
+        {...formItemLayout}
+        label={(
+          <span>
+            Code&nbsp;
+            <Tooltip title='Customer code is a unique information'>
+              <Icon type='question-circle-o' />
+            </Tooltip>
+          </span>
+        )}
+      >
+        <Input name='code'
+          value={!customer.code || customer.code == 'null' ? `TBDC${10000 + customer.id}` : customer.code}
+          onChange={this.onInputChange.bind(this)} />
+      </FormItem>);
 
     let options = null;
 
@@ -95,7 +111,7 @@ class ModalInfoTab extends Component {
             </FormItem>
           </Col>
           <Col lg={12}>
-            <img src={customerImg} />
+
           </Col>
         </Row>
       </div>

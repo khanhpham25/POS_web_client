@@ -2,6 +2,8 @@ import * as constants from '../constants';
 import axios from 'axios';
 import moment from 'moment';
 
+import { showLoading, hideLoading } from 'layouts/Dashboard/actions';
+
 export const onSelectProduct = (product_id, allProducts) => {
   return dispatch => {
     dispatch({
@@ -119,6 +121,7 @@ export const createReceipt = (data) => {
   });
 
   return dispatch => {
+    dispatch(showLoading());
     axios({
       url, method: 'POST',
       data: formData,
@@ -130,11 +133,13 @@ export const createReceipt = (data) => {
         type: constants.ON_CREATE_RECEIPT_SUCCESS,
         response
       });
+      dispatch(hideLoading());
     }).catch(error => {
       // dispatch({
       //   type: constants.LOGIN_FAIL,
       //   errors: handleErrorsResponse(error.response.data.errors)
       // })
+      dispatch(hideLoading());
       console.log(error);
     });
   }
