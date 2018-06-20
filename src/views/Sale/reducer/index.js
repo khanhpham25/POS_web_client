@@ -193,7 +193,7 @@ const saleReducer = (state = initialState, action) => {
             date_time: moment().toString(),
             customer_payment: 0,
             customer: { id: '' },
-            payment_type: { id: 1, name: 'Cash' },
+            payment_type: { id: null, name: 'Cash' },
             note: ''
           }
         }
@@ -221,7 +221,7 @@ const saleReducer = (state = initialState, action) => {
             date_time: moment().toString(),
             customer_payment: 0,
             customer: { id: '' },
-            payment_type: { id: 1, name: 'Cash' },
+            payment_type: { id: null, name: 'Cash' },
             note: ''
           }
         }
@@ -258,7 +258,7 @@ const saleReducer = (state = initialState, action) => {
             date_time: moment().toString(),
             customer_payment: 0,
             customer: { id: '' },
-            payment_type: { id: 1, name: 'Cash' },
+            payment_type: { id: null, name: 'Cash' },
             note: ''
           }
         }
