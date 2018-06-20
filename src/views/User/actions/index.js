@@ -4,7 +4,6 @@ import { showLoading, hideLoading } from 'layouts/Dashboard/actions';
 
 export const getUsers = () => {
   const url = `${process.env.REACT_APP_HOST}users`;
-
   return dispatch => {
     dispatch(showLoading());
     axios({
