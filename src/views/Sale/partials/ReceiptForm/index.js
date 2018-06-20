@@ -24,6 +24,22 @@ class ReceiptForm extends Component {
     }
   }
 
+  componentDidMount() {
+    document.addEventListener('keydown', function (event) {
+
+      switch (event.which) {
+        case 115:
+          document.getElementById('auto-complete-customer').focus();
+          return;
+
+        case 120:
+          document.getElementById('checkout-btn').click();
+          return;
+      }
+    });
+  }
+
+
   onSelect = (value) => {
     const { onSelectCustomer, customers } = this.props;
 
@@ -127,7 +143,7 @@ class ReceiptForm extends Component {
               <Icon type='credit-card' className='payment-method' />
             </Popover>
             <Input className='customer-payment-input' value={data.receipt.customer_payment}
-              name='customer_payment' type='number' onChange={this.onInputChange.bind(this)} />
+              name='customer_payment' type='number' onChange={this.onInputChange.bind(this)} min={0} />
           </Col>
         </Row>
       );
@@ -160,11 +176,11 @@ class ReceiptForm extends Component {
                   style={{ width: 245 }}
                   onSelect={this.onSelect}
                   onSearch={this.handleSearch}
-                  placeholder='Find customer'
+                  placeholder='Find customer (F4)'
                   optionLabelProp='text'
                   onChange={this.onCustomerChange}
                 >
-                  <Input
+                  <Input id='auto-complete-customer'
                     suffix={(
                       <Button className='search-btn' size='large' type='primary'>
                         <Icon type='search' />
@@ -226,8 +242,8 @@ class ReceiptForm extends Component {
         <Row type='flex' className='checkout-btn-container' >
           <Col lg={24} >
             <a className='checkout-btn' onClick={this.onCheckout.bind(this)} >
-              <Icon type='shopping-cart' />&nbsp;
-              Pay
+              <Icon type='shopping-cart' id='checkout-btn' />&nbsp;
+              Pay (F9)
             </a>
           </Col>
         </Row>
@@ -279,7 +295,23 @@ class ReceiptForm extends Component {
   }
 
   onInputChange(event) {
-    this.props.onReceiptInputChange(event.target.name, event.target.value);
+    let errors = [];
+    let inputValue = 0;
+    if (event.target.name == 'customer_payment') {
+      try {
+        inputValue = parseInt(event.target.value);
+      } catch (error) {
+        errors.push(error);
+      }
+    }
+
+    if (errors.length == 0) {
+      if (event.target.name == 'customer_payment' && inputValue < 0) {
+
+      } else {
+        this.props.onReceiptInputChange(event.target.name, event.target.value);
+      }
+    }
   }
 
   onDateChange(timeMoment, timeString) {

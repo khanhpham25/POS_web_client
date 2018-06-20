@@ -28,6 +28,21 @@ class SaleIndex extends Component {
     };
   }
 
+  componentDidMount() {
+    document.addEventListener('keydown', function (event) {
+      switch (event.which) {
+        case 114:
+          event.preventDefault();
+          document.getElementById('auto-complete-product').focus();
+          return;
+
+        case 113:
+          document.getElementById('new-transaction').click();
+          return;
+      }
+    });
+  }
+
   onSelect = (value) => {
     const { onSelectProduct, products } = this.props;
     onSelectProduct(value, products);
@@ -138,9 +153,9 @@ class SaleIndex extends Component {
               <NavLink to='/' className='nav-text home-btn'>
                 <Icon type='home' />
               </NavLink>
-              <Button onClick={this.add} className='new-transaction-btn' >
+              <Button onClick={this.add} className='new-transaction-btn' id='new-transaction' >
                 <Icon type='plus' />
-                Transaction
+                Transaction (F2)
               </Button>
               <AutoComplete
                 allowClear={true}
@@ -148,12 +163,12 @@ class SaleIndex extends Component {
                 size='large'
                 dataSource={dataSource.map(this.renderOption)}
                 style={{ width: 500 }}
-                placeholder='Find product'
+                placeholder='Find product (F3)'
                 optionLabelProp='text'
                 onSelect={this.onSelect}
                 onSearch={this.handleSearch}
               >
-                <Input
+                <Input id='auto-complete-product'
                   suffix={(
                     <Button className='search-btn' size='large' type='primary'>
                       <Icon type='search' />

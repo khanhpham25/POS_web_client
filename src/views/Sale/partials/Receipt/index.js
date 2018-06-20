@@ -14,11 +14,11 @@ class Receipt extends Component {
     return (
       <div>
         <Row type='flex' gutter={32} className='receipt-container' >
-          <Col lg={17} className='product-list' >
+          <Col md={17} xl={17} className='product-list' >
             <ProductList data={data.boughtProducts}
               onQuantityChange={onQuantityChange} onRemoveItemFromList={onRemoveItemFromList} />
           </Col>
-          <Col lg={7} className='receipt-form' >
+          <Col md={7} xl={7} className='receipt-form' >
             <ReceiptForm data={data} customers={customers} payment_methods={payment_methods}
               onPaymentTypeChange={onPaymentTypeChange} onReceiptInputChange={onReceiptInputChange}
               onSelectCustomer={onSelectCustomer} createReceipt={createReceipt}
