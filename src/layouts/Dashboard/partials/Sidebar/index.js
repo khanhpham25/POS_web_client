@@ -73,6 +73,18 @@ class Sidebar extends Component {
               <span>Customers</span>
             </NavLink>
           </Menu.Item>
+          <Menu.Item key='/providers'>
+            <NavLink to='/providers' className='nav-text'>
+              <Icon type='user' />&nbsp;&nbsp;&nbsp;
+              <span>Providers</span>
+            </NavLink>
+          </Menu.Item>
+          <Menu.Item key='/users'>
+            <NavLink to='/users' className='nav-text'>
+              <Icon type='user' />&nbsp;&nbsp;&nbsp;
+              <span>Users</span>
+            </NavLink>
+          </Menu.Item>
         </Menu>
       </Sider>
     );

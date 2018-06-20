@@ -4,31 +4,30 @@ import ModalInfoTab from './ModalInfoTab';
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
-import { updateCustomer, createCustomer } from '../../actions';
+import { updateProvider, createProvider } from '../../actions';
 
 const TabPane = Tabs.TabPane;
 
-class CustomerModal extends Component {
+class ProviderModal extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      customer: props.customer
+      provider: props.provider
     };
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    if (nextProps.customer.id !== prevState.customer.id) {
+    if (nextProps.provider.id !== prevState.provider.id) {
       return {
-        customer: nextProps.customer
+        provider: nextProps.provider
       };
     }
-    return prevState;
   }
 
   render() {
-    const { title, visible, customerTypes, action } = this.props;
-    const { customer } = this.state;
+    const { title, visible, action } = this.props;
+    const { provider } = this.state;
 
     return (
       <Modal
@@ -51,9 +50,8 @@ class CustomerModal extends Component {
       >
         <Tabs defaultActiveKey='1' >
           <TabPane tab='Info' key='1'>
-            <ModalInfoTab customer={customer} customerTypes={customerTypes}
-              onCustomerChange={this.onCustomerChange.bind(this)} action={action}
-              onCustomerTypeChange={this.onCustomerTypeChange.bind(this)} />
+            <ModalInfoTab provider={provider}
+              onProviderChange={this.onProviderChange.bind(this)} action={action} />
           </TabPane>
         </Tabs>
       </Modal>
@@ -62,9 +60,9 @@ class CustomerModal extends Component {
 
   handleOk(event) {
     if (this.props.action === 'create') {
-      this.props.createCustomer(this.state.customer);
+      this.props.createProvider(this.state.provider);
     } else {
-      this.props.updateCustomer(this.state.customer);
+      this.props.updateProvider(this.state.provider);
     }
     this.props.onClose();
   }
@@ -73,27 +71,18 @@ class CustomerModal extends Component {
     this.props.onClose();
   }
 
-  onCustomerChange(name, value) {
-    let changedCustomer = Object.assign({}, this.state.customer);
+  onProviderChange(name, value) {
+    let changedProvider = Object.assign({}, this.state.provider);
 
-    Object.assign(changedCustomer, { [name]: value });
+    Object.assign(changedProvider, { [name]: value });
     this.setState({
-      customer: changedCustomer
-    });
-  }
-
-  onCustomerTypeChange(value) {
-    let changedCustomer = Object.assign({}, this.state.customer);
-
-    Object.assign(changedCustomer.customer_type, { id: value });
-    this.setState({
-      customer: changedCustomer
+      provider: changedProvider
     });
   }
 }
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-  updateCustomer, createCustomer
+  updateProvider, createProvider
 }, dispatch);
 
-export default connect(null, mapDispatchToProps)(CustomerModal);
+export default connect(null, mapDispatchToProps)(ProviderModal);
