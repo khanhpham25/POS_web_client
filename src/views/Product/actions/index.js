@@ -264,3 +264,12 @@ export const deleteProducts = (selectedIds) => {
     });
   }
 }
+
+export const onImportOptionChange = (option) => {
+  return dispatch => {
+    dispatch({
+      type: constants.ON_IMPORT_OPTION_CHANGE,
+      option
+    })
+  }
+}

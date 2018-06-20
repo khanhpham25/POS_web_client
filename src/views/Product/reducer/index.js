@@ -8,6 +8,7 @@ const initialState = {
   expandedRowKeys: [],
   dataSource: [],
   selectedRowKeys: [],
+  updateStockCount: 0
 }
 
 const productReducer = (state = initialState, action) => {
@@ -17,14 +18,12 @@ const productReducer = (state = initialState, action) => {
 
   switch (action.type) {
     case constants.LOAD_ALL_PRODUCT_SUCCESS:
-      return {
+      return Object.assign({}, state, {
         errors: null,
         products: action.data.products,
         categories: action.data.categories,
-        expandedRowKeys: state.expandedRowKeys,
-        dataSource: action.data.products,
-        selectedRowKeys: state.selectedRowKeys
-      }
+        dataSource: action.data.products
+      });
 
     case constants.UPDATE_PRODUCT_SUCCESS:
       products = Object.assign([], state.products);
@@ -35,28 +34,20 @@ const productReducer = (state = initialState, action) => {
 
       products[index] = action.data.product;
 
-      return {
+      return Object.assign({}, state, {
         errors: null,
-        products,
-        categories: state.categories,
-        expandedRowKeys: state.expandedRowKeys,
-        dataSource: state.dataSource,
-        selectedRowKeys: state.selectedRowKeys
-      }
+        products
+      });
 
     case constants.UPDATE_CATEGORIES:
       let categories = Object.assign([], state.categories);
 
       categories.push(action.category);
 
-      return {
+      return Object.assign({}, state, {
         errors: null,
-        products: state.products,
-        categories,
-        expandedRowKeys: state.expandedRowKeys,
-        dataSource: state.dataSource,
-        selectedRowKeys: state.selectedRowKeys
-      }
+        categories
+      });
 
     case constants.CREATE_PRODUCT_SUCCESS:
       expandedRowKeys = [];
@@ -64,27 +55,20 @@ const productReducer = (state = initialState, action) => {
 
       products.unshift(action.data.product);
       expandedRowKeys.push(action.data.product.id);
-      products
-      return {
+
+      return Object.assign({}, state, {
         errors: null,
         products,
-        categories: state.categories,
-        expandedRowKeys,
-        dataSource: state.dataSource,
-        selectedRowKeys: state.selectedRowKeys
-      }
+        expandedRowKeys
+      });
 
     case constants.TABLE_ROW_EXPAND:
       expandedRowKeys = action.data;
 
-      return {
+      return Object.assign({}, state, {
         errors: null,
-        products: state.products,
-        categories: state.categories,
-        expandedRowKeys,
-        dataSource: state.dataSource,
-        selectedRowKeys: state.selectedRowKeys
-      }
+        expandedRowKeys
+      });
 
     case constants.HANDLE_PRODUCT_SEARCH:
       let initialSource = [...state.products];
@@ -94,24 +78,16 @@ const productReducer = (state = initialState, action) => {
         return p.name.toLowerCase().includes(searchValue) || isCodeMatch
       })
 
-      return {
+      return Object.assign({}, state, {
         errors: null,
-        products: state.products,
-        categories: state.categories,
-        expandedRowKeys: state.expandedRowKeys,
-        dataSource: filterdSource,
-        selectedRowKeys: state.selectedRowKeys
-      }
+        dataSource: filterdSource
+      })
 
     case constants.HANDLE_ROW_SELECTED:
-      return {
+      return Object.assign({}, state, {
         errors: null,
-        products: state.products,
-        categories: state.categories,
-        expandedRowKeys: state.expandedRowKeys,
-        dataSource: state.dataSource,
         selectedRowKeys: action.selectedRowKeys,
-      }
+      });
 
     case constants.ALLOW_SELLING_PRODUCTS_SUCCESS:
       products = Object.assign([], state.products);
@@ -119,13 +95,13 @@ const productReducer = (state = initialState, action) => {
 
       products.forEach(p => {
         if (action.selectedIds.includes(p.id)) {
-          Object.assign(p, {is_selling: true});
+          Object.assign(p, { is_selling: true });
         }
       });
 
       dataSource.forEach(d => {
         if (action.selectedIds.includes(d.id)) {
-          Object.assign(d, {is_selling: true});
+          Object.assign(d, { is_selling: true });
         }
       });
 
@@ -142,14 +118,13 @@ const productReducer = (state = initialState, action) => {
       };
       notification.open(allowOpt);
 
-      return {
+      return Object.assign({}, state, {
         errors: null,
         products,
-        categories: state.categories,
         expandedRowKeys: [],
         dataSource,
         selectedRowKeys: []
-      }
+      });
 
 
     case constants.STOP_SELLING_PRODUCTS_SUCCESS:
@@ -158,13 +133,13 @@ const productReducer = (state = initialState, action) => {
 
       products.forEach(p => {
         if (action.selectedIds.includes(p.id)) {
-          Object.assign(p, {is_selling: false});
+          Object.assign(p, { is_selling: false });
         }
       });
 
       dataSource.forEach(d => {
         if (action.selectedIds.includes(d.id)) {
-          Object.assign(d, {is_selling: false});
+          Object.assign(d, { is_selling: false });
         }
       });
 
@@ -181,14 +156,13 @@ const productReducer = (state = initialState, action) => {
       };
       notification.open(stopOpt);
 
-      return {
+      return Object.assign({}, state, {
         errors: null,
         products,
-        categories: state.categories,
         expandedRowKeys: [],
         dataSource,
         selectedRowKeys: []
-      }
+      });
 
     case constants.DELETE_MANY_PRODUCTS_SUCCESS:
       products = Object.assign([], state.products);
@@ -210,14 +184,13 @@ const productReducer = (state = initialState, action) => {
       };
       notification.open(args);
 
-      return {
+      return Object.assign({}, state, {
         errors: null,
         products,
-        categories: state.categories,
         expandedRowKeys: [],
         dataSource,
         selectedRowKeys: []
-      }
+      });
 
     case constants.UPDATE_PRODUCT_STATUS_SUCCESS:
       products = Object.assign([], state.products);
@@ -225,13 +198,13 @@ const productReducer = (state = initialState, action) => {
 
       products.forEach(p => {
         if (action.product_id == p.id) {
-          Object.assign(p, {is_selling: action.status == 1 ? true : false});
+          Object.assign(p, { is_selling: action.status == 1 ? true : false });
         }
       });
 
       dataSource.forEach(d => {
         if (action.product_id == d.id) {
-          Object.assign(d, {is_selling: action.status == 1 ? true : false});
+          Object.assign(d, { is_selling: action.status == 1 ? true : false });
         }
       });
 
@@ -248,14 +221,11 @@ const productReducer = (state = initialState, action) => {
       };
       notification.open(updateOpt);
 
-      return {
+      return Object.assign({}, state, {
         errors: null,
         products,
-        categories: state.categories,
-        expandedRowKeys: state.expandedRowKeys,
-        dataSource,
-        selectedRowKeys: state.selectedRowKeys
-      }
+        dataSource
+      });
 
     case constants.DELETE_MANY_PRODUCTS_SUCCESS:
       products = Object.assign([], state.products);
@@ -277,14 +247,16 @@ const productReducer = (state = initialState, action) => {
       };
       notification.open(deleteOpt);
 
-      return {
+      return Object.assign({}, state, {
         errors: null,
         products,
-        categories: state.categories,
         expandedRowKeys: [],
         dataSource,
         selectedRowKeys: []
-      }
+      });
+
+    case constants.ON_IMPORT_OPTION_CHANGE:
+      return Object.assign({}, state, { updateStockCount: action.option });
 
     default:
       return state
