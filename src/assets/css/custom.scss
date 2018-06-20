@@ -31,7 +31,8 @@
 }
 
 .header-menu,
-.receipt-date {
+.receipt-date,
+.inventory-date {
 	float: right;
 }
 
@@ -336,6 +337,65 @@
 // 	}
 // }
 
+.inventory-form {
+	box-shadow: -1px 0px 0px 0px #cfcfcf;
+	height: 100%;
+	overflow: auto;
+	position: relative;
+
+	.inventory-main-content {
+		position: relative;
+		height: 100%;
+
+		.col-right-content1 {
+			min-height: calc(100% - 129px);
+
+			.col-right-inside {
+
+				.note-wrap {
+
+					.receipt-note {
+						@media screen and (min-height: 645px) {
+							position: absolute;
+							left: 0;
+							top: 10px;
+							right: 0;
+							bottom: 5px;
+						}
+					}
+
+					@media screen and (min-height: 645px) {
+						height: 100%;
+						width: 100%;
+						position: relative;
+						display: table-cell;
+					}
+				}
+
+				@media screen and (min-height: 645px) {
+					display: table-row;
+					width: 100%;
+				}
+			}
+
+			@media screen and (min-height: 645px) {
+				display: table;
+				overflow: hidden;
+				width: 100%;
+			}
+		}
+	}
+
+	.inventory-info-row {
+		margin-top: 20px;
+
+		.inventory-info-total-product,
+		.inventory-total {
+			text-align: right;
+		}
+	}
+
+}
 
 .allow-btn {
 	background: #4bac4d !important;
@@ -531,4 +591,60 @@
       -ms-transform: rotate(360deg);
       transform: rotate(360deg);
   }
+}
+
+.inventory-note-list {
+	.ant-form-item {
+		margin-bottom: 5px;
+
+		.ant-form-item-label {
+			font-weight: bold;
+			text-align: left;
+		}
+	}
+}
+
+.inventory-show-row {
+	margin-top: 20px;
+	background: rgb(122, 195, 255);
+	padding: 10px;
+
+	.inventory-show-col {
+		border-right: 1px solid rgb(143, 143, 143);
+		text-align: right;
+	}
+
+	.inventory-show-col:nth-child(3) {
+		text-align: left;
+	}
+
+	.inventory-show-col:last-of-type {
+		border: none;
+	}
+}
+
+.inventory-show-items {
+	background: rgb(248, 248, 248);
+	padding: 10px;
+
+	.inventory-show-item {
+		border-right: 1px solid rgb(201, 201, 201);
+		text-align: right;
+	}
+
+	.inventory-show-item:nth-child(3) {
+		text-align: left;
+	}
+
+	.inventory-show-item:last-of-type {
+		border: none;
+	}
+}
+
+.inventory-show-items:nth-child(2n) {
+	background: rgb(238, 238, 238);
+}
+
+.inventory-show-items:last-of-type {
+	margin-bottom: 15px;
 }

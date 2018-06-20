@@ -3,11 +3,13 @@ import axios from 'axios';
 import { push } from 'react-router-redux';
 
 import { handleErrorsResponse } from 'assets/helper/handleErrorsResponse';
+import { showLoading, hideLoading } from 'layouts/Dashboard/actions';
 
 export const getInventoryNotes = () => {
   let url = process.env.REACT_APP_HOST + 'inventory_notes';
 
   return dispatch => {
+    dispatch(showLoading());
     axios({
       url, method: 'GET',
       headers: {
@@ -18,12 +20,14 @@ export const getInventoryNotes = () => {
         type: constants.LOAD_ALL_INVENT_NOTES_SUCCESS,
         data: response.data.data
       });
+      dispatch(hideLoading());
     }).catch(error => {
       // dispatch({
       //   type: constants.LOGIN_FAIL,
       //   errors: handleErrorsResponse(error.response.data.errors)
       // })
       console.log(error);
+      dispatch(hideLoading());
     });
   }
 }

@@ -62,7 +62,6 @@ class ProviderList extends Component {
       {hasSelected ? `Selected ${selectedRowKeys.length} items` : ''}
     </span>);
     const showHeader = true;
-    const footer = () => 'Here is footer';
     const rowKey = (record) => { return record.id };
     const scroll = { y: 480 };
     const pagination = {
@@ -92,15 +91,17 @@ class ProviderList extends Component {
       expandRowByClick: true,
       title,
       showHeader,
-      footer,
       rowSelection,
       scroll: undefined
     };
 
     const columns = [{
-      title: 'Id',
-      dataIndex: 'id',
-      key: 'id'
+      title: 'Provider Code',
+      dataIndex: 'code',
+      key: 'code',
+      render: (text, record) => (
+        record.code && record.code !== 'null' ? record.code : <span>{`TBDC${10000 + record.id}`}</span>
+      )
     }, {
       title: 'Name',
       dataIndex: 'name',
@@ -111,17 +112,6 @@ class ProviderList extends Component {
         return 0;
       },
       sortOrder: sortedInfo.columnKey === 'name' && sortedInfo.order
-    }, {
-      title: 'Provider Code',
-      dataIndex: 'code',
-      key: 'code',
-      render: (text, record) => (
-        record.code && record.code !== 'null' ? record.code : <span>{`TBDC${10000 + record.id}`}</span>
-      )
-    }, {
-      title: 'Name',
-      dataIndex: 'name',
-      key: 'name'
     }, {
       title: 'Phone',
       dataIndex: 'phone',

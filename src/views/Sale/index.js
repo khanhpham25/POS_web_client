@@ -46,6 +46,7 @@ class SaleIndex extends Component {
           return;
 
         case 120:
+          event.preventDefault();
           $('.checkout-btn:visible')[0].click();
           return;
       }

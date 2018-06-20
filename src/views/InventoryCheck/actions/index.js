@@ -58,29 +58,39 @@ export const saveTemporarily = (data) => {
   formData.append('inventory_note[status]', 0);
 
   data.checkingProducts.forEach((product, index) => {
-    let deviation = product.real_amount - product.stock_count;
-    if (product.quantity < 0 || ((typeof product.quantity === "number") && Math.floor(product.quantity) === product.quantity)) {
-      errors.push("Cant pay");
-      return;
-    }
+    let deviation = parseInt(product.real_amount) - parseInt(product.stock_count);
     formData.append('inventory_note[inventory_note_details_attributes][' + index + '][real_quantity]', product.real_amount);
     formData.append('inventory_note[inventory_note_details_attributes][' + index + '][product_id]', product.id);
     formData.append('inventory_note[inventory_note_details_attributes][' + index + '][in_stock]', product.stock_count);
     formData.append('inventory_note[inventory_note_details_attributes][' + index + '][amount_deviation]', deviation);
     formData.append('inventory_note[inventory_note_details_attributes][' + index + '][price_deviation]', deviation * product.initial_cost);
+
+    if (product.note_id) {
+      formData.append('inventory_note[inventory_note_details_attributes][' + index + '][id]', product.note_id);
+      formData.append('inventory_note[inventory_note_details_attributes][' + index + '][_destroy]', product._destroy);
+    }
   });
+
+  let method = 'POST';
+  let type = constants.ON_CREATE_TEMP_INVENT_CHECK_SUCCESS;
+
+  if (data.inventoryForm.code) {
+    method = 'PUT';
+    type = constants.ON_UPDATE_INVENT_CHECK_SUCCESS;
+    url += `/${data.inventoryForm.id}`;
+  }
 
   if (errors.length == 0) {
     return dispatch => {
       axios({
-        url, method: 'POST',
+        url, method,
         data: formData,
         headers: {
           'AUTH-TOKEN': localStorage.token
         }
       }).then(response => {
         dispatch({
-          type: constants.ON_CREATE_TEMP_INVENT_CHECK_SUCCESS,
+          type,
           response
         });
 
@@ -113,29 +123,39 @@ export const completeInventoryCheck = (data) => {
   formData.append('inventory_note[status]', 1);
 
   data.checkingProducts.forEach((product, index) => {
-    let deviation = product.real_amount - product.stock_count;
-    if (product.quantity < 0 || ((typeof product.quantity === "number") && Math.floor(product.quantity) === product.quantity)) {
-      errors.push("Cant pay");
-      return;
-    }
+    let deviation = parseInt(product.real_amount) - parseInt(product.stock_count);
     formData.append('inventory_note[inventory_note_details_attributes][' + index + '][real_quantity]', product.real_amount);
     formData.append('inventory_note[inventory_note_details_attributes][' + index + '][product_id]', product.id);
     formData.append('inventory_note[inventory_note_details_attributes][' + index + '][in_stock]', product.stock_count);
     formData.append('inventory_note[inventory_note_details_attributes][' + index + '][amount_deviation]', deviation);
     formData.append('inventory_note[inventory_note_details_attributes][' + index + '][price_deviation]', deviation * product.initial_cost);
+
+    if (product.note_id) {
+      formData.append('inventory_note[inventory_note_details_attributes][' + index + '][id]', product.note_id);
+      formData.append('inventory_note[inventory_note_details_attributes][' + index + '][_destroy]', product._destroy);
+    }
   });
+
+  let method = 'POST';
+  let type = constants.ON_CREATE_TEMP_INVENT_CHECK_SUCCESS;
+
+  if (data.inventoryForm.code) {
+    method = 'PUT';
+    type = constants.ON_UPDATE_INVENT_CHECK_SUCCESS;
+    url += `/${data.inventoryForm.id}`;
+  }
 
   if (errors.length == 0) {
     return dispatch => {
       axios({
-        url, method: 'POST',
+        url, method,
         data: formData,
         headers: {
           'AUTH-TOKEN': localStorage.token
         }
       }).then(response => {
         dispatch({
-          type: constants.ON_CREATE_INVENT_CHECK_SUCCESS,
+          type,
           response
         });
 
@@ -149,4 +169,14 @@ export const completeInventoryCheck = (data) => {
       });
     }
   } else return;
+}
+
+export const setSelectedTempInventNote = (data) => {
+  return dispatch => {
+    dispatch({
+      type: constants.ON_SELECT_TEMP_INVENT_NOTE,
+      data
+    })
+    dispatch(push('/inventory-check'))
+  }
 }
