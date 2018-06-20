@@ -21,5 +21,6 @@ export default combineReducers({
   inventoryCheckReducer,
   inventoryNoteReducer,
   providerReducer,
+  userReducer,
   dashboardReducer
 });
