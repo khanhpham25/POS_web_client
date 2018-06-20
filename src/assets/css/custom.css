@@ -238,3 +238,79 @@
 
 .allow-btn:hover {
   background: #61c963 !important; }
+
+.inventory-check-container .inventory-list-header {
+  margin-top: 15px; }
+  .inventory-check-container .inventory-list-header .inventory-row .inventory-col {
+    border-right: 1px solid rgba(218, 218, 218, 0.479);
+    text-align: center; }
+  .inventory-check-container .inventory-list-header .inventory-row .inventory-col:nth-child(1),
+  .inventory-check-container .inventory-list-header .inventory-row .inventory-col:last-of-type {
+    border: none; }
+
+.inventory-check-container .check-item {
+  font-size: 12pt; }
+
+.inventory-check-container .check-item-unit-price,
+.inventory-check-container .check-item-total {
+  text-align: center; }
+
+.inventory-check-container .check-item-total {
+  font-weight: bold; }
+
+.inventory-check-container .delete-check-item {
+  color: #e47885;
+  cursor: pointer; }
+
+.inventory-check-container .delete-check-item:hover {
+  background: #e47885;
+  border-radius: 20%;
+  color: #fff; }
+
+.inventory-check-container .check-quantity-input {
+  border: 0;
+  border-bottom: 1px solid #929292;
+  border-radius: 0;
+  margin-left: 10px; }
+
+.inventory-check-container .check-quantity-input:focus {
+  border: 0;
+  border-bottom: 1px solid #0081fa;
+  box-shadow: none; }
+
+.inventory-check-container .complete-btn-container {
+  margin: 0 12px;
+  padding-top: 5px;
+  height: 129px; }
+  .inventory-check-container .complete-btn-container .complete-btn {
+    background: #4bac4d;
+    border-radius: 2px;
+    color: #fff;
+    cursor: pointer;
+    float: left;
+    font-size: 16px;
+    font-weight: bold;
+    text-decoration: none;
+    text-align: center;
+    padding: 20px;
+    line-height: 1.5;
+    height: 67px;
+    width: 100%; }
+  .inventory-check-container .complete-btn-container .complete-btn:hover {
+    background: #419543; }
+  .inventory-check-container .complete-btn-container .save-btn {
+    background: #0081fa;
+    border-radius: 2px;
+    color: #fff;
+    cursor: pointer;
+    float: left;
+    font-size: 16px;
+    font-weight: bold;
+    text-decoration: none;
+    text-align: center;
+    padding: 20px;
+    line-height: 1.5;
+    height: 67px;
+    width: 100%; }
+  .inventory-check-container .complete-btn-container .save-btn:hover {
+    background: #1d92ff; }

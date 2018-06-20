@@ -52,20 +52,27 @@ class Sidebar extends Component {
               <span>Products</span>
             </NavLink>
           </Menu.Item>
+          <SubMenu
+            key='inventory'
+            title={<span><Icon type='calculator' />&nbsp;&nbsp;&nbsp;<span>Inventory</span></span>}
+          >
+            <Menu.Item key='/inventory-notes'>
+              <NavLink to='/inventory-notes' className='nav-text'>
+                Check Notes
+              </NavLink>
+            </Menu.Item>
+            <Menu.Item key='/inventory-check'>
+              <NavLink to='/inventory-check' className='nav-text'>
+                Inventory Checking
+              </NavLink>
+            </Menu.Item>
+          </SubMenu>
           <Menu.Item key='/customers'>
             <NavLink to='/customers' className='nav-text'>
               <Icon type='user' />&nbsp;&nbsp;&nbsp;
               <span>Customers</span>
             </NavLink>
           </Menu.Item>
-          <SubMenu
-            key='sub1'
-            title={<span><Icon type='user' /><span>User</span></span>}
-          >
-            <Menu.Item key='3'>Tom</Menu.Item>
-            <Menu.Item key='4'>Bill</Menu.Item>
-            <Menu.Item key='5'>Alex</Menu.Item>
-          </SubMenu>
         </Menu>
       </Sider>
     );

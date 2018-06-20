@@ -24,7 +24,7 @@ class TodaySale extends Component {
     return (
       <ResponsiveContainer width='100%' height={420}>
         <BarChart data={graphData} >
-          <XAxis type={xType} dataKey='time' unit=':00' padding={{ left: 100, right: 100 }} allowDecimals={false} />
+          <XAxis type={xType} dataKey='time' unit={unit} padding={{ left: 100, right: 100 }} allowDecimals={false} />
           <YAxis type='number' unit='$' domain={[0, 'dataMax + 500']} />
           <CartesianGrid strokeDasharray='3 3' />
           <Tooltip />

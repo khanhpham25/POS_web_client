@@ -39,18 +39,20 @@ class Hello extends Component {
 
     let currentSaleGraph;
     let currentProductGraph;
+    let firstTitle;
+    let secondTitle;
 
-    if (currentSaleSelect == 'today') { currentSaleGraph = data.today_sale_by_hour_graph }
-    else if (currentSaleSelect == 'yesterday') { currentSaleGraph = data.yesterday_sale_by_hour_graph }
-    else if (currentSaleSelect == 'seven_day') { currentSaleGraph = data.sale_by_seven_day_graph }
-    else if (currentSaleSelect == 'this_month') { currentSaleGraph = data.sale_by_month_graph }
-    else { currentSaleGraph = data.sale_by_last_month_graph }
+    if (currentSaleSelect == 'today') { firstTitle = 'Today'; currentSaleGraph = data.today_sale_by_hour_graph; }
+    else if (currentSaleSelect == 'yesterday') { firstTitle = 'Yesterday'; currentSaleGraph = data.yesterday_sale_by_hour_graph }
+    else if (currentSaleSelect == 'seven_day') { firstTitle = 'Last 7 day'; currentSaleGraph = data.sale_by_seven_day_graph }
+    else if (currentSaleSelect == 'this_month') { firstTitle = 'This Month'; currentSaleGraph = data.sale_by_month_graph }
+    else { firstTitle = 'Last Month'; currentSaleGraph = data.sale_by_last_month_graph }
 
-    if (currentProductSelect == 'today') { currentProductGraph = data.today_ten_product_sale_graph }
-    else if (currentProductSelect == 'yesterday') { currentProductGraph = data.yesterday_ten_product_sale_graph }
-    else if (currentProductSelect == 'seven_day') { currentProductGraph = data.seven_day_ten_product_sale_graph }
-    else if (currentProductSelect == 'this_month') { currentProductGraph = data.this_month_ten_product_sale_graph }
-    else { currentProductGraph = data.last_month_ten_product_sale_graph }
+    if (currentProductSelect == 'today') { secondTitle = 'Today'; currentProductGraph = data.today_ten_product_sale_graph }
+    else if (currentProductSelect == 'yesterday') { secondTitle = 'Yesterday'; currentProductGraph = data.yesterday_ten_product_sale_graph }
+    else if (currentProductSelect == 'seven_day') { secondTitle = 'Last 7 day'; currentProductGraph = data.seven_day_ten_product_sale_graph }
+    else if (currentProductSelect == 'this_month') { secondTitle = 'This Month'; currentProductGraph = data.this_month_ten_product_sale_graph }
+    else { secondTitle = 'Last Month'; currentProductGraph = data.last_month_ten_product_sale_graph }
 
     return (
       <Content style={{ margin: '0 16px' }}>
@@ -59,7 +61,7 @@ class Hello extends Component {
           <TodaySaleResult data={data.todaySaleResult} />
         </Card>
 
-        <Card title="Today's Sales" style={{ width: '100%', minHeight: 470 }}
+        <Card title={`${firstTitle}'s Sales`} style={{ width: '100%', minHeight: 470 }}
           className='today-sale-result' extra={<Select
             style={{ width: 230 }}
             value={currentSaleSelect}
@@ -70,7 +72,7 @@ class Hello extends Component {
           <TodaySale data={currentSaleGraph} type={currentSaleSelect} />
         </Card>
 
-        <Card title="Top 10 Most Selling Product By Quantity" style={{ width: '100%', minHeight: 470 }}
+        <Card title={`Top 10 Most Selling Product By Quantity ${secondTitle}`} style={{ width: '100%', minHeight: 470 }}
           className='today-sale-result' extra={<Select
             style={{ width: 230 }}
             value={currentProductSelect}

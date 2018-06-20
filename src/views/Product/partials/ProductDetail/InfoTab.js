@@ -39,8 +39,8 @@ class InfoTab extends Component {
     };
 
     let updateStatusBtn = (<Button className='allow-btn' onClick={this.updatetStatus.bind(this, true)} >
-        <Icon type='play-circle-o' />
-        Allow Selling
+      <Icon type='play-circle-o' />
+      Allow Selling
       </Button>);
 
     if (product.is_selling == 1) {
@@ -60,7 +60,7 @@ class InfoTab extends Component {
           <Col lg={8}>
             <Form layout='vertical'>
               <FormItem label='Code:' {...formItemLayout} >
-                <strong>{`TBDC${10000 + product.id}`}</strong>
+                <strong>{product.code}</strong>
               </FormItem>
               <FormItem label='Category:' {...formItemLayout}>
                 {product.category.name}
@@ -82,7 +82,7 @@ class InfoTab extends Component {
               </FormItem>
 
               <FormItem label='Description:' {...formItemLayout} >
-                <div dangerouslySetInnerHTML={{__html: content}} />
+                <div dangerouslySetInnerHTML={{ __html: content }} />
               </FormItem>
             </Form>
           </Col>
@@ -126,11 +126,11 @@ class InfoTab extends Component {
   }
 
   updatetStatus(status, event) {
-    const {updateProductStatus, product} = this.props;
+    const { updateProductStatus, product } = this.props;
 
     swal({
       title: `Confirmation`,
-      text: `You want to ${status ? 'continue' : 'stop' }  selling this product?`,
+      text: `You want to ${status ? 'continue' : 'stop'}  selling this product?`,
       icon: 'warning',
       buttons: true,
       dangerMode: true,

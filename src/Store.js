@@ -15,7 +15,7 @@ const middleware = [
   routerMiddleware(history)
 ];
 
-offlineConfig.persistOptions = { blacklist: ['saleReducer'] };
+offlineConfig.persistOptions = { blacklist: ['saleReducer', 'inventoryNoteReducer'] };
 
 // const composedEnhancers = compose(
 //   applyMiddleware(...middleware),

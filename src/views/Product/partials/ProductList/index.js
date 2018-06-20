@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-   Table, Icon, Button, Row, Col, Layout, Breadcrumb, Input, Menu, Dropdown,
+  Table, Icon, Button, Row, Col, Layout, Breadcrumb, Input, Menu, Dropdown,
 } from 'antd';
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
@@ -12,6 +12,7 @@ import {
 } from '../../actions';
 import ProductDetail from '../ProductDetail';
 import ProductModal from '../ProductModal';
+import ProductImportModal from '../ImportModal';
 import swal from 'sweetalert';
 
 const { Content } = Layout;
@@ -23,7 +24,8 @@ class ProductList extends Component {
     this.state = {
       filteredInfo: null,
       sortedInfo: null,
-      isProductModalVisible: false
+      isProductModalVisible: false,
+      isImportModalVisible: false
     }
   }
 
@@ -61,7 +63,7 @@ class ProductList extends Component {
       });
     }
     else {
-       swal({
+      swal({
         title: `Delete Products`,
         text: `Do you want to delete these products?`,
         icon: 'warning',
@@ -76,9 +78,9 @@ class ProductList extends Component {
   render() {
     const {
       products, categories, expandedRowKeys, dataSource, selectedRowKeys,
-      deleteProduct, updateProductStatus
+      deleteProduct, updateProductStatus, getProducts
     } = this.props;
-    const { isProductModalVisible } = this.state;
+    const { isProductModalVisible, isImportModalVisible } = this.state;
     let { sortedInfo, filteredInfo } = this.state;
     let categoryFilters = [];
     let totalInStock = 0;
@@ -141,7 +143,7 @@ class ProductList extends Component {
       width: 200,
       sorter: true,
       render: (text, record) => (
-        <span>{`TBDC${10000 + record.id}`}</span>
+        <span>{record.code}</span>
       ),
     }, {
       title: 'Name',
@@ -215,7 +217,7 @@ class ProductList extends Component {
                 </Button>
               </Col>
               <Col>
-                <Button type='default' ><Icon type='login' /> Import</Button>
+                <Button type='default' onClick={this.showImportModal.bind(this)} ><Icon type='login' /> Import</Button>
               </Col>
               <Col>
                 <Button type='default' ><Icon type='logout' /> Export</Button>
@@ -232,6 +234,10 @@ class ProductList extends Component {
           categories={categories}
           visible={isProductModalVisible}
           onClose={this.hideProductModal.bind(this)} />
+
+        <ProductImportModal visible={isImportModalVisible}
+          getProducts={getProducts}
+          onClose={this.hideImportModal.bind(this)} />
       </div>
     );
   }
@@ -259,9 +265,21 @@ class ProductList extends Component {
     });
   }
 
+  showImportModal(event) {
+    this.setState({
+      isImportModalVisible: true,
+    });
+  }
+
   hideProductModal(event) {
     this.setState({
       isProductModalVisible: false,
+    });
+  }
+
+  hideImportModal(event) {
+    this.setState({
+      isImportModalVisible: false,
     });
   }
 
