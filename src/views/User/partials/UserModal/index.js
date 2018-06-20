@@ -23,6 +23,8 @@ class UserModal extends Component {
         user: nextProps.user
       };
     }
+
+    return prevState;
   }
 
   render() {

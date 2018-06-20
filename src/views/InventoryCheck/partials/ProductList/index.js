@@ -8,6 +8,8 @@ class ProductList extends Component {
     const { data, onQuantityChange, onRemoveItemFromList } = this.props;
     let source = [...data];
 
+    source = source.filter(s => !s._destroy);
+
     return (
       <div>
         <div className='inventory-list-header' >

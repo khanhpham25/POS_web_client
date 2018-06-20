@@ -23,6 +23,8 @@ class ProviderModal extends Component {
         provider: nextProps.provider
       };
     }
+
+    return prevState;
   }
 
   render() {

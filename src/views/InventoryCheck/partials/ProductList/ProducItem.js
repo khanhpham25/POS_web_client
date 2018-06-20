@@ -21,7 +21,7 @@ class ProductItem extends Component {
 
   render() {
     const { data } = this.props;
-    const deviation = data.real_amount - data.stock_count;
+    const deviation = parseInt(data.real_amount) - parseInt(data.stock_count);
 
     return (
       <Row type='flex' gutter={8} className='check-item'
@@ -44,7 +44,7 @@ class ProductItem extends Component {
           </div>
         </Col>
         <Col lg={3} >
-          <InputNumber className='check-quantity-input' value={data.real_amount}
+          <InputNumber className='check-quantity-input' value={parseInt(data.real_amount)}
             onChange={this.onNumberInputChange} min={1} />
         </Col>
         <Col lg={2} >

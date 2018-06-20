@@ -65,7 +65,6 @@ class CustomerList extends Component {
       {hasSelected ? `Selected ${selectedRowKeys.length} items` : ''}
     </span>);
     const showHeader = true;
-    const footer = () => 'Here is footer';
     const rowKey = (record) => { return record.id };
     const scroll = { y: 480 };
     const pagination = {
@@ -95,15 +94,17 @@ class CustomerList extends Component {
       expandRowByClick: true,
       title,
       showHeader,
-      footer,
       rowSelection,
       scroll: undefined
     };
 
     const columns = [{
-      title: 'Id',
-      dataIndex: 'id',
-      key: 'id'
+      title: 'Customer Code',
+      dataIndex: 'code',
+      key: 'code',
+      render: (text, record) => (
+        record.code && record.code !== 'null' ? record.code : <span>{`TBDC${10000 + record.id}`}</span>
+      )
     }, {
       title: 'Name',
       dataIndex: 'name',
@@ -115,12 +116,13 @@ class CustomerList extends Component {
       },
       sortOrder: sortedInfo.columnKey === 'name' && sortedInfo.order
     }, {
-      title: 'Customer Code',
-      dataIndex: 'code',
-      key: 'code',
-      render: (text, record) => (
-        record.code && record.code !== 'null' ? record.code : <span>{`TBDC${10000 + record.id}`}</span>
-      )
+      title: 'Phone',
+      dataIndex: 'phone',
+      key: 'phone'
+    }, {
+      title: 'Address',
+      dataIndex: 'address',
+      key: 'address'
     }, {
       title: 'Customer Type',
       dataIndex: 'customer_type.name',
@@ -161,12 +163,6 @@ class CustomerList extends Component {
                 <Button type='primary' onClick={this.showCustomerModal.bind(this)} >
                   <Icon type='plus' /> New customer
                 </Button>
-              </Col>
-              <Col>
-                <Button type='default' ><Icon type='login' /> Import</Button>
-              </Col>
-              <Col>
-                <Button type='default' ><Icon type='logout' /> Export</Button>
               </Col>
             </Row>
           </Col>

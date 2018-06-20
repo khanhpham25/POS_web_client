@@ -77,10 +77,11 @@ class InventoryCheckContainer extends Component {
 
     return (
       <Content style={{ margin: '0 16px' }}>
-        <div style={{ padding: 24, background: '#fff', minHeight: 360 }}
+        <div style={{ padding: 24, background: '#f0f2f5', minHeight: 360 }}
           className='inventory-check-container' >
           <Row type='flex' gutter={32} className='receipt-container' >
-            <Col md={17} xl={17} className='product-list' >
+            <Col md={17} xl={17} className='product-list'
+              style={{ padding: 24, background: '#fff' }} >
               <Row type='flex' >
                 <Col lg={24} >
                   <AutoComplete
@@ -111,7 +112,7 @@ class InventoryCheckContainer extends Component {
                 </Col>
               </Row>
             </Col>
-            <Col md={7} xl={7} className='receipt-form' >
+            <Col md={7} xl={7} className='inventory-form' style={{ padding: 24, background: '#fff' }} >
               <InventoryForm data={data} onNoteInputChange={onNoteInputChange}
                 saveTemporarily={saveTemporarily} completeInventoryCheck={completeInventoryCheck} />
             </Col>

@@ -14,12 +14,6 @@ class CustomerDetail extends Component {
           <TabPane tab='Info' key='1'>
             <InfoTab {...this.props} />
           </TabPane>
-          {/* <TabPane tab='Inventory Cards' key='2'>
-            <InventoryCardTab />
-          </TabPane>
-          <TabPane tab='In Stock' key='3'>
-            <InStockTab />
-          </TabPane> */}
         </Tabs>
       </div>
     );

@@ -6,7 +6,7 @@ import { Form, Divider, Button, Icon } from 'antd';
 import { deleteProvider } from '../../actions';
 import ProviderModal from '../ProviderModal';
 
-import providerImg from 'assets/img/24.png';
+import providerImg from 'assets/img/avatars/avatardefault.png';
 
 const FormItem = Form.Item;
 
@@ -33,12 +33,12 @@ class InfoTab extends Component {
         <h2>{provider.name}</h2>
         <Row type='flex' gutter={16}>
           <Col lg={8} md={8}>
-            <img src={providerImg} />
+            <img src={providerImg} width={140} height={140} />
           </Col>
           <Col lg={8} md={8}>
             <Form layout='vertical'>
               <FormItem label='Code:' {...formItemLayout}>
-                <strong>{`TBDC${10000 + provider.id}`}</strong>
+                <strong>{provider.code && provider.code !== 'null' ? provider.code : `TBDC${10000 + provider.id}`}</strong>
               </FormItem>
 
               <FormItem label='Phone:' {...formItemLayout}>

@@ -26,7 +26,7 @@ class InventoryForm extends Component {
       },
     };
 
-    const receiptInfoLayout = {
+    const inventoryInfoLayout = {
       labelCol: {
         sm: 12
       },
@@ -42,20 +42,20 @@ class InventoryForm extends Component {
 
     if (data.checkingProducts.length > 0) {
       data.checkingProducts.map(product => {
-        totalProduct += product.real_amount;
-        totalInStock += product.stock_count;
+        totalProduct += parseInt(product.real_amount);
+        totalInStock += parseInt(product.stock_count);
       });
     }
 
     return (
-      <div className='receipt-main-content' >
+      <div className='inventory-main-content' >
         <div className='col-right-content1' >
           <div className='col-right-inside' >
             <Form layout='inline' >
               <FormItem label='Seller' >
                 <span>{currentUser.name.charAt(0).toUpperCase() + currentUser.name.slice(1)}</span>
               </FormItem>
-              <div className='receipt-date' >
+              <div className='inventory-date' >
                 <FormItem label='DatePicker' >
                   <DatePicker showTime format='YYYY-MM-DD HH:mm:ss'
                     value={moment(data.inventoryForm.date_time)} disabled={true}
@@ -64,29 +64,37 @@ class InventoryForm extends Component {
               </div>
             </Form >
 
+            <Row type='flex' className='inventory-info-row' >
+              <Col lg={12} >
+                <span>Code:</span>
+              </Col>
+              <Col lg={7} >
+                {data.inventoryForm.code ? data.inventoryForm.code : 'Auto generated'}
+              </Col>
+            </Row>
 
-            <Row type='flex' className='receipt-info-row' >
+            <Row type='flex' className='inventory-info-row' >
               <Col lg={12} >
                 <span>Total Real Amount</span>
               </Col>
               <Col lg={7} >
-                <div className='receipt-info-total-product' >{totalProduct}</div>
+                <div className='inventory-info-total-product' >{totalProduct}</div>
               </Col>
             </Row>
 
-            <Row type='flex' className='receipt-info-row' >
+            <Row type='flex' className='inventory-info-row' >
               <Col lg={12} >
                 <span>Total In Stock</span>
               </Col>
               <Col lg={7} >
-                <div className='receipt-info-total-product' >{totalInStock}</div>
+                <div className='inventory-info-total-product' >{totalInStock}</div>
               </Col>
             </Row>
 
           </div>
           <div className='col-right-inside' >
             <div className='note-wrap'>
-              <Form className='receipt-note' >
+              <Form className='inventory-note' style={{ marginTop: '10px' }} >
                 <FormItem label='Note' >
                   <TextArea name='note' placeholder='Note' autosize={{ minRows: 2, maxRows: 6 }}
                     onChange={this.onInputChange.bind(this)} value={data.inventoryForm.note} />

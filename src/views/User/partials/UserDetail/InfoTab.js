@@ -6,7 +6,7 @@ import { Form, Divider, Button, Icon } from 'antd';
 import { deleteUser } from '../../actions';
 import UserModal from '../UserModal';
 
-import userImg from 'assets/img/24.png';
+import userImg from 'assets/img/avatars/avatardefault.png';
 
 const FormItem = Form.Item;
 
@@ -33,9 +33,9 @@ class InfoTab extends Component {
         <h2>{user.name}</h2>
         <Row type='flex' gutter={16}>
           <Col lg={8} md={8}>
-            <img src={userImg} />
+            <img src={userImg} width={140} height={140} />
           </Col>
-          <Col lg={8} md={8}>
+          <Col lg={16} md={16}>
             <Form layout='vertical'>
               <FormItem label='Name:' {...formItemLayout}>
                 <strong>{`${user.name}`}</strong>

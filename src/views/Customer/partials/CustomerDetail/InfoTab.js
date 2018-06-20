@@ -6,7 +6,7 @@ import { Form, Divider, Button, Icon } from 'antd';
 import { deleteCustomer } from '../../actions';
 import CustomerModal from '../CustomerModal';
 
-import customerImg from 'assets/img/24.png';
+import customerImg from 'assets/img/avatars/avatardefault.png';
 
 const FormItem = Form.Item;
 
@@ -33,15 +33,20 @@ class InfoTab extends Component {
         <h2>{customer.name}</h2>
         <Row type='flex' gutter={16}>
           <Col lg={8} md={8}>
-            <img src={customerImg} />
+            <img src={customerImg} width={140} height={140} />
           </Col>
-          <Col lg={8} md={8}>
+          <Col lg={16} md={16}>
             <Form layout='vertical'>
-              <FormItem label='Code:' {...formItemLayout}>
-                <strong>{`TBDC${10000 + customer.id}`}</strong>
+              <FormItem label='Code' {...formItemLayout}>
+                <strong>{customer.code && customer.code !== 'null' ? customer.code : `TBDC${10000 + customer.id}`}</strong>
               </FormItem>
-
-              <FormItem label='Customer type:' {...formItemLayout}>
+              <FormItem label='Phone' {...formItemLayout}>
+                {customer.phone}
+              </FormItem>
+              <FormItem label='Address' {...formItemLayout}>
+                {customer.address}
+              </FormItem>
+              <FormItem label='Customer type' {...formItemLayout}>
                 {customer.customer_type.name}
               </FormItem>
             </Form>

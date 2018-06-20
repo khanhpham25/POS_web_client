@@ -8,8 +8,11 @@ import { connect } from 'react-redux'
 import {
   getInventoryNotes, onInventTableRowChange, handleSearchInventNote
 } from '../../actions';
+import { setSelectedTempInventNote } from 'views/InventoryCheck/actions';
+
 import NoteDetail from '../NoteDetail';
 import swal from 'sweetalert';
+import moment from 'moment';
 
 const { Content } = Layout;
 
@@ -35,12 +38,12 @@ class InventoryNoteList extends Component {
 
   render() {
     const {
-      inventoryNotes, expandedRowKeys, dataSource
+      inventoryNotes, expandedRowKeys, dataSource, setSelectedTempInventNote
     } = this.props;
     const { isProductModalVisible, isImportModalVisible } = this.state;
     let { sortedInfo, filteredInfo } = this.state;
 
-    const expandedRowRender = record => <NoteDetail key={record.id}
+    const expandedRowRender = record => <NoteDetail key={record.id} setSelectedTempInventNote={setSelectedTempInventNote}
       note={record} />;
     const showHeader = true;
     const rowKey = (record) => { return record.id };
@@ -78,12 +81,18 @@ class InventoryNoteList extends Component {
       key: 'inventory_date',
       sorter: (a, b) => a.inventory_date - b.inventory_date,
       sortOrder: sortedInfo.columnKey === 'inventory_date' && sortedInfo.order,
+      render: (text, record) => (
+        <span>{record.inventory_date ? moment(record.inventory_date).format('MM-DD-YYYY HH:mm') : ''}</span>
+      )
     }, {
       title: 'Balance Date',
       dataIndex: 'balance_date',
       key: 'balance_date',
       sorter: (a, b) => a.balance_date - b.balance_date,
       sortOrder: sortedInfo.columnKey === 'balance_date' && sortedInfo.order,
+      render: (text, record) => (
+        <span>{record.balance_date ? moment(record.balance_date).format('MM-DD-YYYY HH:mm') : ''}</span>
+      )
     }, {
       title: 'Note',
       dataIndex: 'note',
@@ -99,7 +108,7 @@ class InventoryNoteList extends Component {
     }];
 
     return (
-      <div>
+      <div className='inventory-note-list' >
         <Row type='flex' justify='end'>
           <Col lg={12} >
             <Row type='flex' justify='start' gutter={16} >
@@ -178,6 +187,7 @@ const mapDispatchToProps = dispatch => bindActionCreators({
   getInventoryNotes,
   onInventTableRowChange,
   handleSearchInventNote,
+  setSelectedTempInventNote
 }, dispatch);
 
 export default connect(

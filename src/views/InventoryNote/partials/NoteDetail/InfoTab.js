@@ -4,8 +4,7 @@ import { Form, Divider, Button, Icon } from 'antd';
 import { convertToHTML, convertFromRaw, EditorState, convertToRaw } from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
 import swal from 'sweetalert';
-
-import productImg from 'assets/img/24.png';
+import moment from 'moment';
 
 const FormItem = Form.Item;
 
@@ -22,48 +21,123 @@ class InfoTab extends Component {
     const { note } = this.props;
     const { isProductModalVisible } = this.state;
 
+    // const formItemLayout = {
+    //   labelCol: { span: 4 },
+    //   wrapperCol: { span: 8 },
+    // };
+
     const formItemLayout = {
-      labelCol: { span: 4 },
-      wrapperCol: { span: 8 },
+      labelCol: {
+        sm: { span: 24 },
+        xxl: { span: 5 }
+      },
+      wrapperCol: {
+        sm: { span: 24 },
+        xxl: { span: 19 }
+      },
     };
+
+    let inventoryNoteDetailsItem = null;
+    let noteUpdateBtn = null;
+
+    inventoryNoteDetailsItem = note.inventory_note_details.map((note_d, index) => {
+      return (
+        <Row type='flex' gutter={8} className='inventory-show-items' key={index}
+          style={{ width: '100%' }}>
+          <Col lg={1} className='inventory-show-item' >
+            <span>{index + 1}</span>
+          </Col>
+          <Col lg={3} className='inventory-show-item' >
+            <span>{note_d.product.code}</span>
+          </Col>
+          <Col lg={9} className='inventory-show-item' >
+            <span>{note_d.product.name}</span>
+          </Col>
+          <Col lg={2} className='inventory-show-item' >
+            <span>{note_d.in_stock}</span>
+          </Col>
+          <Col lg={2} className='inventory-show-item' >
+            <span>{note_d.real_quantity}</span>
+          </Col>
+          <Col lg={3} className='inventory-show-item' >
+            <span>{note_d.in_stock}</span>
+          </Col>
+          <Col lg={4} className='inventory-show-item' >
+            <span>{note_d.price_deviation}</span>
+          </Col>
+        </Row>
+      )
+    });
+
+    if (note.status == "0") {
+      noteUpdateBtn = (<Row type='flex' justify='end' gutter={16}>
+        <Col lg={2} md={2} pull={2} >
+          <Button type='primary' onClick={this.updateInventNoteInfo.bind(this)}>
+            <Icon type='edit' />
+            Update Note
+            </Button>
+        </Col>
+      </Row>);
+    }
 
     return (
       <div>
-        <Row type='flex' gutter={24}>
+        <Row type='flex' gutter={8}>
           <Col lg={8}>
             <Form layout='vertical'>
-              <FormItem label='Code:'  >
+              <FormItem {...formItemLayout} label='Code:'  >
                 <strong>{note.code}</strong>
               </FormItem>
-              <FormItem label='Creator:' >
+              <FormItem {...formItemLayout} label='Creator:' >
                 {note.creator.name}
               </FormItem>
-
-
             </Form>
           </Col>
           <Col lg={8}>
             <Form layout='vertical'>
-              <FormItem label='Inventory Date:' >
-                {note.inventory_date}
+              <FormItem {...formItemLayout} label='Inventory Date:' >
+                {note.inventory_date ? moment(note.inventory_date).format('MM-DD-YYYY HH:mm') : ''}
               </FormItem>
-              <FormItem label='Balance Date:' >
-                {note.balance_date}
+              <FormItem {...formItemLayout} label='Balance Date:' >
+                {note.balance_date ? moment(note.balance_date).format('MM-DD-YYYY HH:mm') : ''}
               </FormItem>
             </Form>
           </Col>
           <Col lg={8} >
-            <FormItem label='Status:'  >
+            <FormItem {...formItemLayout} label='Status:'  >
               {note.status == 1 ? 'Inventory Balanced' : 'Temporary Note'}
             </FormItem>
-            <FormItem label='Description:'  >
+            <FormItem {...formItemLayout} label='Description:'  >
               {note.description}
             </FormItem>
           </Col>
         </Row>
-        <Row type='flex' justify='end' gutter={16}>
-
+        <Row type='flex' gutter={8} className='inventory-show-row'
+          style={{ width: '100%' }}>
+          <Col lg={1} className='inventory-show-col' >
+            <strong>STT</strong>
+          </Col>
+          <Col lg={3} className='inventory-show-col' >
+            <strong>Code</strong>
+          </Col>
+          <Col lg={9} className='inventory-show-col' >
+            <strong>Product Name</strong>
+          </Col>
+          <Col lg={2} className='inventory-show-col' >
+            <strong>In Stock</strong>
+          </Col>
+          <Col lg={2} className='inventory-show-col' >
+            <strong>Real Quantity</strong>
+          </Col>
+          <Col lg={3} className='inventory-show-col' >
+            <strong>Amount Deviation</strong>
+          </Col>
+          <Col lg={4} className='inventory-show-col' >
+            <strong>Price Deviation</strong>
+          </Col>
         </Row>
+        {inventoryNoteDetailsItem}
+        {noteUpdateBtn}
       </div>
     );
   }
@@ -81,30 +155,10 @@ class InfoTab extends Component {
     });
   }
 
-  updatetStatus(status, event) {
-    const { updateProductStatus, product } = this.props;
+  updateInventNoteInfo() {
+    const { setSelectedTempInventNote, note } = this.props;
 
-    swal({
-      title: `Confirmation`,
-      text: `You want to ${status ? 'continue' : 'stop'}  selling this product?`,
-      icon: 'warning',
-      buttons: true,
-      dangerMode: true,
-    }).then(willConfirm => {
-      if (willConfirm) updateProductStatus(product.id, status);
-    });
-  }
-
-  removeProduct() {
-    swal({
-      title: `Delete Product`,
-      text: `Do you want to delete this product?`,
-      icon: 'warning',
-      buttons: true,
-      dangerMode: true,
-    }).then(willConfirm => {
-      if (willConfirm) this.props.deleteProduct(this.props.product.id);
-    });
+    setSelectedTempInventNote(note);
   }
 }
 
