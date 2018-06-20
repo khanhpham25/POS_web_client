@@ -5,6 +5,7 @@ import { Layout, Menu, Tabs, Button, AutoComplete, Input, Icon } from 'antd';
 import Receipt from './partials/Receipt';
 import ProductOption from './partials/ProductOption';
 import swal from 'sweetalert';
+import $ from 'jquery';
 
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
@@ -38,6 +39,14 @@ class SaleIndex extends Component {
 
         case 113:
           document.getElementById('new-transaction').click();
+          return;
+
+        case 115:
+          document.getElementById('auto-complete-customer').focus();
+          return;
+
+        case 120:
+          $('.checkout-btn:visible')[0].click();
           return;
       }
     });

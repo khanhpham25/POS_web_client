@@ -8,7 +8,7 @@ import { connect } from 'react-redux'
 import {
   getProducts, onTableRowChange, handleSearchProduct, handleRowSelected,
   allowSellingProducts, stopSellingProducts, deleteProducts, updateProductStatus,
-  deleteProduct
+  deleteProduct, onImportOptionChange
 } from '../../actions';
 import ProductDetail from '../ProductDetail';
 import ProductModal from '../ProductModal';
@@ -78,7 +78,8 @@ class ProductList extends Component {
   render() {
     const {
       products, categories, expandedRowKeys, dataSource, selectedRowKeys,
-      deleteProduct, updateProductStatus, getProducts
+      deleteProduct, updateProductStatus, getProducts, onImportOptionChange,
+      updateStockCount
     } = this.props;
     const { isProductModalVisible, isImportModalVisible } = this.state;
     let { sortedInfo, filteredInfo } = this.state;
@@ -236,7 +237,8 @@ class ProductList extends Component {
           onClose={this.hideProductModal.bind(this)} />
 
         <ProductImportModal visible={isImportModalVisible}
-          getProducts={getProducts}
+          updateStockCount={updateStockCount}
+          getProducts={getProducts} onImportOptionChange={onImportOptionChange}
           onClose={this.hideImportModal.bind(this)} />
       </div>
     );
@@ -295,6 +297,7 @@ const mapStateToProps = (state) => ({
   expandedRowKeys: state.productReducer.expandedRowKeys,
   dataSource: state.productReducer.dataSource,
   selectedRowKeys: state.productReducer.selectedRowKeys,
+  updateStockCount: state.productReducer.updateStockCount
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
@@ -306,7 +309,8 @@ const mapDispatchToProps = dispatch => bindActionCreators({
   stopSellingProducts,
   allowSellingProducts,
   updateProductStatus,
-  deleteProduct
+  deleteProduct,
+  onImportOptionChange
 }, dispatch);
 
 export default connect(

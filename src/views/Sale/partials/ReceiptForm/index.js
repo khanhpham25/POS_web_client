@@ -24,22 +24,6 @@ class ReceiptForm extends Component {
     }
   }
 
-  componentDidMount() {
-    document.addEventListener('keydown', function (event) {
-
-      switch (event.which) {
-        case 115:
-          document.getElementById('auto-complete-customer').focus();
-          return;
-
-        case 120:
-          document.getElementById('checkout-btn').click();
-          return;
-      }
-    });
-  }
-
-
   onSelect = (value) => {
     const { onSelectCustomer, customers } = this.props;
 
@@ -188,9 +172,6 @@ class ReceiptForm extends Component {
                     )}
                   />
                 </AutoComplete>
-                <Button type='default' className='receipt-add-customer-btn'>
-                  <Icon type='plus' />
-                </Button>
               </FormItem>
             </Form>
 

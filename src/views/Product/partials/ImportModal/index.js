@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Modal, Icon, Button, Upload, message, Row, Col, Divider } from 'antd';
-import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux'
+import { Modal, Icon, Button, Upload, message, Row, Col, Divider, Radio } from 'antd';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+
+const RadioGroup = Radio.Group;
 
 class ProductImportModal extends Component {
   constructor() {
@@ -16,7 +18,9 @@ class ProductImportModal extends Component {
 
   handleUpload = () => {
     const { fileList } = this.state;
+    const { updateStockCount } = this.props;
     const formData = new FormData();
+    formData.append('update_stock_count', updateStockCount);
     fileList.forEach((file) => {
       formData.append('file', file);
     });
@@ -49,10 +53,14 @@ class ProductImportModal extends Component {
     });
   }
 
-  render() {
-    const { visible } = this.props;
-    const { fileList, uploading } = this.state;
+  onChange = (event) => {
+    const { onImportOptionChange } = this.props;
+    onImportOptionChange(event.target.value);
+  }
 
+  render() {
+    const { visible, updateStockCount } = this.props;
+    const { fileList, uploading } = this.state;
     const uploadOptions = {
       onRemove: (file) => {
         this.setState(({ fileList }) => {
@@ -84,6 +92,13 @@ class ProductImportModal extends Component {
       </div>);
     }
 
+    const radioStyle = {
+      display: 'block',
+      height: '30px',
+      lineHeight: '30px',
+      marginBottom: '5px'
+    };
+
     return (
       <Modal
         maskClosable={false}
@@ -97,6 +112,13 @@ class ProductImportModal extends Component {
         <Row type='flex' >
           <Col lg={24} >
             <a href={`${process.env.REACT_APP_HOST}exports/products/import_template`} > Get Sample Excel File </a>
+          </Col>
+          <Divider />
+          <Col lg={24} >
+            <RadioGroup onChange={this.onChange} value={updateStockCount} >
+              <Radio style={radioStyle} value={0}>Update product information (Except for stock count)</Radio>
+              <Radio style={radioStyle} value={1}>Update product information (Inventory Note will be created)</Radio>
+            </RadioGroup>
           </Col>
         </Row>
 
