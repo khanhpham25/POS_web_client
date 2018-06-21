@@ -75,7 +75,7 @@ class Sidebar extends Component {
           </Menu.Item>
           <Menu.Item key='/providers'>
             <NavLink to='/providers' className='nav-text'>
-              <Icon type='user' />&nbsp;&nbsp;&nbsp;
+              <Icon type="usergroup-delete" />&nbsp;&nbsp;&nbsp;
               <span>Providers</span>
             </NavLink>
           </Menu.Item>
@@ -83,6 +83,12 @@ class Sidebar extends Component {
             <NavLink to='/users' className='nav-text'>
               <Icon type='user' />&nbsp;&nbsp;&nbsp;
               <span>Users</span>
+            </NavLink>
+          </Menu.Item>
+          <Menu.Item key='/receipts'>
+            <NavLink to='/receipts' className='nav-text'>
+              <Icon type="exception" />&nbsp;&nbsp;&nbsp;
+              <span>Receipts</span>
             </NavLink>
           </Menu.Item>
         </Menu>

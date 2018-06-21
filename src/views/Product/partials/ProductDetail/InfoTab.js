@@ -6,7 +6,7 @@ import { convertToHTML, convertFromRaw, EditorState, convertToRaw } from 'draft-
 import draftToHtml from 'draftjs-to-html';
 import swal from 'sweetalert';
 
-import productImg from 'assets/img/24.png';
+import productImg from 'assets/img/product-default.jpg';
 
 const FormItem = Form.Item;
 
@@ -55,7 +55,7 @@ class InfoTab extends Component {
         <h2>{product.name}</h2>
         <Row type='flex' gutter={24}>
           <Col lg={8}>
-            <img src={productImg} />
+            <img src={product.product_images[0] ? process.env.REACT_APP_HOST.slice(0, -1) + product.product_images[0].image.url : productImg} width={200} height={200} />
           </Col>
           <Col lg={8}>
             <Form layout='vertical'>

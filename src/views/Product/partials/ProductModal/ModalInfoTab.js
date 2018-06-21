@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { Form, Input, Tooltip, Icon, Row, Col, Upload, Button, Select, InputNumber } from 'antd';
+import { Form, Input, Tooltip, Icon, Row, Col, Upload, Button, Select, InputNumber, Modal, message } from 'antd';
 import CategoryModal from '../CategoryModal';
+import axios from 'axios';
 
 // import productImg from 'assets/img/24.png';
 const FormItem = Form.Item;
@@ -12,17 +13,82 @@ const uploadButton = (
   </div>
 );
 class ModalInfoTab extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this.state = {
-      isCategoryModalVisible: false
+      isCategoryModalVisible: false,
+      previewVisible: false,
+      previewImage: '',
+      fileList: [],
     }
+  }
+
+  handleCancel = () => this.setState({ previewVisible: false })
+
+  handlePreview = (file) => {
+    this.setState({
+      previewImage: file.url || file.thumbUrl,
+      previewVisible: true,
+    });
+  }
+
+  handleChange = ({ fileList }) => this.setState({ fileList })
+
+  handleUpload = (event) => {
+    const { product } = this.props;
+    const { fileList } = this.state;
+    const formData = new FormData();
+
+    formData.append(`product[product_images_attributes][0][image]`, event.file);
+
+    axios({
+      url: `${process.env.REACT_APP_HOST}/products/${product.id}}`,
+      method: 'PUT',
+      headers: {
+        'AUTH-TOKEN': localStorage.token,
+      },
+      data: formData,
+    }).then(response => {
+      this.setState({
+        fileList: [event.file]
+      });
+      message.success('upload successfully.');
+    }).catch(error => {
+      console.log(error)
+      message.error('upload failed.');
+    });
+  }
+
+  onRemove = (file) => {
+    const { product } = this.props;
+    const { fileList } = this.state;
+    const formData = new FormData();
+
+    formData.append(`product[product_images_attributes][0][image]`, file);
+    formData.append(`product[product_images_attributes][0][_destroy]`, true);
+
+    axios({
+      url: `${process.env.REACT_APP_HOST}/products/${product.id}}`,
+      method: 'PUT',
+      headers: {
+        'AUTH-TOKEN': localStorage.token,
+      },
+      data: formData,
+    }).then(response => {
+      this.setState({
+        fileList: []
+      });
+      message.success('delete successfully.');
+    }).catch(error => {
+      console.log(error)
+      message.error('delete failed.');
+    });
   }
 
   render() {
     const { product, categories, action } = this.props;
-    const { isCategoryModalVisible } = this.state;
+    const { isCategoryModalVisible, fileList, previewVisible, previewImage } = this.state;
     // const formItemLayout = {
     //   labelCol: { span: 4 },
     //   wrapperCol: { span: 8 },
@@ -82,6 +148,13 @@ class ModalInfoTab extends Component {
         </FormItem>);
       codeInput = null;
     }
+
+    const uploadButton = (
+      <div>
+        <Icon type="plus" />
+        <div className="ant-upload-text">Upload</div>
+      </div>
+    );
 
     return (
       <div>
@@ -151,15 +224,21 @@ class ModalInfoTab extends Component {
             </FormItem>
           </Col>
           <Col lg={12}>
-            {/* <Upload
-              action="/products"
+            <Upload
+              action={`${process.env.REACT_APP_HOST}/products/${product.id}}`}
               listType="picture-card"
               fileList={fileList}
+              customRequest={this.handleUpload}
+              beforeUpload={this.berforeUpload}
               onPreview={this.handlePreview}
               onChange={this.handleChange}
+              onRemove={this.onRemove}
             >
               {fileList.length >= 3 ? null : uploadButton}
-            </Upload> */}
+            </Upload>
+            <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>
+              <img alt='example' style={{ width: '100%' }} src={previewImage} />
+            </Modal>
           </Col>
         </Row>
 
