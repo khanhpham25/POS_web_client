@@ -7,6 +7,7 @@ const AsyncInventoryCheck = asyncComponent(() => import('views/InventoryCheck'))
 const AsyncCustomer = asyncComponent(() => import('views/Customer'));
 const AsyncProvider = asyncComponent(() => import('views/Provider'));
 const AsyncUser = asyncComponent(() => import('views/User'));
+const AsyncReceipt = asyncComponent(() => import('views/Receipt'));
 
 const dashboardRoutes = [
   {
@@ -37,6 +38,10 @@ const dashboardRoutes = [
   {
     path: '/users',
     component: AsyncUser
+  },
+  {
+    path: '/receipts',
+    component: AsyncReceipt
   }
 ];
 

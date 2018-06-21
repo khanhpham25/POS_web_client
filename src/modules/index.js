@@ -10,6 +10,7 @@ import inventoryNoteReducer from 'views/InventoryNote/reducer';
 import providerReducer from 'views/Provider/reducer';
 import dashboardReducer from 'layouts/Dashboard/reducer';
 import userReducer from 'views/User/reducer';
+import receiptReducer from 'views/Receipt/reducer';
 
 export default combineReducers({
   routing: routerReducer,
@@ -22,5 +23,6 @@ export default combineReducers({
   inventoryNoteReducer,
   providerReducer,
   userReducer,
-  dashboardReducer
+  dashboardReducer,
+  receiptReducer
 });
