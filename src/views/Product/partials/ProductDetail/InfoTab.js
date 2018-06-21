@@ -23,15 +23,15 @@ class InfoTab extends Component {
     const { product, categories } = this.props;
     const { isProductModalVisible } = this.state;
 
-    let editorState;
+    // let editorState;
 
-    if (product.description) {
-      editorState = EditorState.createWithContent(convertFromRaw(JSON.parse(product.description)));
-    } else {
-      editorState = EditorState.createEmpty();
-    }
+    // if (product.description) {
+    //   editorState = EditorState.createWithContent(convertFromRaw(JSON.parse(product.description)));
+    // } else {
+    //   editorState = EditorState.createEmpty();
+    // }
 
-    const content = draftToHtml(convertToRaw(editorState.getCurrentContent()));
+    // const content = draftToHtml(convertToRaw(editorState.getCurrentContent()));
 
     const formItemLayout = {
       labelCol: { span: 4 },
@@ -55,7 +55,7 @@ class InfoTab extends Component {
         <h2>{product.name}</h2>
         <Row type='flex' gutter={24}>
           <Col lg={8}>
-            <img src={product.product_images[0] ? process.env.REACT_APP_HOST.slice(0, -1) + product.product_images[0].image.url : productImg} width={200} height={200} />
+            <img src={product.product_images[0] ? process.env.REACT_APP_BASE + product.product_images[0].image.url : productImg} width={200} height={200} />
           </Col>
           <Col lg={8}>
             <Form layout='vertical'>
@@ -82,7 +82,7 @@ class InfoTab extends Component {
               </FormItem>
 
               <FormItem label='Description:' {...formItemLayout} >
-                <div dangerouslySetInnerHTML={{ __html: content }} />
+                {/* <div dangerouslySetInnerHTML={{ __html: content }} /> */}
               </FormItem>
             </Form>
           </Col>
